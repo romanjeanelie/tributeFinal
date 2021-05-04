@@ -8,9 +8,6 @@ export default class Circle {
     this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
-
-    console.log("circle");
-    this.init();
   }
 
   init() {
@@ -31,8 +28,8 @@ export default class Circle {
       transparent: true,
     });
 
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.scene.add(this.mesh);
+    this.circle = new THREE.Mesh(this.geometry, this.material);
+    this.scene.add(this.circle);
   }
 
   setColors() {
@@ -41,5 +38,29 @@ export default class Circle {
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("circleColor");
+  }
+
+  anim(tl) {
+    tl.fromTo(
+      this.circle.position,
+      {
+        y: -2,
+      },
+      {
+        y: 0,
+        duration: 5,
+      }
+    );
+    tl.fromTo(
+      this.circle.position,
+      {
+        z: 0,
+      },
+      {
+        z: 2,
+        duration: 10,
+        delay: 2,
+      }
+    );
   }
 }

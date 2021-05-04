@@ -8,7 +8,6 @@ export default class Circle {
     this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
-    this.init();
   }
 
   init() {
@@ -22,6 +21,7 @@ export default class Circle {
       uniforms: {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
+        opacity: { value: 0 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -39,5 +39,19 @@ export default class Circle {
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("singlePointColor");
+  }
+
+  anim(tl) {
+    tl.fromTo(
+      this.material.uniforms.opacity,
+      {
+        value: 0,
+      },
+      {
+        value: 1,
+        duration: 6,
+      },
+      "<"
+    );
   }
 }

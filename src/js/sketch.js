@@ -23,7 +23,7 @@ export default class Sketch {
     this.height = this.container.offsetHeight;
 
     this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
-    //this.camera.position.z = 2;
+    this.camera.position.z = 2;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     // this.renderer.setSize(this.width, this.height);
@@ -36,7 +36,6 @@ export default class Sketch {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.update();
     this.controls.enableDamping = true;
-    this.animations = new Animations({ camera: this.camera });
 
     this.init();
   }
@@ -47,7 +46,8 @@ export default class Sketch {
     this.setClearColor();
 
     this.addObject();
-    this.animations = new Animations({ camera: this.camera });
+    // this.anim();
+
     this.render();
   }
 
@@ -74,6 +74,16 @@ export default class Sketch {
   addObject() {
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new singlePoint({ scene: this.scene, gui: this.gui });
+
+    this.circle.init();
+    this.singlePoint.init();
+  }
+
+  anim() {
+    this.animations = new Animations({
+      camera: this.camera,
+      objects: [this.circle, this.singlePoint],
+    });
   }
 
   render() {

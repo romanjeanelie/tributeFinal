@@ -1,6 +1,7 @@
 
 uniform float time;
 uniform vec3 color1;
+uniform float opacity; 
 
 
 varying vec2 vUv;
