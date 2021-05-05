@@ -1,12 +1,12 @@
 @import "scss/reset";
 @import "scss/base";
+@import "scss/text";
 
 @import "../assets/fonts/webfonts/stylesheet.css";
 
-// body {
-//   height: 1000vh;
-// }
-
-// #container {
-//   pointer-events: none;
-// }
+body.scroll {
+  height: 1000vh;
+  #container {
+    pointer-events: none;
+  }
+}

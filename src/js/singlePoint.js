@@ -3,7 +3,7 @@ import * as THREE from "three";
 import fragment from "./shaders/singlePoint/fragment.glsl";
 import vertex from "./shaders/singlePoint/vertex.glsl";
 
-export default class Circle {
+export default class SinglePoint {
   constructor(options) {
     this.scene = options.scene;
     this.gui = options.gui;
@@ -27,6 +27,7 @@ export default class Circle {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
+      depthWrite: false,
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);

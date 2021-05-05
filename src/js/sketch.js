@@ -3,8 +3,10 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 
 import Animations from "./animations";
+import TextIntro from "./textIntro";
 import Circle from "./circle";
-import singlePoint from "./singlePoint";
+import SinglePoint from "./singlePoint";
+import Points from "./points";
 
 export default class Sketch {
   constructor(options) {
@@ -22,7 +24,7 @@ export default class Sketch {
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
 
-    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
+    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 100);
     this.camera.position.z = 2;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -46,7 +48,7 @@ export default class Sketch {
     this.setClearColor();
 
     this.addObject();
-    // this.anim();
+    this.anim();
 
     this.render();
   }
@@ -72,18 +74,23 @@ export default class Sketch {
   }
 
   addObject() {
+    this.textIntro = new TextIntro({ scene: this.scene, gui: this.gui });
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
-    this.singlePoint = new singlePoint({ scene: this.scene, gui: this.gui });
+    this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
+    this.points = new Points({ scene: this.scene, gui: this.gui });
 
     this.circle.init();
     this.singlePoint.init();
+    this.points.init();
   }
 
   anim() {
     this.animations = new Animations({
       camera: this.camera,
-      objects: [this.circle, this.singlePoint],
+      objects: [this.circle, this.singlePoint, this.textIntro, this.points],
     });
+
+    this.animations.anim();
   }
 
   render() {

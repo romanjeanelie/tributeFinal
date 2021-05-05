@@ -8,6 +8,8 @@ export default class Circle {
     this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
+
+    this.circlePositionZ = 0.05;
   }
 
   init() {
@@ -29,6 +31,7 @@ export default class Circle {
     });
 
     this.circle = new THREE.Mesh(this.geometry, this.material);
+
     this.scene.add(this.circle);
   }
 
@@ -54,7 +57,7 @@ export default class Circle {
     tl.fromTo(
       this.circle.position,
       {
-        z: 0,
+        z: this.circlePositionZ,
       },
       {
         z: 2,
