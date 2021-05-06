@@ -1,3 +1,4 @@
+import gsap from "gsap/gsap-core";
 import * as THREE from "three";
 
 import fragment from "./shaders/singlePoint/fragment.glsl";
@@ -5,14 +6,25 @@ import vertex from "./shaders/singlePoint/vertex.glsl";
 
 export default class SinglePoint {
   constructor(options) {
-    this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
+
+    this.scene = options.scene;
+
+    this.mousePosition = {
+      x: 0,
+      y: 0,
+    };
+    this.mousePositionEased = {
+      x: 0,
+      y: 0,
+    };
   }
 
   init() {
     this.setColors();
     this.createPoint();
+    this.mouseMove();
   }
 
   createPoint() {
@@ -27,10 +39,12 @@ export default class SinglePoint {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
+      //alphaTest: 0.001,
       depthWrite: false,
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.geometry.center();
     this.scene.add(this.mesh);
   }
 
@@ -42,17 +56,25 @@ export default class SinglePoint {
       .name("singlePointColor");
   }
 
-  anim(tl) {
-    tl.fromTo(
-      this.material.uniforms.opacity,
-      {
-        value: 0,
-      },
-      {
-        value: 1,
-        duration: 6,
-      },
-      "<"
-    );
+  mouseMove() {
+    window.addEventListener("mousemove", (e) => {
+      this.mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mousePosition.y = (e.clientY / window.innerHeight) * 2 - 1;
+
+      gsap.to(this.mousePositionEased, {
+        x: this.mousePosition.x,
+        y: this.mousePosition.y,
+        duration: 5.5,
+        ease: "power2.out",
+      });
+    });
+  }
+
+  events() {
+    this.singlePointMove();
+  }
+
+  singlePointMove() {
+    this.mesh.position.set(this.mousePositionEased.x, -this.mousePositionEased.y);
   }
 }

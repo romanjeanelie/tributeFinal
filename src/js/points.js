@@ -11,22 +11,12 @@ export default class Points {
   }
 
   init() {
-    this.addPoints();
+    this.createPointsMaterials();
+    this.addPoints(0, -10, this.pointsMaterial1, 30);
   }
 
-  addPoints() {
-    this.pointsGeometry = new THREE.BufferGeometry();
-    this.count = 500;
-
-    this.positions = new Float32Array(this.count * 3);
-
-    for (let i = 0; i < this.count * 3; i++) {
-      this.positions[i * 1] = (Math.random() - 0.5) * 10;
-      this.positions[i * 2] = (Math.random() - 0.5) * 10;
-      this.positions[i * 3] = (Math.random() - 0.5) * 10;
-    }
-    this.pointsGeometry.setAttribute("position", new THREE.BufferAttribute(this.positions, 3));
-    this.pointsMaterial = new THREE.ShaderMaterial({
+  createPointsMaterials() {
+    this.pointsMaterial1 = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         time: { value: 0 },
@@ -36,24 +26,50 @@ export default class Points {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
+      depthWrite: false,
     });
-
-    this.points = new THREE.Points(this.pointsGeometry, this.pointsMaterial);
-
-    this.scene.add(this.points);
+    this.pointsMaterial2 = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        time: { value: 0 },
+        color1: { value: new THREE.Color("#ff0559") },
+        opacity: { value: 0 },
+      },
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      depthWrite: false,
+    });
+    this.pointsMaterial3 = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        time: { value: 0 },
+        color1: { value: new THREE.Color("#ff0559") },
+        opacity: { value: 0 },
+      },
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      depthWrite: false,
+    });
   }
 
-  anim(tl) {
-    tl.fromTo(
-      this.pointsMaterial.uniforms.opacity,
-      {
-        value: 0,
-      },
-      {
-        value: 1,
-        duration: 6,
-      },
-      "<"
-    );
+  addPoints(minPosZ, maxPosZ, pointsMaterial, nbPoints) {
+    const pointsGeometry = new THREE.BufferGeometry();
+    const count = nbPoints;
+
+    const positions = new Float32Array(count * 3);
+
+    for (let i = 0; i < count * 3; i++) {
+      const i3 = i * 3;
+      positions[i3 + 0] = (Math.random() - 0.5) * 10;
+      positions[i3 + 1] = (Math.random() - 0.5) * 10;
+      positions[i3 + 2] = minPosZ + Math.random() * maxPosZ;
+    }
+    pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+    const points = new THREE.Points(pointsGeometry, pointsMaterial);
+
+    this.scene.add(points);
   }
 }

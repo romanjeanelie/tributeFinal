@@ -1,4 +1,4 @@
-export default class TextIntro {
+export default class Text {
   constructor(options) {
     this.scene = options.scene;
 
@@ -8,7 +8,7 @@ export default class TextIntro {
       },
       { text: "could you possibly help me understand ?", fadeIn: 10 },
       { text: "would you even hold my hand speakling softly in my hear ?" },
-      { text: "please" },
+      { text: "please", delayOut: 10 },
     ];
 
     this.addText();
@@ -34,6 +34,9 @@ export default class TextIntro {
       const fadeIn = this.text[i].fadeIn;
       const fadeOut = this.text[i].fadeOut;
 
+      const delayOut = this.text[i].delayOut;
+
+      // FADE IN Text
       tl.fromTo(
         text,
         {
@@ -44,9 +47,12 @@ export default class TextIntro {
           duration: fadeIn ? fadeIn : 2,
         }
       );
+
+      // FADE OUT Text
       tl.to(text, {
         opacity: 0,
         duration: fadeOut ? fadeOut : 2,
+        delay: delayOut ? delayOut : 0,
       });
     });
   }

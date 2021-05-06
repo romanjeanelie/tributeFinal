@@ -21,7 +21,9 @@ void main()	{
     float alpha = circle; 
 
 
+   float distanceToCenter = distance(vUv, vec2(0.5));
+    float strength = (0.02 / distanceToCenter - 0.5) * opacity;
 
-    gl_FragColor = vec4(color, alpha);
+    gl_FragColor = vec4(color1, strength * 3.);
 
 }

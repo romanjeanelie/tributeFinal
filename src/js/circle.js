@@ -28,11 +28,12 @@ export default class Circle {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
+      depthWrite: false,
     });
 
-    this.circle = new THREE.Mesh(this.geometry, this.material);
+    this.circleMesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.scene.add(this.circle);
+    this.scene.add(this.circleMesh);
   }
 
   setColors() {
@@ -41,29 +42,5 @@ export default class Circle {
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("circleColor");
-  }
-
-  anim(tl) {
-    tl.fromTo(
-      this.circle.position,
-      {
-        y: -2,
-      },
-      {
-        y: 0,
-        duration: 5,
-      }
-    );
-    tl.fromTo(
-      this.circle.position,
-      {
-        z: this.circlePositionZ,
-      },
-      {
-        z: 2,
-        duration: 10,
-        delay: 2,
-      }
-    );
   }
 }
