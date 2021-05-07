@@ -25,8 +25,9 @@ export default class Sketch {
     this.height = this.container.offsetHeight;
 
     this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 100);
-    // this.camera.position.y = 40;
-    this.camera.position.z = 10;
+    this.camera.position.z = 5;
+    // this.camera.position.y = -50;
+    // this.camera.position.z = 95;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     // this.renderer.setSize(this.width, this.height);

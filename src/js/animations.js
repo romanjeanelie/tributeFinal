@@ -3,6 +3,8 @@ import Text from "./text";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
+import Moon from "./moon/moon";
+import Road from "./street/road";
 
 export default class Animations {
   constructor(options) {
@@ -32,9 +34,14 @@ export default class Animations {
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
     this.points = new Points({ scene: this.scene, gui: this.gui });
+    this.moon = new Moon({ scene: this.scene, gui: this.gui });
+    this.road = new Road({ scene: this.scene, gui: this.gui });
+
     this.circle.init();
     this.singlePoint.init();
     this.points.init();
+    this.moon.init();
+    this.road.init();
   }
 
   createTimelines() {
@@ -59,6 +66,7 @@ export default class Animations {
     this.stepOne();
     this.stepTwo();
     this.stepThree();
+    this.stepFour();
   }
 
   stepOne() {
@@ -69,33 +77,27 @@ export default class Animations {
       },
       {
         y: 0,
-        duration: 5,
+        duration: 40,
       }
     );
+
+    // ZOOM Circle
     this.tl.fromTo(
       this.circle.circleMesh.position,
       {
-        z: 0.05,
+        z: 3.7,
       },
       {
-        z: 2,
-        duration: 10,
-        delay: 2,
+        z: 6,
+        duration: 200,
       }
     );
-    this.tl.fromTo(
-      this.camera.position,
-      {
-        z: 4,
-      },
-      {
-        z: 1,
-        duration: 10,
-      },
-      "<"
-    );
   }
+
   stepTwo() {
+    const textPoints = document.querySelectorAll(".text__point");
+
+    // FADE IN Single point
     this.tl.fromTo(
       this.singlePoint.material.uniforms.opacity,
       {
@@ -104,13 +106,133 @@ export default class Animations {
       {
         value: 1,
         duration: 20,
-        delay: 4,
+        delay: 10,
+      },
+      "<"
+    );
+
+    // FADE OUT Circle
+    this.tl.fromTo(
+      this.circle.material.uniforms.opacity,
+      {
+        value: 1,
+      },
+      {
+        value: 0,
+        duration: 20,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[0],
+      {
+        opacity: 1,
+        duration: 5,
+        delay: 20,
+      },
+      "<"
+    );
+
+    // MOVE Single point + FADE IN Text
+    this.tl.to(
+      this.singlePoint.mesh.position,
+      {
+        x: this.singlePoint.positions[0].x,
+        y: this.singlePoint.positions[0].y,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[0],
+      {
+        opacity: 0,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[1],
+      {
+        opacity: 1,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    // MOVE Single point + FADE IN Text
+    this.tl.to(
+      this.singlePoint.mesh.position,
+      {
+        x: this.singlePoint.positions[1].x,
+        y: this.singlePoint.positions[1].y,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[1],
+      {
+        opacity: 0,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[2],
+      {
+        opacity: 1,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    // MOVE Single point + FADE IN Text
+    this.tl.to(
+      this.singlePoint.mesh.position,
+      {
+        x: this.singlePoint.positions[2].x,
+        y: this.singlePoint.positions[2].y,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[2],
+      {
+        opacity: 0,
+        duration: 5,
+        delay: 10,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      textPoints[3],
+      {
+        opacity: 1,
+        duration: 5,
+        delay: 10,
       },
       "<"
     );
   }
 
   stepThree() {
+    // APPEAR Points 1
     this.tl.fromTo(
       this.points.pointsMaterial1.uniforms.opacity,
       {
@@ -119,13 +241,13 @@ export default class Animations {
       {
         value: 1,
         duration: 10,
-        onComplete: () => this.points.addPoints(0, 10, this.points.pointsMaterial2, 20),
       }
     );
 
     this.tl.to(this.camera.position, {
-      z: 30,
-      duration: 30,
+      // z: 36,
+      z: 63,
+      duration: 50,
     });
 
     this.tl.fromTo(
@@ -135,9 +257,10 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 10,
-        onComplete: () => this.points.addPoints(10, 30, this.points.pointsMaterial3, 100),
-      }
+        duration: 30,
+        delay: 10,
+      },
+      "<"
     );
 
     this.tl.fromTo(
@@ -147,25 +270,51 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 40,
-      }
+        duration: 50,
+        delay: 10,
+      },
+      "<"
+    );
+  }
+
+  stepFour() {
+    this.tl.to(this.camera.position, {
+      z: 80,
+      duration: 30,
+    });
+
+    this.tl.to(this.camera.position, {
+      z: 95,
+      duration: 20,
+    });
+
+    this.tl.to(
+      this.camera.position,
+      {
+        //y: -40,
+        // A REMETTRE / C ETAIT POUR LE SCROLL
+        y: -53,
+        duration: 20,
+      },
+      "<"
     );
   }
 
   render() {
-    this.time += 0.0005;
-    this.tl.progress(this.time);
-    this.tlText.progress(this.time * 2);
+    this.time += 0.0002;
+    //this.progress = this.time;
+    this.progress = this.scrollValue;
 
-    this.singlePoint.events();
+    this.tl.progress(this.progress);
+    this.tlText.progress(this.progress * 8);
 
     window.requestAnimationFrame(this.render.bind(this));
   }
 
   eventListener() {
+    document.body.classList.toggle("scroll");
     window.addEventListener("keydown", (e) => {
       if (e.key === "s") {
-        document.body.classList.toggle("scroll");
       }
     });
   }

@@ -8,8 +8,6 @@ export default class Circle {
     this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
-
-    this.circlePositionZ = 0.05;
   }
 
   init() {
@@ -23,6 +21,7 @@ export default class Circle {
       uniforms: {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
+        opacity: { value: 1 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -33,6 +32,7 @@ export default class Circle {
 
     this.circleMesh = new THREE.Mesh(this.geometry, this.material);
 
+    this.circleMesh.position.z = 3.7;
     this.scene.add(this.circleMesh);
   }
 

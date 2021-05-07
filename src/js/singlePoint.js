@@ -9,22 +9,18 @@ export default class SinglePoint {
     this.gui = options.gui;
     this.debugObject = {};
 
-    this.scene = options.scene;
+    this.positions = [
+      { x: -0.2, y: 0.3 },
+      { x: 0.4, y: -0.4 },
+      { x: 0.4, y: 0.4 },
+    ];
 
-    this.mousePosition = {
-      x: 0,
-      y: 0,
-    };
-    this.mousePositionEased = {
-      x: 0,
-      y: 0,
-    };
+    this.scene = options.scene;
   }
 
   init() {
     this.setColors();
     this.createPoint();
-    this.mouseMove();
   }
 
   createPoint() {
@@ -54,27 +50,5 @@ export default class SinglePoint {
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("singlePointColor");
-  }
-
-  mouseMove() {
-    window.addEventListener("mousemove", (e) => {
-      this.mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
-      this.mousePosition.y = (e.clientY / window.innerHeight) * 2 - 1;
-
-      gsap.to(this.mousePositionEased, {
-        x: this.mousePosition.x,
-        y: this.mousePosition.y,
-        duration: 5.5,
-        ease: "power2.out",
-      });
-    });
-  }
-
-  events() {
-    this.singlePointMove();
-  }
-
-  singlePointMove() {
-    this.mesh.position.set(this.mousePositionEased.x, -this.mousePositionEased.y);
   }
 }
