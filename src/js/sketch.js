@@ -73,7 +73,7 @@ export default class Sketch {
   }
 
   setClearColor() {
-    this.debugObject.clearColor = "#000000";
+    this.debugObject.clearColor = "#150438";
     this.renderer.setClearColor(this.debugObject.clearColor);
     this.gui
       .addColor(this.debugObject, "clearColor")

@@ -291,9 +291,9 @@ export default class Animations {
     this.tl.to(
       this.camera.position,
       {
-        //y: -40,
+        y: -50,
         // A REMETTRE / C ETAIT POUR LE SCROLL
-        y: -53,
+        //y: -53,
         duration: 20,
       },
       "<"
@@ -302,8 +302,8 @@ export default class Animations {
 
   render() {
     this.time += 0.0002;
-    //this.progress = this.time;
-    this.progress = this.scrollValue;
+    this.progress = this.time;
+    //this.progress = this.scrollValue;
 
     this.tl.progress(this.progress);
     this.tlText.progress(this.progress * 8);

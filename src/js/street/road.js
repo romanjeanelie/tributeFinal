@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import * as dat from "dat.gui";
+
+import Palmtrees from "./palmtrees";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
@@ -12,10 +13,15 @@ export default class Road {
 
     this.gltfLoader = new GLTFLoader();
     this.textureLoader = new THREE.TextureLoader();
+
+    this.street = new THREE.Group();
+    this.palmtrees = new Palmtrees({ scene: this.street, gui: this.gui });
   }
 
   init() {
     this.addModelRoad();
+    this.palmtrees.init();
+    this.scene.add(this.street);
   }
 
   addModelRoad() {
@@ -29,15 +35,16 @@ export default class Road {
       });
       gltf.scene.rotation.y = 4.7132;
 
-      gltf.scene.position.y = -50.5;
-      gltf.scene.position.z = 65;
-
       this.gui.add(gltf.scene.rotation, "y", 4, 5, 0.0001).name("roadRotationX");
 
       this.gui.add(gltf.scene.position, "x", -5, 3, 0.0001).name("roadpositionX");
       this.gui.add(gltf.scene.position, "y", -5, 3, 0.0001).name("roadpositionX");
       this.gui.add(gltf.scene.position, "z", -5, 3, 0.0001).name("roadpositionX");
-      this.scene.add(gltf.scene);
+
+      this.street.add(gltf.scene);
+
+      this.street.position.y = -50.5;
+      this.street.position.z = 65;
     });
   }
 }
