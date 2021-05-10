@@ -8,7 +8,7 @@ import Road from "./street/road";
 
 export default class Animations {
   constructor(options) {
-    let start = 0;
+    let start = 1000;
     this.time = start;
     this.timeText = start;
 
@@ -65,8 +65,8 @@ export default class Animations {
     this.text.anim(this.tlText);
     this.stepOne();
     this.stepTwo();
-    // this.stepThree();
-    // this.stepFour();
+    this.stepThree();
+    this.stepFour();
   }
 
   stepOne() {
@@ -279,12 +279,12 @@ export default class Animations {
   }
 
   render() {
-    const speedFactor = 10;
+    const speedFactor = 1000;
     this.time += 0.0001 * speedFactor;
     //this.timeText += 0.00035 * speedFactor;
     this.timeText += this.time;
-    this.progress = this.time;
-    this.progress = this.scrollValue;
+    this.progress = this.time * 0.06;
+    //this.progress = this.scrollValue;
 
     this.tl.progress(this.progress);
     this.tlText.progress(this.progress * 3.5);
