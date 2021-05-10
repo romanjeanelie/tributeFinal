@@ -6,7 +6,7 @@ uniform float opacity;
 varying vec2 vUv;
 
 float stroke (float x, float s, float w){
-    return smoothstep(s-0.05,s, x + w * .5) - smoothstep(s,s+0.3, x-w * .5);
+    return smoothstep(s-0.05,s, x + w * .5) - smoothstep(s,s+0.2, x-w * .5);
 }
 
 

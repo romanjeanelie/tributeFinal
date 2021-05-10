@@ -9,8 +9,8 @@
   transform: translate(-50%, -50%);
 }
 .text__intro {
+  opacity: 0;
   top: 50%;
-
   color: #fff;
 }
 
@@ -19,4 +19,10 @@
   font-size: 5vw;
   top: 90%;
   color: #ff0057;
+}
+
+.god {
+  font-weight: 700;
+  font-size: 16vw;
+  top: 50%;
 }

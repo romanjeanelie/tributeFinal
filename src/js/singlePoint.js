@@ -9,11 +9,7 @@ export default class SinglePoint {
     this.gui = options.gui;
     this.debugObject = {};
 
-    this.positions = [
-      { x: -0.2, y: 0.3 },
-      { x: 0.4, y: -0.4 },
-      { x: 0.4, y: 0.4 },
-    ];
+    this.activeWave = { value: 0 };
 
     this.scene = options.scene;
   }
@@ -50,5 +46,11 @@ export default class SinglePoint {
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("singlePointColor");
+  }
+
+  move(time) {
+    const speed = 25;
+    this.mesh.position.x = Math.sin(time * 2 * speed) * 0.5 * this.activeWave.value;
+    this.mesh.position.y = Math.cos(time * 8 * speed) * 0.1 * this.activeWave.value;
   }
 }

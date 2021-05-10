@@ -8,7 +8,9 @@ import Road from "./street/road";
 
 export default class Animations {
   constructor(options) {
-    this.time = 0;
+    let start = 0;
+    this.time = start;
+    this.timeText = start;
 
     this.scene = options.scene;
     this.gui = options.gui;
@@ -25,8 +27,6 @@ export default class Animations {
     this.createTimelines();
     this.getScroll();
     this.render();
-
-    this.eventListener();
   }
 
   addObject() {
@@ -65,11 +65,12 @@ export default class Animations {
     this.text.anim(this.tlText);
     this.stepOne();
     this.stepTwo();
-    this.stepThree();
-    this.stepFour();
+    // this.stepThree();
+    // this.stepFour();
   }
 
   stepOne() {
+    const textIntro = document.querySelectorAll(".text__intro");
     this.tl.fromTo(
       this.circle.circleMesh.position,
       {
@@ -77,7 +78,8 @@ export default class Animations {
       },
       {
         y: 0,
-        duration: 40,
+        duration: 80,
+        //ease: "power1.out",
       }
     );
 
@@ -89,8 +91,11 @@ export default class Animations {
       },
       {
         z: 6,
-        duration: 200,
-      }
+        delay: 33,
+        duration: 40,
+        ease: "power1.in",
+      },
+      "<"
     );
   }
 
@@ -105,7 +110,7 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 20,
+        duration: 80,
         delay: 10,
       },
       "<"
@@ -127,20 +132,8 @@ export default class Animations {
     this.tl.to(
       textPoints[0],
       {
-        opacity: 1,
-        duration: 5,
-        delay: 20,
-      },
-      "<"
-    );
-
-    // MOVE Single point + FADE IN Text
-    this.tl.to(
-      this.singlePoint.mesh.position,
-      {
-        x: this.singlePoint.positions[0].x,
-        y: this.singlePoint.positions[0].y,
-        duration: 5,
+        opacity: 0.4,
+        duration: 15,
         delay: 10,
       },
       "<"
@@ -149,7 +142,7 @@ export default class Animations {
     this.tl.to(
       textPoints[0],
       {
-        opacity: 0,
+        opacity: 0.2,
         duration: 5,
         delay: 10,
       },
@@ -161,18 +154,15 @@ export default class Animations {
       {
         opacity: 1,
         duration: 5,
-        delay: 10,
+        delay: 0,
       },
       "<"
     );
-
-    // MOVE Single point + FADE IN Text
     this.tl.to(
-      this.singlePoint.mesh.position,
+      this.singlePoint.activeWave,
       {
-        x: this.singlePoint.positions[1].x,
-        y: this.singlePoint.positions[1].y,
-        duration: 5,
+        value: 1,
+        duration: 100,
         delay: 10,
       },
       "<"
@@ -183,7 +173,7 @@ export default class Animations {
       {
         opacity: 0,
         duration: 5,
-        delay: 10,
+        delay: 5,
       },
       "<"
     );
@@ -193,19 +183,7 @@ export default class Animations {
       {
         opacity: 1,
         duration: 5,
-        delay: 10,
-      },
-      "<"
-    );
-
-    // MOVE Single point + FADE IN Text
-    this.tl.to(
-      this.singlePoint.mesh.position,
-      {
-        x: this.singlePoint.positions[2].x,
-        y: this.singlePoint.positions[2].y,
-        duration: 5,
-        delay: 10,
+        delay: 0,
       },
       "<"
     );
@@ -215,7 +193,7 @@ export default class Animations {
       {
         opacity: 0,
         duration: 5,
-        delay: 10,
+        delay: 5,
       },
       "<"
     );
@@ -225,7 +203,7 @@ export default class Animations {
       {
         opacity: 1,
         duration: 5,
-        delay: 10,
+        delay: 0,
       },
       "<"
     );
@@ -301,21 +279,18 @@ export default class Animations {
   }
 
   render() {
-    this.time += 0.0002;
+    const speedFactor = 10;
+    this.time += 0.0001 * speedFactor;
+    //this.timeText += 0.00035 * speedFactor;
+    this.timeText += this.time;
     this.progress = this.time;
-    //this.progress = this.scrollValue;
+    this.progress = this.scrollValue;
 
     this.tl.progress(this.progress);
-    this.tlText.progress(this.progress * 8);
+    this.tlText.progress(this.progress * 3.5);
+
+    this.singlePoint.move(this.time);
 
     window.requestAnimationFrame(this.render.bind(this));
-  }
-
-  eventListener() {
-    document.body.classList.toggle("scroll");
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "s") {
-      }
-    });
   }
 }
