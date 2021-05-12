@@ -2,8 +2,10 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import Palmtrees from "./palmtrees";
-import vertex from "../shaders/headLight/vertex.glsl";
-import fragment from "../shaders/headLight/fragment.glsl";
+import vertexHL from "../shaders/headLight/vertex.glsl";
+import fragmentHL from "../shaders/headLight/fragment.glsl";
+import vertexSL from "../shaders/streetLight/vertex.glsl";
+import fragmentSL from "../shaders/streetLight/fragment.glsl";
 
 export default class Road {
   constructor(options) {
@@ -22,13 +24,17 @@ export default class Road {
 
   init() {
     this.addModelRoad();
+    this.addBuildingsandLamps();
+
+    this.addHeadLights();
+    this.addLampStreet();
+
     this.palmtrees.init();
     this.scene.add(this.street);
-    this.addHeadLights();
   }
 
   addModelRoad() {
-    this.bakedTexture = this.textureLoader.load("/textures/street/baked10_05-3.jpg");
+    this.bakedTexture = this.textureLoader.load("/textures/street/baked11_05.jpg");
     this.bakedTexture.flipY = false;
     this.bakedMaterial = new THREE.MeshBasicMaterial({ map: this.bakedTexture });
 
@@ -36,6 +42,17 @@ export default class Road {
       gltf.scene.traverse((child) => {
         child.material = this.bakedMaterial;
       });
+      gltf.scene.rotation.y = 4.7132;
+
+      this.street.add(gltf.scene);
+
+      this.street.position.y = -50.5;
+      this.street.position.z = 65;
+    });
+  }
+
+  addBuildingsandLamps() {
+    this.gltfLoader.load("/models/buildings-with-lamps.glb", (gltf) => {
       gltf.scene.rotation.y = 4.7132;
 
       this.street.add(gltf.scene);
@@ -80,8 +97,8 @@ export default class Road {
       uniforms: {
         color: { value: new THREE.Color(this.debugObject.headLightColor) },
       },
-      vertexShader: vertex,
-      fragmentShader: fragment,
+      vertexShader: vertexHL,
+      fragmentShader: fragmentHL,
       transparent: true,
     });
 
@@ -101,5 +118,66 @@ export default class Road {
     this.headLightR.position.z = light.z;
 
     this.street.add(this.headLightR, this.headLightL);
+  }
+
+  addLampStreet() {
+    this.lampStreet = [
+      {
+        x: -2.5,
+        y: 4.6,
+        z: 19,
+        s: 1,
+      },
+      {
+        x: 2.8,
+        y: 4.6,
+        z: 17,
+        s: 0.98,
+      },
+      {
+        x: 3.1,
+        y: 4.55,
+        z: -5,
+        s: 0.8,
+      },
+      {
+        x: -2.6,
+        y: 4.5,
+        z: -27.5,
+        s: 0.6,
+      },
+    ];
+
+    this.lampStreet.forEach((light) => {
+      this.createLampStreet(light);
+    });
+  }
+
+  createLampStreet(light) {
+    this.debugObject.lampStreetColor = "#ffffff";
+    this.gui
+      .addColor(this.debugObject, "lampStreetColor")
+      .onChange(
+        () => (this.lampStreetMaterial.uniforms.color.value = new THREE.Color(this.debugObject.lampStreetColor))
+      )
+      .name("lampStreetColor");
+    this.lampStreetGeometry = new THREE.PlaneBufferGeometry(1, 1, 1);
+    this.lampStreetMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        color: { value: new THREE.Color(this.debugObject.lampStreetColor) },
+      },
+      vertexShader: vertexSL,
+      fragmentShader: fragmentSL,
+      transparent: true,
+    });
+
+    this.lampStreet = new THREE.Mesh(this.lampStreetGeometry, this.lampStreetMaterial);
+
+    this.lampStreet.position.x = light.x;
+    this.lampStreet.position.y = light.y;
+    this.lampStreet.position.z = light.z;
+    this.lampStreet.scale.set(light.s, light.s, light.s);
+
+    this.street.add(this.lampStreet);
   }
 }
