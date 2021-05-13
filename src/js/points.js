@@ -8,6 +8,8 @@ export default class Points {
     this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
+
+    this.pointsGroup = new THREE.Group();
   }
 
   init() {
@@ -15,6 +17,9 @@ export default class Points {
     this.addPoints(0, -10, this.pointsMaterial1, 100);
     this.addPoints(0, 10, this.pointsMaterial2, 60);
     this.addPoints(10, 80, this.pointsMaterial3, 150);
+
+    this.pointsGroup.position.x = 60;
+    this.pointsGroup.position.y = 60;
   }
 
   createPointsMaterials() {
@@ -64,7 +69,7 @@ export default class Points {
 
     for (let i = 0; i < count * 3; i++) {
       const i3 = i * 3;
-      positions[i3 + 0] = (Math.random() - 0.5) * 200;
+      positions[i3 + 0] = (Math.random() - 0.5) * 300;
       positions[i3 + 1] = (Math.random() - 0.5) * 200;
       positions[i3 + 2] = minPosZ + Math.random() * maxPosZ;
     }
@@ -72,6 +77,7 @@ export default class Points {
 
     const points = new THREE.Points(pointsGeometry, pointsMaterial);
 
-    this.scene.add(points);
+    this.pointsGroup.add(points);
+    this.scene.add(this.pointsGroup);
   }
 }

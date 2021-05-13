@@ -3,6 +3,7 @@ import Text from "./text";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
+import Plane from "./plane";
 import Moon from "./moon/moon";
 import Road from "./street/road";
 
@@ -15,7 +16,7 @@ export default class Animations {
     this.scene = options.scene;
     this.gui = options.gui;
     this.camera = options.camera;
-    this.objects = options.objects;
+    //this.objects = options.objects;
 
     this.scrollValue = 0;
 
@@ -34,12 +35,14 @@ export default class Animations {
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
     this.points = new Points({ scene: this.scene, gui: this.gui });
+    this.plane = new Plane({ scene: this.scene, gui: this.gui });
     this.moon = new Moon({ scene: this.scene, gui: this.gui });
     this.road = new Road({ scene: this.scene, gui: this.gui });
 
     this.circle.init();
     this.singlePoint.init();
     this.points.init();
+    this.plane.init();
     this.moon.init();
     this.road.init();
   }
