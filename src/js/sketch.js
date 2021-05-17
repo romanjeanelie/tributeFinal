@@ -3,16 +3,12 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 
 import Animations from "./animations";
-import TextIntro from "./text";
-import Circle from "./circle";
-import SinglePoint from "./singlePoint";
-import Points from "./points";
 
 export default class Sketch {
   constructor(options) {
     this.gui = new dat.GUI();
     this.debugObject = {};
-    this.gui.hide();
+    //this.gui.hide();
     this.gui.hideable = true;
 
     this.time = 0;
@@ -24,11 +20,11 @@ export default class Sketch {
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
 
-    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 300);
-    this.camera.position.z = 5;
-
-    // this.camera.position.y = -50;
-    // this.camera.position.z = 95;
+    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 1000);
+    this.camera.lookAt(400, 700, 0);
+    // this.camera.up.set(0, 0, 1);
+    this.camera.position.x = 300;
+    this.camera.position.z = 10;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     // this.renderer.setSize(this.width, this.height);
@@ -55,6 +51,9 @@ export default class Sketch {
       camera: this.camera,
       scene: this.scene,
       gui: this.gui,
+      container: this.container,
+      renderer: this.renderer,
+      controls: this.controls,
     });
     this.animations.anim();
 
@@ -83,8 +82,9 @@ export default class Sketch {
 
   render() {
     this.renderer.render(this.scene, this.camera);
-
     this.controls.update();
+
+    this.animations.render();
 
     window.requestAnimationFrame(this.render.bind(this));
   }

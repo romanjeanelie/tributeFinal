@@ -6,6 +6,7 @@ import Points from "./points";
 import Plane from "./plane";
 import Moon from "./moon/moon";
 import Road from "./street/road";
+import CreatePath from "./camera/createPath";
 
 export default class Animations {
   constructor(options) {
@@ -16,6 +17,9 @@ export default class Animations {
     this.scene = options.scene;
     this.gui = options.gui;
     this.camera = options.camera;
+    this.container = options.container;
+    this.renderer = options.renderer;
+    this.controls = options.controls;
     //this.objects = options.objects;
 
     this.scrollValue = 0;
@@ -25,6 +29,7 @@ export default class Animations {
 
   init() {
     this.addObject();
+    this.manageCamera();
     this.createTimelines();
     this.getScroll();
     this.render();
@@ -47,6 +52,17 @@ export default class Animations {
     this.road.init();
   }
 
+  manageCamera() {
+    this.createPath = new CreatePath({
+      container: this.container,
+      scene: this.scene,
+      camera: this.camera,
+      controls: this.controls,
+      renderer: this.renderer,
+      gui: this.gui,
+    });
+  }
+
   createTimelines() {
     this.tl = gsap.timeline({
       paused: true,
@@ -65,15 +81,13 @@ export default class Animations {
   }
 
   anim() {
-    this.text.anim(this.tlText);
-    this.stepOne();
-    this.stepTwo();
-    this.stepThree();
-    this.stepFour();
+    // this.text.anim(this.tlText);
+    // this.stepOne();
+    // this.stepTwo();
+    // this.stepThree();
   }
 
   stepOne() {
-    const textIntro = document.querySelectorAll(".text__intro");
     this.tl.fromTo(
       this.circle.circleMesh.position,
       {
@@ -82,7 +96,6 @@ export default class Animations {
       {
         y: 0,
         duration: 80,
-        //ease: "power1.out",
       }
     );
 
@@ -120,17 +133,17 @@ export default class Animations {
     );
 
     // FADE OUT Circle
-    this.tl.fromTo(
-      this.circle.material.uniforms.opacity,
-      {
-        value: 1,
-      },
-      {
-        value: 0,
-        duration: 20,
-      },
-      "<"
-    );
+    // this.tl.fromTo(
+    //   this.circle.material.uniforms.opacity,
+    //   {
+    //     value: 1,
+    //   },
+    //   {
+    //     value: 0,
+    //     duration: 20,
+    //   },
+    //   "<"
+    // );
 
     this.tl.to(
       textPoints[0],
@@ -225,12 +238,6 @@ export default class Animations {
       }
     );
 
-    this.tl.to(this.camera.position, {
-      // z: 36,
-      z: 63,
-      duration: 50,
-    });
-
     this.tl.fromTo(
       this.points.pointsMaterial2.uniforms.opacity,
       {
@@ -258,31 +265,8 @@ export default class Animations {
     );
   }
 
-  stepFour() {
-    this.tl.to(this.camera.position, {
-      z: 80,
-      duration: 30,
-    });
-
-    this.tl.to(this.camera.position, {
-      z: 95,
-      duration: 20,
-    });
-
-    this.tl.to(
-      this.camera.position,
-      {
-        y: -50,
-        // A REMETTRE / C ETAIT POUR LE SCROLL
-        //y: -53,
-        duration: 20,
-      },
-      "<"
-    );
-  }
-
   render() {
-    const speedFactor = 1000;
+    const speedFactor = 1;
     this.time += 0.0001 * speedFactor;
     //this.timeText += 0.00035 * speedFactor;
     this.timeText += this.time;
@@ -294,6 +278,8 @@ export default class Animations {
 
     this.singlePoint.move(this.time);
 
-    window.requestAnimationFrame(this.render.bind(this));
+    // Animation Camera
+    this.createPath.anim();
+    this.createPath.cameraPath.anim();
   }
 }

@@ -32,7 +32,13 @@ export default class Circle {
 
     this.circleMesh = new THREE.Mesh(this.geometry, this.material);
 
+    this.circleMesh.scale.set(10, 10, 10);
+
+    this.circleMesh.position.x = 500;
+    this.circleMesh.position.y = 80;
     this.circleMesh.position.z = 3.7;
+
+    this.circleMesh.rotation.y = Math.PI / 2;
     this.scene.add(this.circleMesh);
   }
 

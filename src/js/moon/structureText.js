@@ -4,7 +4,6 @@ export default class StructureText {
   constructor(options) {
     this.debugObject = {};
     this.gui = options.gui;
-    this.gui.hide();
 
     this.scene = options.scene;
 
