@@ -11,6 +11,9 @@ export default class Sketch {
     //this.gui.hide();
     this.gui.hideable = true;
 
+    // GUI
+    this.folderSketch = this.gui.addFolder("Sketch");
+
     this.time = 0;
 
     this.container = options.dom;
@@ -20,10 +23,7 @@ export default class Sketch {
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
 
-    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 1000);
-    this.camera.lookAt(400, 700, 0);
-    // this.camera.up.set(0, 0, 1);
-    this.camera.position.x = 300;
+    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 4000);
     this.camera.position.z = 10;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -73,9 +73,9 @@ export default class Sketch {
   }
 
   setClearColor() {
-    this.debugObject.clearColor = "#150438";
+    this.debugObject.clearColor = "#01011c";
     this.renderer.setClearColor(this.debugObject.clearColor);
-    this.gui
+    this.folderSketch
       .addColor(this.debugObject, "clearColor")
       .onChange(() => this.renderer.setClearColor(this.debugObject.clearColor));
   }
@@ -83,7 +83,6 @@ export default class Sketch {
   render() {
     this.renderer.render(this.scene, this.camera);
     this.controls.update();
-
     this.animations.render();
 
     window.requestAnimationFrame(this.render.bind(this));

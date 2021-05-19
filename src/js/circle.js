@@ -8,6 +8,10 @@ export default class Circle {
     this.scene = options.scene;
     this.gui = options.gui;
     this.debugObject = {};
+
+    this.positionX = 0;
+    this.positionY = -150;
+    this.positionZ = -100;
   }
 
   init() {
@@ -32,13 +36,12 @@ export default class Circle {
 
     this.circleMesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.circleMesh.scale.set(10, 10, 10);
+    this.circleMesh.scale.set(100, 100, 100);
 
-    this.circleMesh.position.x = 500;
-    this.circleMesh.position.y = 80;
-    this.circleMesh.position.z = 3.7;
+    this.circleMesh.position.x = this.positionX;
+    this.circleMesh.position.y = this.positionY;
+    this.circleMesh.position.z = this.positionZ;
 
-    this.circleMesh.rotation.y = Math.PI / 2;
     this.scene.add(this.circleMesh);
   }
 

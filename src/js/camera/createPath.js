@@ -16,6 +16,7 @@ export default class CreatePath {
     this.renderer = options.renderer;
     this.controls = options.controls;
     this.gui = options.gui;
+    this.folderPath = this.gui.addFolder("Path");
 
     this.splineHelperObjects = [];
     this.splinePointsLength = 4;
@@ -35,13 +36,16 @@ export default class CreatePath {
     this.splines = {};
 
     this.codeCurve = [
-      new THREE.Vector3(516.0070336965083, 76.99118361639042, 3.6003446214659967),
-      new THREE.Vector3(165.3978506734047, 55.77475073285952, -61.3002486221354),
-      new THREE.Vector3(-26.491533393748455, 61.48348806732774, -124.11445194211284),
-      new THREE.Vector3(2.7064228794056895, 69.82724672099745, -18.201708198476528),
-      new THREE.Vector3(-3.2070442316403596, -47.70566097733623, 99.2823595051571),
-      new THREE.Vector3(88.31455120145267, -21.99544882379576, 112.04905088709852),
-      new THREE.Vector3(170.4478841224952, 124.95044442800464, 100.70431254286862),
+      //new THREE.Vector3(179, 477, -2371),
+      //new THREE.Vector3(150, 467.08094539338794, -629.1088696875004),
+      // new THREE.Vector3(-10.777985409535018, 307.5284332448407, 55.29076039293021),
+      // new THREE.Vector3(7.984710841278314, -21.96939234694753, 523.1299423107769),
+      // new THREE.Vector3(168.8363897564537, -4.146713725504924, 854.0714313054578),
+      // new THREE.Vector3(-3.2674760998055064, 1124.7441991009302, 1547.8580290779007),
+      new THREE.Vector3(0, 0, 10),
+      new THREE.Vector3(0, 0, 100),
+      new THREE.Vector3(0, 0, 200),
+      new THREE.Vector3(0, 0, 400),
     ];
 
     this.params = {
@@ -58,15 +62,17 @@ export default class CreatePath {
     this.init();
 
     this.createCameraPath();
+
+    this.toggleCurve();
   }
 
   init() {
     // GUI
-    this.gui.add(this.params, "addPoint");
-    this.gui.add(this.params, "removePoint");
-    this.gui.add(this.params, "exportSpline");
-    this.gui.add(this.params, "toggleCurve");
-    this.gui.open();
+    this.folderPath.add(this.params, "addPoint");
+    this.folderPath.add(this.params, "removePoint");
+    this.folderPath.add(this.params, "exportSpline");
+    this.folderPath.add(this.params, "toggleCurve");
+    //this.folderPath.open();
 
     // Transform Controls
     this.transformControl = new TransformControls(this.camera, this.renderer.domElement);

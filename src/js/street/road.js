@@ -11,6 +11,7 @@ export default class Road {
   constructor(options) {
     this.debugObject = {};
     this.gui = options.gui;
+    this.folderStreet = this.gui.addFolder("Street");
 
     this.scene = options.scene;
 
@@ -29,6 +30,10 @@ export default class Road {
     this.addLampStreet();
 
     this.palmtrees.init();
+
+    this.street.position.y = -50.5;
+    this.street.position.z = 465;
+
     this.scene.add(this.street);
   }
 
@@ -44,9 +49,6 @@ export default class Road {
       gltf.scene.rotation.y = 4.7132;
 
       this.street.add(gltf.scene);
-
-      this.street.position.y = -50.5;
-      this.street.position.z = 65;
     });
   }
 
@@ -55,9 +57,6 @@ export default class Road {
       gltf.scene.rotation.y = 4.7132;
 
       this.street.add(gltf.scene);
-
-      this.street.position.y = -50.5;
-      this.street.position.z = 65;
     });
   }
 
@@ -86,7 +85,7 @@ export default class Road {
 
   createHeadLights(light) {
     this.debugObject.headLightColor = "#ff0364";
-    this.gui
+    this.folderStreet
       .addColor(this.debugObject, "headLightColor")
       .onChange(() => (this.headLightMaterial.uniforms.color.value = new THREE.Color(this.debugObject.headLightColor)))
       .name("headLightColor");
@@ -154,7 +153,7 @@ export default class Road {
 
   createLampStreet(light) {
     this.debugObject.lampStreetColor = "#ffffff";
-    this.gui
+    this.folderStreet
       .addColor(this.debugObject, "lampStreetColor")
       .onChange(
         () => (this.lampStreetMaterial.uniforms.color.value = new THREE.Color(this.debugObject.lampStreetColor))

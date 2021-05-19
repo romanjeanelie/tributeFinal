@@ -8,11 +8,12 @@ export default class Moon {
   constructor(options) {
     this.gui = options.gui;
     this.debugObject = {};
+    this.folderMoon = this.gui.addFolder("Moon");
 
     this.scene = options.scene;
     this.moon = new THREE.Group();
 
-    this.textMoon = new TextMoon({ scene: this.moon, gui: this.gui });
+    this.textMoon = new TextMoon({ scene: this.moon, gui: this.folderMoon });
   }
 
   init() {
@@ -20,13 +21,13 @@ export default class Moon {
     this.textMoon.init();
 
     this.moon.position.y = 30;
-    this.moon.position.z = -80;
+    this.moon.position.z = 420;
   }
 
   addMoon() {
     this.debugObject.moonColor1 = "#F81C39";
     this.debugObject.moonColor2 = "#EE31C3";
-    this.gui.addColor(this.debugObject, "moonColor1").onChange(() => {
+    this.folderMoon.addColor(this.debugObject, "moonColor1").onChange(() => {
       this.moonMaterial.color = new THREE.Color(this.debugObject.moonColor);
     });
 
