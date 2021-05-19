@@ -169,9 +169,9 @@ export default class Animations {
     this.time += 0.0001 * speedFactor;
     this.timeText += this.time;
     this.progress = this.time * 0.06;
-    this.progress = this.scrollValue;
+    this.progress = this.scrollValue * 6;
 
-    this.tl.progress(this.progress);
+    this.tl.progress(this.time * 0.01);
 
     // Animation Text
     setTimeout(() => {
