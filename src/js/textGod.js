@@ -1,11 +1,14 @@
 import * as THREE from "three";
 import gsap from "gsap";
 
-import fragment from "./shaders/textIntro/fragment.glsl";
-import vertex from "./shaders/textIntro/vertex.glsl";
+import fragment from "./shaders/textGod/fragment.glsl";
+import vertex from "./shaders/textGod/vertex.glsl";
 
-export default class TextIntro {
+export default class TextGod {
   constructor(options) {
+    this.gui = options.gui;
+    this.debugObject = {};
+
     this.scene = options.scene;
 
     this.loader = new THREE.FontLoader();
@@ -29,39 +32,24 @@ export default class TextIntro {
   }
 
   animText(progress) {
-    const steps = [0, 0.2, 0.4, 0.6, 0.8, 1];
-
-    steps.forEach((step, i) => {
-      if (progress > step && progress < steps[i + 1]) {
-        const currentText = this.materialsText[i];
-        const otherTexts = this.materialsText.filter((el) => el !== currentText);
-
-        // FADE IN currentText
-        gsap.to(currentText.uniforms.opacity, {
+    if (progress > 1.28) {
+      this.materialsText.forEach((material) => {
+        gsap.to(material.uniforms.opacity, {
           value: 1,
+          duration: 5,
         });
-
-        // FADE OUT otherTexts
-        otherTexts.forEach((text) => {
-          gsap.to(text.uniforms.opacity, {
-            value: 0,
-          });
-        });
-      }
-    });
+      });
+    }
   }
 
   addText() {
-    const texts = [
-      "HOW DO I FORGIVE MYSELF FOR MY OWN MISTAKES ?",
-      "COULD YOU POSSIBLY HELP ME UNDERSTAND ?",
-      "WOULD YOU EVEN HOLD MY HAND SPEAKING SOFTLY IN MY HEAR ?",
-      "COULD YOU POSSIBLY HELP ME",
-      "PLEASE",
-    ];
+    const texts = ["OH LIFE IS A GRAIN OF SALT", "IN THE EYES OF GOD"];
     this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
       if (this.index > texts.length - 1) {
         this.textGroup.position.z = -80;
+        // Position
+        this.textGroup.children[0].position.y = 20;
+        this.textGroup.children[1].position.y = -20;
         this.scene.add(this.textGroup);
         return;
       }
@@ -77,7 +65,7 @@ export default class TextIntro {
     return new Promise((resolve, reject) => {
       const textGeometry = new THREE.TextGeometry(text, {
         font: font,
-        size: 3.5,
+        size: 20,
         height: 0,
         curveSegments: 10,
         bevelEnabled: false,
@@ -85,11 +73,11 @@ export default class TextIntro {
 
       const textMaterial = new THREE.ShaderMaterial({
         uniforms: {
-          uStrength: { value: 0 },
           time: { value: 0 },
           activeLines: { value: 0 },
-          progress: { value: 0 },
+          scroll: { value: 0 },
           opacity: { value: 0 },
+          uColor: { value: new THREE.Color("#EE31C3") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -114,10 +102,8 @@ export default class TextIntro {
   anim(progress, time) {
     this.materialsText.forEach((material) => {
       material.uniforms.time.value = time;
-      material.uniforms.progress.value = progress;
-      // SPEED Volets
-      const velocity = progress * 0.1;
-      material.uniforms.activeLines.value = progress;
+
+      material.uniforms.activeLines.value = time * 0.001;
     });
   }
 }

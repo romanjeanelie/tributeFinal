@@ -10,7 +10,7 @@ export default class Circle {
     this.debugObject = {};
 
     this.positionX = 0;
-    this.positionY = -150;
+    this.positionY = -170;
     this.positionZ = -100;
   }
 
@@ -24,6 +24,7 @@ export default class Circle {
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
+        progress: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
         opacity: { value: 1 },
       },
@@ -51,5 +52,10 @@ export default class Circle {
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("circleColor");
+  }
+
+  anim(time, progress) {
+    this.material.uniforms.time.value = time;
+    this.material.uniforms.progress.value = progress;
   }
 }

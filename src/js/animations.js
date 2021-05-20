@@ -1,5 +1,6 @@
 import gsap from "gsap";
 import TextIntro from "./textIntro";
+import TextGod from "./textGod";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
@@ -37,6 +38,7 @@ export default class Animations {
 
   addObject() {
     this.textIntro = new TextIntro({ scene: this.scene, scroll: this.scrollValue });
+    this.textGod = new TextGod({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
     this.points = new Points({ scene: this.scene, gui: this.gui });
@@ -45,6 +47,7 @@ export default class Animations {
     this.road = new Road({ scene: this.scene, gui: this.gui });
 
     this.textIntro.init();
+    this.textGod.init();
     this.circle.init();
     this.singlePoint.init();
     this.points.init();
@@ -77,7 +80,6 @@ export default class Animations {
   getScroll() {
     window.addEventListener("scroll", (e) => {
       this.scrollValue = window.scrollY / document.body.scrollHeight;
-      console.log(this.scrollValue);
     });
   }
 
@@ -89,7 +91,7 @@ export default class Animations {
 
   stepOne() {
     this.tl.to(this.circle.circleMesh.position, {
-      y: this.circle.positionY + 150,
+      y: this.circle.positionY + 160,
       duration: 60,
     });
     console.log(this.circle.positionY);
@@ -98,7 +100,7 @@ export default class Animations {
     this.tl.to(
       this.circle.circleMesh.position,
       {
-        z: this.circle.positionZ + 70,
+        z: this.circle.positionZ + 110,
         delay: 20,
         duration: 100,
       },
@@ -164,25 +166,38 @@ export default class Animations {
     );
   }
 
-  render() {
-    const speedFactor = 100;
-    this.time += 0.0001 * speedFactor;
-    this.timeText += this.time;
-    this.progress = this.time * 0.06;
-    this.progress = this.scrollValue * 6;
-
-    this.tl.progress(this.time * 0.01);
-
-    // Animation Text
-    setTimeout(() => {
-      this.textIntro.anim(this.progress * 12);
-      this.textIntro.animText(this.progress * 0.5);
-    }, 1000);
-
-    // Animation Camera
+  animCamera() {
     this.createPath.cameraPath.cameraSpeed = 0;
 
     this.createPath.anim();
     this.createPath.cameraPath.anim(this.time);
+  }
+
+  animText(progress, time) {
+    this.textIntro.anim(progress * 12, time);
+    this.textIntro.animText(progress * 0.5);
+    this.textGod.anim(progress * 12, time);
+    this.textGod.animText(progress * 0.5);
+  }
+
+  render() {
+    // Params
+    const speedFactor = 100;
+    this.time += 0.0001 * speedFactor;
+    this.progress = this.scrollValue * 6;
+
+    // Animation objects
+    this.tl.progress(this.time * this.progress * 0.02);
+
+    // Animations object materials
+    this.circle.anim(this.time, this.progress);
+
+    // Animation Text
+    setTimeout(() => {
+      this.animText(this.progress, this.time);
+    }, 1000);
+
+    // Animation camera
+    this.animCamera();
   }
 }

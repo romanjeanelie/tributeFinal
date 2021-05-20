@@ -1,8 +1,8 @@
 uniform float time;
-uniform float uStrength;
 uniform float activeLines;
-uniform float progress;
+uniform float scroll;
 uniform float opacity;
+uniform vec3 uColor; 
 
 varying vec2 vUv;
 
@@ -89,17 +89,16 @@ float stroke(float x, float s, float w){
 void main()	{
 
    // BARS
-  float speed = progress * .005;
+  float speed =  time * 2.;
   float animShutter = (200. * activeLines) * speed ;
   float factorDivision = .04;
   float thickness = 0.5 ;
 
 
-   float shutter2 = stroke(fract((vUv.y+animShutter)*factorDivision), .7, thickness);
+  float shutter2 = stroke(fract((vUv.y+animShutter)*factorDivision), .7, thickness);
   float color =shutter2 * opacity;
 
-    //float color = noise(vUv);
-    gl_FragColor = vec4(vec3(color), color);
+    gl_FragColor = vec4(vec3(uColor), color);
 
     
 }
