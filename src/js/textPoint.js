@@ -1,14 +1,11 @@
 import * as THREE from "three";
 import gsap from "gsap";
 
-import fragment from "./shaders/textGod/fragment.glsl";
-import vertex from "./shaders/textGod/vertex.glsl";
+import fragment from "./shaders/textPoint/fragment.glsl";
+import vertex from "./shaders/textPoint/vertex.glsl";
 
-export default class TextGod {
+export default class TextPoint {
   constructor(options) {
-    this.gui = options.gui;
-    this.debugObject = {};
-
     this.scene = options.scene;
 
     this.loader = new THREE.FontLoader();
@@ -24,8 +21,6 @@ export default class TextGod {
 
     this.textGroup = new THREE.Group();
 
-    this.opacity = { value: 0 };
-
     this.index = 0;
   }
 
@@ -33,23 +28,36 @@ export default class TextGod {
     this.addText();
   }
 
-  animText(progress) {
-    if (progress > 0.7 && progress < 0.8) {
-      gsap.to(this.opacity, {
-        value: 0.2,
-        duration: 5,
+  animText(i) {
+    console.log(i);
+    const currentText = this.materialsText[i];
+    const otherTexts = this.materialsText.filter((el) => el !== currentText);
+
+    // FADE IN currentText
+    if (currentText) {
+      gsap.to(currentText.uniforms.opacity, {
+        value: 1,
       });
     }
+
+    // FADE OUT otherTexts
+    otherTexts.forEach((text) => {
+      gsap.to(text.uniforms.opacity, {
+        value: 0,
+      });
+    });
   }
 
   addText() {
-    const texts = ["OH LIFE IS A GRAIN OF SALT", "IN THE EYES OF GOD"];
+    const texts = [
+      "THERE'S A REASON WE ARE TOGETHER",
+      "TAKE ME BACK",
+      "CATCH ME IN THE MOMENT WHEN YOU SAID YOU LOVE ME",
+    ];
     this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
       if (this.index > texts.length - 1) {
+        this.textGroup.position.y = -55;
         this.textGroup.position.z = -80;
-        // Position
-        this.textGroup.children[0].position.y = 20;
-        this.textGroup.children[1].position.y = -20;
         this.scene.add(this.textGroup);
         return;
       }
@@ -65,7 +73,7 @@ export default class TextGod {
     return new Promise((resolve, reject) => {
       const textGeometry = new THREE.TextGeometry(text, {
         font: font,
-        size: 20,
+        size: 2.5,
         height: 0,
         curveSegments: 10,
         bevelEnabled: false,
@@ -73,11 +81,11 @@ export default class TextGod {
 
       const textMaterial = new THREE.ShaderMaterial({
         uniforms: {
+          uStrength: { value: 0 },
           time: { value: 0 },
-          activeLines: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
-          uColor: { value: new THREE.Color("#EE31C3") },
+          color1: { value: new THREE.Color("#ff0559") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -103,9 +111,6 @@ export default class TextGod {
     this.materialsText.forEach((material) => {
       material.uniforms.time.value = time;
       material.uniforms.progress.value = progress;
-
-      material.uniforms.opacity.value = this.opacity.value;
-      material.uniforms.activeLines.value = progress;
     });
   }
 }

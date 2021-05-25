@@ -15,7 +15,7 @@ export default class SinglePoint {
 
     this.positionX = 0;
     this.positionY = 0;
-    this.positionZ = -130;
+    this.positionZ = -180;
   }
 
   init() {
@@ -30,6 +30,7 @@ export default class SinglePoint {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
         opacity: { value: 0 },
+        isPressed: { value: 1 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -63,5 +64,8 @@ export default class SinglePoint {
     const speed = 25;
     // this.mesh.position.x = Math.sin(time * 2 * speed) * 0.5 * this.activeWave.value;
     // this.mesh.position.y = Math.cos(time * 8 * speed) * 0.1 * this.activeWave.value;
+  }
+  anim(progress, time) {
+    this.material.uniforms.time.value = time;
   }
 }

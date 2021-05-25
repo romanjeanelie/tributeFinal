@@ -8,7 +8,7 @@ export default class Sketch {
   constructor(options) {
     this.gui = new dat.GUI();
     this.debugObject = {};
-    //this.gui.hide();
+    this.gui.hide();
     this.gui.hideable = true;
 
     // GUI

@@ -29,7 +29,7 @@ export default class TextIntro {
   }
 
   animText(progress) {
-    const steps = [0, 0.2, 0.4, 0.6, 0.8, 1];
+    const steps = [0, 0.25, 0.5, 0.72, 0.95, 1.45];
 
     steps.forEach((step, i) => {
       if (progress > step && progress < steps[i + 1]) {
@@ -38,6 +38,7 @@ export default class TextIntro {
 
         // FADE IN currentText
         gsap.to(currentText.uniforms.opacity, {
+          duration: 0.1,
           value: 1,
         });
 
@@ -46,6 +47,14 @@ export default class TextIntro {
           gsap.to(text.uniforms.opacity, {
             value: 0,
           });
+        });
+      }
+
+      // FADE OUT "please"
+      if (progress > steps[steps.length - 1]) {
+        const currentText = this.materialsText[this.materialsText.length - 1];
+        gsap.to(currentText.uniforms.opacity, {
+          value: 0,
         });
       }
     });

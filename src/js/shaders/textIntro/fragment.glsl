@@ -82,7 +82,8 @@ float cnoise(vec3 P){
 }
 
 float stroke(float x, float s, float w){
-  float d = smoothstep(s, s+0.3,x + w) - smoothstep(s-0.8,s, x-w);
+  float d = smoothstep(s, s+0.3,x + w) - smoothstep(s-0.7,s, x-w);
+  // float d = step(s,x + w) - step(s, x-w);
   return d; 
  }
 
@@ -90,12 +91,16 @@ void main()	{
 
    // BARS
   float speed = progress * .005;
-  float animShutter = (200. * activeLines) * speed ;
-  float factorDivision = .04;
-  float thickness = 0.5 ;
+  // float animShutter = (200. * activeLines) * speed ;
+  // float factorDivision = .04;
+  // float thickness = 0.5 ;
+  float animShutter = 7. * progress ;
+  float factorDivision = .05;
+  float thickness = 0.6 ;
 
 
-   float shutter2 = stroke(fract((vUv.y+animShutter)*factorDivision), .7, thickness);
+  //  float shutter2 = stroke(fract((vUv.y+animShutter)*factorDivision), .7, thickness);
+   float shutter2 = stroke(fract((vUv.y+animShutter)*factorDivision), .9, thickness);
   float color =shutter2 * opacity;
 
     //float color = noise(vUv);

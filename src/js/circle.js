@@ -10,8 +10,8 @@ export default class Circle {
     this.debugObject = {};
 
     this.positionX = 0;
-    this.positionY = -170;
-    this.positionZ = -100;
+    this.positionY = -105;
+    this.positionZ = -60;
   }
 
   init() {

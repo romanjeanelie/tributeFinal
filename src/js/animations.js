@@ -1,6 +1,8 @@
+import * as THREE from "three";
 import gsap from "gsap";
 import TextIntro from "./textIntro";
 import TextGod from "./textGod";
+import TextPoint from "./textPoint";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
@@ -21,6 +23,12 @@ export default class Animations {
     this.container = options.container;
     this.renderer = options.renderer;
     this.controls = options.controls;
+
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.currentIntersect = null;
+    this.intersects = null;
+
     //this.objects = options.objects;
 
     this.scrollValue = 0;
@@ -33,12 +41,49 @@ export default class Animations {
     this.manageCamera();
     this.createTimelines();
     this.getScroll();
+    this.objectsToTest = [this.singlePoint.mesh];
     this.render();
+
+    this.onMouseMove();
+  }
+
+  rayCaster() {
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+
+    this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
+  }
+
+  onMouseMove() {
+    let index = 0;
+    const tl = gsap.timeline();
+    window.addEventListener("mousemove", (event) => {
+      this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    window.addEventListener("click", () => {
+      if (this.intersects.length) {
+        this.textPoint.animText(index);
+        tl.to(this.singlePoint.material.uniforms.isPressed, {
+          value: 2.5,
+        });
+        tl.to(this.singlePoint.material.uniforms.isPressed, {
+          duration: 5,
+          value: 1,
+        });
+
+        index++;
+      } else {
+        console.log("clic outside the ball");
+      }
+    });
   }
 
   addObject() {
     this.textIntro = new TextIntro({ scene: this.scene, scroll: this.scrollValue });
     this.textGod = new TextGod({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
+    this.textPoint = new TextPoint({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
+
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
     this.points = new Points({ scene: this.scene, gui: this.gui });
@@ -48,6 +93,8 @@ export default class Animations {
 
     this.textIntro.init();
     this.textGod.init();
+    this.textPoint.init();
+
     this.circle.init();
     this.singlePoint.init();
     this.points.init();
@@ -91,16 +138,15 @@ export default class Animations {
 
   stepOne() {
     this.tl.to(this.circle.circleMesh.position, {
-      y: this.circle.positionY + 160,
+      y: 0,
       duration: 60,
     });
-    console.log(this.circle.positionY);
 
     // ZOOM Circle
     this.tl.to(
       this.circle.circleMesh.position,
       {
-        z: this.circle.positionZ + 110,
+        z: 20,
         delay: 20,
         duration: 100,
       },
@@ -109,8 +155,6 @@ export default class Animations {
   }
 
   stepTwo() {
-    const textPoints = document.querySelectorAll(".text__point");
-
     // FADE IN Single point
     this.tl.fromTo(
       this.singlePoint.material.uniforms.opacity,
@@ -119,8 +163,30 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 80,
+        duration: 150,
         delay: 30,
+      },
+      "<"
+    );
+
+    // Single point GETTING CLOSER
+    this.tl.to(
+      this.singlePoint.mesh.position,
+      {
+        z: -100,
+        duration: 40,
+        delay: 30,
+      },
+      "<"
+    );
+
+    // FADE OUT Text God
+    this.tl.to(
+      this.textGod.opacity,
+      {
+        value: 0,
+        duration: 40,
+        delay: 0,
       },
       "<"
     );
@@ -173,11 +239,17 @@ export default class Animations {
     this.createPath.cameraPath.anim(this.time);
   }
 
+  animObjects(progress, time) {
+    this.tl.progress(time * 0.005 + progress * 0.2);
+    this.singlePoint.anim(progress, time);
+  }
+
   animText(progress, time) {
     this.textIntro.anim(progress * 12, time);
-    this.textIntro.animText(progress * 0.5);
+    this.textIntro.animText(progress * 1);
     this.textGod.anim(progress * 12, time);
     this.textGod.animText(progress * 0.5);
+    this.textPoint.anim(progress * 12, time);
   }
 
   render() {
@@ -187,7 +259,8 @@ export default class Animations {
     this.progress = this.scrollValue * 6;
 
     // Animation objects
-    this.tl.progress(this.time * this.progress * 0.02);
+    // this.tl.progress(this.time * this.progress * 0.02);
+    this.animObjects(this.progress, this.time);
 
     // Animations object materials
     this.circle.anim(this.time, this.progress);
@@ -199,5 +272,8 @@ export default class Animations {
 
     // Animation camera
     this.animCamera();
+
+    // RayCasting
+    this.rayCaster();
   }
 }
