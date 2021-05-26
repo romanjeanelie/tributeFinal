@@ -14,12 +14,9 @@ export default class Points {
 
   init() {
     this.createPointsMaterials();
-    this.addPoints(0, -10, this.pointsMaterial1, 100);
+    this.addPoints(0, -70, this.pointsMaterial1, 20);
     this.addPoints(0, 10, this.pointsMaterial2, 60);
     this.addPoints(10, 80, this.pointsMaterial3, 150);
-
-    this.pointsGroup.position.x = 60;
-    this.pointsGroup.position.y = 60;
   }
 
   createPointsMaterials() {
@@ -66,14 +63,18 @@ export default class Points {
     const count = nbPoints;
 
     const positions = new Float32Array(count * 3);
+    const size = new Float32Array(count);
 
     for (let i = 0; i < count * 3; i++) {
       const i3 = i * 3;
-      positions[i3 + 0] = (Math.random() - 0.5) * 300;
-      positions[i3 + 1] = (Math.random() - 0.5) * 200;
+      positions[i3 + 0] = (Math.random() - 0.5) * 50;
+      positions[i3 + 1] = (Math.random() - 0.5) * 50;
       positions[i3 + 2] = minPosZ + Math.random() * maxPosZ;
+
+      size[i] = 500 + Math.random() * 9000;
     }
     pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    pointsGeometry.setAttribute("size", new THREE.BufferAttribute(size, 1));
 
     const points = new THREE.Points(pointsGeometry, pointsMaterial);
 

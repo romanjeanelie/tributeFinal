@@ -94,13 +94,17 @@ void main()	{
   // float animShutter = (200. * activeLines) * speed ;
   // float factorDivision = .04;
   // float thickness = 0.5 ;
-  float animShutter = 10. * time * 100.;
-  float factorDivision = .01;
+  float animShutter = time * .5;
+  float factorDivision = 1.5;
   float thickness = 0.3 ;
 
 
-  float shutter2 = stroke(fract((vUv.y+animShutter)*factorDivision), .7, thickness);
-  float color =shutter2 * opacity;
+  float littleLines = stroke(fract((vUv.y + animShutter)*factorDivision), .7, thickness);
+
+  float strobe = sin(time * 130.);
+  float strobeLight = mix(0.93, 1., strobe);
+
+  float color = strobeLight * littleLines * opacity;
 
     gl_FragColor = vec4(vec3(uColor), color);
 

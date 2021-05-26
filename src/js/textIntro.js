@@ -70,7 +70,7 @@ export default class TextIntro {
     ];
     this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
       if (this.index > texts.length - 1) {
-        this.textGroup.position.z = -80;
+        this.textGroup.position.z = -10;
         this.scene.add(this.textGroup);
         return;
       }
@@ -86,7 +86,7 @@ export default class TextIntro {
     return new Promise((resolve, reject) => {
       const textGeometry = new THREE.TextGeometry(text, {
         font: font,
-        size: 3.5,
+        size: 1,
         height: 0,
         curveSegments: 10,
         bevelEnabled: false,
@@ -103,6 +103,7 @@ export default class TextIntro {
         vertexShader: vertex,
         fragmentShader: fragment,
         transparent: true,
+        depthWrite: false,
       });
 
       this.materialsText.push(textMaterial);

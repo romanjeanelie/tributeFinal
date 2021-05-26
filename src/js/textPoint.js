@@ -29,7 +29,6 @@ export default class TextPoint {
   }
 
   animText(i) {
-    console.log(i);
     const currentText = this.materialsText[i];
     const otherTexts = this.materialsText.filter((el) => el !== currentText);
 
@@ -73,7 +72,7 @@ export default class TextPoint {
     return new Promise((resolve, reject) => {
       const textGeometry = new THREE.TextGeometry(text, {
         font: font,
-        size: 2.5,
+        size: 3,
         height: 0,
         curveSegments: 10,
         bevelEnabled: false,

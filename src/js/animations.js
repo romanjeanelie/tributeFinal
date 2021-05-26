@@ -29,9 +29,12 @@ export default class Animations {
     this.currentIntersect = null;
     this.intersects = null;
 
-    //this.objects = options.objects;
-
     this.scrollValue = 0;
+    this.progress2 = 0;
+
+    this.steps = [1.4];
+    this.delta = 0;
+    this.currentScroll = 0;
 
     this.init();
   }
@@ -63,18 +66,8 @@ export default class Animations {
 
     window.addEventListener("click", () => {
       if (this.intersects.length) {
-        this.textPoint.animText(index);
-        tl.to(this.singlePoint.material.uniforms.isPressed, {
-          value: 2.5,
-        });
-        tl.to(this.singlePoint.material.uniforms.isPressed, {
-          duration: 5,
-          value: 1,
-        });
-
+        this.stepThree(index);
         index++;
-      } else {
-        console.log("clic outside the ball");
       }
     });
   }
@@ -112,10 +105,24 @@ export default class Animations {
       renderer: this.renderer,
       gui: this.gui,
     });
+
+    this.createPath.cameraPath.cameraSpeed = 0;
   }
 
   createTimelines() {
     this.tl = gsap.timeline({
+      paused: true,
+    });
+
+    this.tl2 = gsap.timeline({
+      paused: true,
+    });
+
+    this.tl3 = gsap.timeline({
+      paused: true,
+    });
+
+    this.tl4 = gsap.timeline({
       paused: true,
     });
 
@@ -133,7 +140,6 @@ export default class Animations {
   anim() {
     this.stepOne();
     this.stepTwo();
-    // this.stepThree();
   }
 
   stepOne() {
@@ -156,46 +162,8 @@ export default class Animations {
 
   stepTwo() {
     // FADE IN Single point
-    this.tl.fromTo(
+    this.tl2.fromTo(
       this.singlePoint.material.uniforms.opacity,
-      {
-        value: 0,
-      },
-      {
-        value: 1,
-        duration: 150,
-        delay: 30,
-      },
-      "<"
-    );
-
-    // Single point GETTING CLOSER
-    this.tl.to(
-      this.singlePoint.mesh.position,
-      {
-        z: -100,
-        duration: 40,
-        delay: 30,
-      },
-      "<"
-    );
-
-    // FADE OUT Text God
-    this.tl.to(
-      this.textGod.opacity,
-      {
-        value: 0,
-        duration: 40,
-        delay: 0,
-      },
-      "<"
-    );
-  }
-
-  stepThree() {
-    // APPEAR Points 1
-    this.tl.fromTo(
-      this.points.pointsMaterial1.uniforms.opacity,
       {
         value: 0,
       },
@@ -205,50 +173,108 @@ export default class Animations {
       }
     );
 
-    this.tl.fromTo(
-      this.points.pointsMaterial2.uniforms.opacity,
-      {
-        value: 0,
-      },
+    // FADE IN Text God
+    this.tl2.to(
+      this.textGod.opacity,
       {
         value: 1,
-        duration: 30,
-        delay: 10,
+        duration: 5,
+        delay: 2,
       },
       "<"
     );
 
-    this.tl.fromTo(
-      this.points.pointsMaterial3.uniforms.opacity,
+    // FADE OUT Text God
+    this.tl2.to(
+      this.textGod.opacity,
       {
         value: 0,
+        duration: 10,
+        delay: 10,
       },
+      "<"
+    );
+  }
+
+  stepThree(index) {
+    this.textPoint.animText(index);
+
+    this.tl3.clear();
+    this.tl3.play();
+
+    // SMALLER Point
+    this.tl3.to(this.singlePoint.material.uniforms.isPressed, {
+      value: 2.5,
+    });
+
+    // BIGGER Points
+    this.tl3.to(this.singlePoint.material.uniforms.isPressed, {
+      duration: 2,
+      value: 1,
+    });
+    if (index === 3) {
+      this.stepFour();
+    }
+  }
+
+  stepFour() {
+    const tl = gsap.timeline();
+    this.progress2 = 0;
+
+    console.log("step four");
+
+    tl.to(this.singlePoint.mesh.position, {
+      duration: 6,
+      z: -910.5,
+    });
+
+    tl.to(
+      this.points.pointsMaterial1.uniforms.opacity,
       {
         value: 1,
-        duration: 50,
-        delay: 10,
+        delay: 1,
+        duration: 10,
+      },
+      "<"
+    );
+    tl.fromTo(
+      this.createPath.cameraPath,
+      {
+        cameraSpeed: 0,
+      },
+      {
+        cameraSpeed: 0.0005,
+        delay: 1,
       },
       "<"
     );
   }
 
   animCamera() {
-    this.createPath.cameraPath.cameraSpeed = 0;
-
     this.createPath.anim();
     this.createPath.cameraPath.anim(this.time);
   }
 
   animObjects(progress, time) {
-    this.tl.progress(time * 0.005 + progress * 0.2);
+    this.tl.progress(progress * 0.3);
+    this.tl4.progress(progress * 0.3);
     this.singlePoint.anim(progress, time);
+
+    if (this.progress > this.steps[0]) {
+      this.tl2.play();
+    }
+  }
+
+  computeDelta(progress) {
+    this.delta = Math.abs(this.currentScroll - progress);
+    this.currentScroll = progress;
   }
 
   animText(progress, time) {
     this.textIntro.anim(progress * 12, time);
     this.textIntro.animText(progress * 1);
     this.textGod.anim(progress * 12, time);
-    this.textGod.animText(progress * 0.5);
+    // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
   }
 
@@ -258,9 +284,11 @@ export default class Animations {
     this.time += 0.0001 * speedFactor;
     this.progress = this.scrollValue * 6;
 
+    this.computeDelta(this.progress);
+
     // Animation objects
-    // this.tl.progress(this.time * this.progress * 0.02);
     this.animObjects(this.progress, this.time);
+    this.progress2 += this.delta;
 
     // Animations object materials
     this.circle.anim(this.time, this.progress);

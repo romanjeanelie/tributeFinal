@@ -33,15 +33,6 @@ export default class TextGod {
     this.addText();
   }
 
-  animText(progress) {
-    if (progress > 0.7 && progress < 0.8) {
-      gsap.to(this.opacity, {
-        value: 0.2,
-        duration: 5,
-      });
-    }
-  }
-
   addText() {
     const texts = ["OH LIFE IS A GRAIN OF SALT", "IN THE EYES OF GOD"];
     this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
@@ -77,7 +68,7 @@ export default class TextGod {
           activeLines: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
-          uColor: { value: new THREE.Color("#EE31C3") },
+          uColor: { value: new THREE.Color("#ff0559") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

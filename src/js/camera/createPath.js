@@ -43,7 +43,7 @@ export default class CreatePath {
       // new THREE.Vector3(168.8363897564537, -4.146713725504924, 854.0714313054578),
       // new THREE.Vector3(-3.2674760998055064, 1124.7441991009302, 1547.8580290779007),
       new THREE.Vector3(0, 0, 10),
-      new THREE.Vector3(0, 0, 100),
+      new THREE.Vector3(0, -50, 10),
       new THREE.Vector3(0, 0, 200),
       new THREE.Vector3(0, 0, 400),
     ];

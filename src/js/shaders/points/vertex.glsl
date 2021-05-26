@@ -1,6 +1,8 @@
 uniform float time;
 uniform float uPixelRatio;
 
+attribute float size; 
+
 varying vec2 vUv;
 
 void main() {
@@ -12,7 +14,7 @@ void main() {
 
     gl_Position = projectionPosition;
 
-    gl_PointSize = 500.0 * uPixelRatio;
+    gl_PointSize = size * uPixelRatio;
         // Keep size attenuation
     gl_PointSize *= (1.0 / - viewPosition.z);
 

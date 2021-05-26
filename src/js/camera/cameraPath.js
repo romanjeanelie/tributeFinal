@@ -115,7 +115,7 @@ export default class cameraPath {
 
     this.splineCamera.position.copy(this.pos2);
     //this.splineCamera.lookAt(this.pos2);
-    this.splineCamera.lookAt(this.pos);
+    //this.splineCamera.lookAt(this.pos);
     this.cameraHelper.update();
   }
 
