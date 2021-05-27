@@ -19,6 +19,8 @@ export default class StructureText {
     this.structure.position.x = this.positions.x;
     this.structure.position.y = this.positions.y;
     this.structure.position.z = this.positions.z;
+
+    this.structure.scale.set(6, 6, 6);
     this.scene.add(this.structure);
   }
 

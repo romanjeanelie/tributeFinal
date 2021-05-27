@@ -15,7 +15,7 @@ export default class SinglePoint {
 
     this.positionX = 0;
     this.positionY = 0;
-    this.positionZ = -180;
+    this.positionZ = -30;
   }
 
   init() {
@@ -24,7 +24,7 @@ export default class SinglePoint {
   }
 
   createPoint() {
-    this.geometry = new THREE.PlaneGeometry(2, 2, 10, 10);
+    this.geometry = new THREE.PlaneGeometry(0.2, 0.2, 1, 1);
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
@@ -36,7 +36,6 @@ export default class SinglePoint {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
-      //alphaTest: 0.001,
       depthWrite: false,
     });
 

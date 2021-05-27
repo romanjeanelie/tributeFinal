@@ -183,17 +183,27 @@ export default class Animations {
       },
       "<"
     );
-
-    // FADE OUT Text God
+    // FADE OUT Circle
     this.tl2.to(
-      this.textGod.opacity,
+      this.circle.material.uniforms.opacity,
       {
         value: 0,
-        duration: 10,
-        delay: 10,
+        duration: 5,
+        delay: 0,
       },
       "<"
     );
+
+    // // FADE OUT Text God
+    // this.tl2.to(
+    //   this.textGod.opacity,
+    //   {
+    //     value: 0,
+    //     duration: 10,
+    //     delay: 10,
+    //   },
+    //   "<"
+    // );
   }
 
   stepThree(index) {
@@ -225,8 +235,18 @@ export default class Animations {
 
     tl.to(this.singlePoint.mesh.position, {
       duration: 6,
-      z: -910.5,
+      z: -60.5,
     });
+
+    tl.to(
+      this.textGod.textGroup.position,
+      {
+        z: -90,
+        duration: 6,
+      },
+
+      "<"
+    );
 
     tl.to(
       this.points.pointsMaterial1.uniforms.opacity,
@@ -237,27 +257,41 @@ export default class Animations {
       },
       "<"
     );
-    tl.fromTo(
+    tl.to(
+      this.points.pointsMaterial2.uniforms.opacity,
+      {
+        value: 1,
+        duration: 10,
+      },
+      "<"
+    );
+    tl.to(
+      this.points.pointsMaterial3.uniforms.opacity,
+      {
+        value: 1,
+        duration: 10,
+      },
+      "<"
+    );
+    this.tl4.to(
       this.createPath.cameraPath,
       {
-        cameraSpeed: 0,
+        progress: 9350,
+        //duration: 1500,
       },
-      {
-        cameraSpeed: 0.0005,
-        delay: 1,
-      },
+
       "<"
     );
   }
 
-  animCamera() {
+  animCamera(progress, time) {
     this.createPath.anim();
-    this.createPath.cameraPath.anim(this.time);
+    this.createPath.cameraPath.anim(progress);
   }
 
   animObjects(progress, time) {
     this.tl.progress(progress * 0.3);
-    this.tl4.progress(progress * 0.3);
+    this.tl4.progress(this.progress2 * 0.7);
     this.singlePoint.anim(progress, time);
 
     if (this.progress > this.steps[0]) {
@@ -266,7 +300,7 @@ export default class Animations {
   }
 
   computeDelta(progress) {
-    this.delta = Math.abs(this.currentScroll - progress);
+    this.delta = progress - this.currentScroll;
     this.currentScroll = progress;
   }
 
@@ -283,6 +317,7 @@ export default class Animations {
     const speedFactor = 100;
     this.time += 0.0001 * speedFactor;
     this.progress = this.scrollValue * 6;
+    // this.progress = this.time;
 
     this.computeDelta(this.progress);
 
@@ -299,7 +334,7 @@ export default class Animations {
     }, 1000);
 
     // Animation camera
-    this.animCamera();
+    this.animCamera(this.progress, this.time);
 
     // RayCasting
     this.rayCaster();

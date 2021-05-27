@@ -27,7 +27,7 @@ export default class cameraPath {
       cameraHelper: false,
     };
 
-    this.cameraSpeed = 0.4;
+    this.progress = 0;
 
     this.positionCameraLarge();
     this.init();
@@ -35,7 +35,7 @@ export default class cameraPath {
 
   positionCameraLarge() {
     // this.camera.position.x = 0;
-    // this.camera.position.y = 0;
+    //this.camera.position.y = -1200;
     // this.camera.position.z = 0;
     //this.posCameraLarge = new THREE.Vector3(196.7571580388389, 444.14068264826415, -2369.896873902935);
   }
@@ -103,12 +103,12 @@ export default class cameraPath {
     this.folderCamera.open();
   }
 
-  cameraPath(time) {
+  cameraPath(progress) {
     this.looptime = 20 * 1000;
 
     // range number between 0 and 1
-    this.t = (time % this.looptime) / this.looptime;
-    this.t2 = ((time + 0.1) % this.looptime) / this.looptime;
+    this.t = (progress % this.looptime) / this.looptime;
+    this.t2 = ((progress + 0.1) % this.looptime) / this.looptime;
 
     this.pos = this.mesh.geometry.parameters.path.getPointAt(this.t);
     this.pos2 = this.mesh.geometry.parameters.path.getPointAt(this.t2);
@@ -119,13 +119,11 @@ export default class cameraPath {
     this.cameraHelper.update();
   }
 
-  anim(time) {
-    //console.log(time);
+  anim(progress) {
     // animate camera along spline
     this.camera.updateProjectionMatrix();
-    this.time = Date.now();
 
-    this.cameraPath(time * this.cameraSpeed * 100000);
+    this.cameraPath(this.progress);
 
     // this.camera.lookAt(this.posCameraLarge);
 

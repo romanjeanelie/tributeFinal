@@ -20,8 +20,9 @@ export default class Moon {
     this.addMoon();
     this.textMoon.init();
 
-    this.moon.position.y = 30;
-    this.moon.position.z = 420;
+    // this.moon.position.y = -33;
+    this.moon.position.y = -1200;
+    this.moon.position.z = -24;
   }
 
   addMoon() {
@@ -31,7 +32,7 @@ export default class Moon {
       this.moonMaterial.color = new THREE.Color(this.debugObject.moonColor);
     });
 
-    this.geometry = new THREE.SphereGeometry(60, 50, 50);
+    this.geometry = new THREE.SphereGeometry(60, 70, 70);
     this.moonMaterial = new THREE.ShaderMaterial({
       uniforms: {
         color1: { value: new THREE.Color(this.debugObject.moonColor1) },

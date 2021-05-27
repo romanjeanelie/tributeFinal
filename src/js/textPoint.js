@@ -89,6 +89,7 @@ export default class TextPoint {
         vertexShader: vertex,
         fragmentShader: fragment,
         transparent: true,
+        depthWrite: false,
       });
 
       this.materialsText.push(textMaterial);

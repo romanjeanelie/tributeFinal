@@ -9,13 +9,43 @@ export default class Points {
     this.gui = options.gui;
     this.debugObject = {};
 
+    this.opacity = 0;
+
     this.pointsGroup = new THREE.Group();
   }
 
   init() {
     this.createPointsMaterials();
-    this.addPoints(0, -70, this.pointsMaterial1, 20);
-    this.addPoints(0, 10, this.pointsMaterial2, 60);
+    this.addPoints({
+      minX: 0,
+      maxX: 800,
+      minY: -10,
+      maxY: 600,
+      minZ: -300,
+      maxZ: -100,
+      material: this.pointsMaterial1,
+      qty: 100,
+    });
+    this.addPoints({
+      minX: 0,
+      maxX: 4000,
+      minY: -150,
+      maxY: 100,
+      minZ: -100,
+      maxZ: -2000,
+      material: this.pointsMaterial2,
+      qty: 4000,
+    });
+    this.addPoints({
+      minX: 0,
+      maxX: 800,
+      minY: -700,
+      maxY: 1000,
+      minZ: -100,
+      maxZ: -500,
+      material: this.pointsMaterial3,
+      qty: 100,
+    });
     this.addPoints(10, 80, this.pointsMaterial3, 150);
   }
 
@@ -58,7 +88,15 @@ export default class Points {
     });
   }
 
-  addPoints(minPosZ, maxPosZ, pointsMaterial, nbPoints) {
+  addPoints(options) {
+    const minPosX = options.minX;
+    const maxPosX = options.maxX;
+    const minPosY = options.minY;
+    const maxPosY = options.maxY;
+    const minPosZ = options.minZ;
+    const maxPosZ = options.maxZ;
+    const pointsMaterial = options.material;
+    const nbPoints = options.qty;
     const pointsGeometry = new THREE.BufferGeometry();
     const count = nbPoints;
 
@@ -67,8 +105,8 @@ export default class Points {
 
     for (let i = 0; i < count * 3; i++) {
       const i3 = i * 3;
-      positions[i3 + 0] = (Math.random() - 0.5) * 50;
-      positions[i3 + 1] = (Math.random() - 0.5) * 50;
+      positions[i3 + 0] = minPosX + (Math.random() - 0.5) * maxPosX;
+      positions[i3 + 1] = minPosY + (Math.random() - 0.5) * maxPosY;
       positions[i3 + 2] = minPosZ + Math.random() * maxPosZ;
 
       size[i] = 500 + Math.random() * 9000;

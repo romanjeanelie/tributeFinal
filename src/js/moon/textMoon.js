@@ -12,7 +12,6 @@ export default class TextMoon {
 
   init() {
     this.textDance();
-    this.addStructure();
   }
 
   textDance() {
@@ -54,23 +53,30 @@ export default class TextMoon {
       this.textDanceGeometry.center();
       this.textFloorGeometry.center();
 
-      this.textFloor.position.y = -3;
-      this.textFloor.position.z = 8;
+      this.textDance.scale.set(6, 6, 6);
+      this.textDance.position.y = 0;
+      this.textDance.position.y = 39;
+      this.textDance.position.z = 20;
+
+      this.textFloor.scale.set(4, 4, 4);
+      this.textFloor.position.y = 24;
+      this.textFloor.position.z = 40;
 
       this.scene.add(this.textDance, this.textFloor);
+      this.addStructure();
     });
   }
 
   addStructure() {
     const posDanceStruct = {
-      x: 0,
-      y: 0,
-      z: 0,
+      x: this.textDance.position.x,
+      y: this.textDance.position.y,
+      z: this.textDance.position.z,
     };
     const posFloorStruct = {
-      x: 0,
-      y: -3,
-      z: 8,
+      x: this.textFloor.position.x,
+      y: this.textFloor.position.y,
+      z: this.textFloor.position.z,
     };
     this.structureDance = new StructureText({ gui: this.gui, scene: this.scene, positions: posDanceStruct });
     this.structureFloor = new StructureText({ gui: this.gui, scene: this.scene, positions: posFloorStruct });
