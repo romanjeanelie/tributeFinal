@@ -11,6 +11,8 @@ import Moon from "./moon/moon";
 import Road from "./street/road";
 import CreatePath from "./camera/createPath";
 
+import ios from "./utils/ios";
+
 export default class Animations {
   constructor(options) {
     let start = 0;
@@ -40,6 +42,7 @@ export default class Animations {
   }
 
   init() {
+    console.log(ios());
     this.addObject();
     this.manageCamera();
     this.createTimelines();
@@ -59,17 +62,29 @@ export default class Animations {
   onMouseMove() {
     let index = 0;
     const tl = gsap.timeline();
-    window.addEventListener("mousemove", (event) => {
-      this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
-
-    window.addEventListener("click", () => {
-      if (this.intersects.length) {
-        this.stepThree(index);
-        index++;
-      }
-    });
+    if (ios()) {
+      window.addEventListener("touchstart", (event) => {
+        console.log(this.mouse.x);
+        this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+        if (this.intersects.length) {
+          this.stepThree(index);
+          index++;
+        }
+      });
+    } else {
+      window.addEventListener("mousemove", (event) => {
+        console.log(this.mouse.x);
+        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      });
+      window.addEventListener("click", () => {
+        if (this.intersects.length) {
+          this.stepThree(index);
+          index++;
+        }
+      });
+    }
   }
 
   addObject() {
