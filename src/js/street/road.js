@@ -31,8 +31,8 @@ export default class Road {
 
     this.palmtrees.init();
 
-    this.street.position.y = -50.5;
-    this.street.position.z = 465;
+    this.street.position.y = -2050;
+    this.street.position.z = 900;
 
     this.scene.add(this.street);
   }

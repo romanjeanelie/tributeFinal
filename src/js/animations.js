@@ -6,6 +6,7 @@ import TextPoint from "./textPoint";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
+import Clouds from "./clouds";
 import Plane from "./plane";
 import Moon from "./moon/moon";
 import Road from "./street/road";
@@ -42,7 +43,6 @@ export default class Animations {
   }
 
   init() {
-    console.log(ios());
     this.addObject();
     this.manageCamera();
     this.createTimelines();
@@ -60,9 +60,10 @@ export default class Animations {
   }
 
   onMouseMove() {
-    let index = 0;
     const tl = gsap.timeline();
     if (ios()) {
+      let index = -1;
+
       window.addEventListener("touchstart", (event) => {
         console.log(this.mouse.x);
         this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
@@ -73,8 +74,9 @@ export default class Animations {
         }
       });
     } else {
+      let index = 0;
+
       window.addEventListener("mousemove", (event) => {
-        console.log(this.mouse.x);
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       });
@@ -95,6 +97,7 @@ export default class Animations {
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
     this.points = new Points({ scene: this.scene, gui: this.gui });
+    this.clouds = new Clouds({ scene: this.scene, gui: this.gui });
     this.plane = new Plane({ scene: this.scene, gui: this.gui });
     this.moon = new Moon({ scene: this.scene, gui: this.gui });
     this.road = new Road({ scene: this.scene, gui: this.gui });
@@ -106,6 +109,7 @@ export default class Animations {
     this.circle.init();
     this.singlePoint.init();
     this.points.init();
+    this.clouds.init();
     this.plane.init();
     this.moon.init();
     this.road.init();
@@ -292,7 +296,19 @@ export default class Animations {
       this.createPath.cameraPath,
       {
         progress: 9350,
-        //duration: 1500,
+        duration: 10,
+        ease: "linear",
+      },
+
+      "<"
+    );
+    this.tl4.to(
+      this.createPath.cameraPath,
+      {
+        progress: 16000,
+        delay: 10,
+        duration: 10,
+        ease: "linear",
       },
 
       "<"
@@ -332,9 +348,18 @@ export default class Animations {
     const speedFactor = 100;
     this.time += 0.0001 * speedFactor;
     this.progress = this.scrollValue * 6;
-    // this.progress = this.time;
 
     this.computeDelta(this.progress);
+
+    ///////////////////////////////////////// Test without scrollBar
+    // this.progress = this.time;
+    // this.progress2 = this.time * 0.2;
+    // document.body.classList.remove("scroll");
+    // this.gui.show();
+    // this.points.pointsMaterial1.uniforms.opacity.value = 1;
+    // this.points.pointsMaterial2.uniforms.opacity.value = 1;
+    // this.points.pointsMaterial3.uniforms.opacity.value = 1;
+    ///////////////////////////////////////// End Test without scrollBar
 
     // Animation objects
     this.animObjects(this.progress, this.time);

@@ -35,9 +35,9 @@ export default class cameraPath {
 
   positionCameraLarge() {
     // this.camera.position.x = 0;
-    //this.camera.position.y = -1200;
-    // this.camera.position.z = 0;
-    //this.posCameraLarge = new THREE.Vector3(196.7571580388389, 444.14068264826415, -2369.896873902935);
+    // this.camera.position.y = -1300;
+    // this.camera.position.z = 300;
+    // this.posCameraLarge = new THREE.Vector3(196.7571580388389, -1300, -2369.896873902935);
   }
 
   addTube(curve) {

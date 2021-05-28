@@ -44,7 +44,7 @@ export default class TextMoon {
         color: 0xff0000,
       });
       this.textFloorMaterial = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
+        color: 0x00ff,
       });
 
       this.textDance = new THREE.Mesh(this.textDanceGeometry, this.textDanceMaterial);
@@ -54,13 +54,12 @@ export default class TextMoon {
       this.textFloorGeometry.center();
 
       this.textDance.scale.set(6, 6, 6);
-      this.textDance.position.y = 0;
       this.textDance.position.y = 39;
       this.textDance.position.z = 20;
 
-      this.textFloor.scale.set(4, 4, 4);
-      this.textFloor.position.y = 24;
-      this.textFloor.position.z = 40;
+      this.textFloor.scale.set(10, 10, 10);
+      this.textFloor.position.y = -10;
+      this.textFloor.position.z = 58;
 
       this.scene.add(this.textDance, this.textFloor);
       this.addStructure();
@@ -79,6 +78,6 @@ export default class TextMoon {
       z: this.textFloor.position.z,
     };
     this.structureDance = new StructureText({ gui: this.gui, scene: this.scene, positions: posDanceStruct });
-    this.structureFloor = new StructureText({ gui: this.gui, scene: this.scene, positions: posFloorStruct });
+    //this.structureFloor = new StructureText({ gui: this.gui, scene: this.scene, positions: posFloorStruct });
   }
 }
