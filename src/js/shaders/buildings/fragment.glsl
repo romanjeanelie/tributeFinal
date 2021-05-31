@@ -1,6 +1,4 @@
 varying vec2 vUv;
-uniform vec3 color;
-
 
 float rectSDF(vec2 st, vec2 s) {
     st = st*2.-1.;
@@ -9,9 +7,9 @@ float rectSDF(vec2 st, vec2 s) {
 }
 
 void main(){
-    float window =  rectSDF(vUv, 0.5);
-    //circle = 0.2 / circle - 0.4; 
+    float window = rectSDF(vUv, vec2(0.5));
+    window = 0.8 / window - 0.4; 
 
 
- gl_FragColor = vec4(vec3(1.),window);   
+ gl_FragColor = vec4(vec3(window),window);   
 }

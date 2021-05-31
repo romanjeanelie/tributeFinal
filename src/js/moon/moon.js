@@ -3,6 +3,7 @@ import * as THREE from "three";
 import fragment from "../shaders/moon/fragment.glsl";
 import vertex from "../shaders/moon/vertex.glsl";
 import TextMoon from "./textMoon";
+import Atmosphere from "./atmosphere";
 
 export default class Moon {
   constructor(options) {
@@ -14,13 +15,15 @@ export default class Moon {
     this.moon = new THREE.Group();
 
     this.textMoon = new TextMoon({ scene: this.moon, gui: this.folderMoon });
+    this.atmosphere = new Atmosphere({ scene: this.moon, gui: this.folderMoon });
   }
 
   init() {
     this.addMoon();
-    this.textMoon.init();
+    this.atmosphere.init();
+    // this.textMoon.init();
 
-    this.moon.position.y = -1700;
+    this.moon.position.y = -2300;
     this.moon.position.z = -400;
     // this.moon.position.y = -0;
     // this.moon.position.z = -1000;
@@ -39,6 +42,7 @@ export default class Moon {
         color1: { value: new THREE.Color(this.debugObject.moonColor1) },
         color2: { value: new THREE.Color(this.debugObject.moonColor2) },
       },
+      transparent: true,
       vertexShader: vertex,
       fragmentShader: fragment,
     });

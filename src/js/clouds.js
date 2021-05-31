@@ -26,7 +26,7 @@ export default class Clouds {
         time: { value: 0 },
         progress: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
-        opacity: { value: 1 },
+        opacity: { value: 0 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,

@@ -159,6 +159,7 @@ export default class Animations {
   anim() {
     this.stepOne();
     this.stepTwo();
+    //this.stepFour();
   }
 
   stepOne() {
@@ -250,13 +251,15 @@ export default class Animations {
     const tl = gsap.timeline();
     this.progress2 = 0;
 
-    console.log("step four");
+    console.log("step four", this.progress2);
 
+    // DEZOOM Single point
     tl.to(this.singlePoint.mesh.position, {
       duration: 6,
       z: -60.5,
     });
 
+    // DEZOOM Text God
     tl.to(
       this.textGod.textGroup.position,
       {
@@ -267,6 +270,18 @@ export default class Animations {
       "<"
     );
 
+    // FADE IN Sky
+    tl.to(
+      this.clouds.material.uniforms.opacity,
+      {
+        value: 1,
+        delay: 1,
+        duration: 10,
+      },
+      "<"
+    );
+
+    // FADE IN All Points
     tl.to(
       this.points.pointsMaterial1.uniforms.opacity,
       {
@@ -305,7 +320,7 @@ export default class Animations {
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 16000,
+        progress: 19500,
         delay: 10,
         duration: 10,
         ease: "linear",
@@ -354,6 +369,8 @@ export default class Animations {
     ///////////////////////////////////////// Test without scrollBar
     // this.progress = this.time;
     // this.progress2 = this.time * 0.2;
+    // this.progress = this.time;
+    // this.progress2 = 1;
     // document.body.classList.remove("scroll");
     // this.gui.show();
     // this.points.pointsMaterial1.uniforms.opacity.value = 1;

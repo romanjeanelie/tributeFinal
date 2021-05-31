@@ -1,6 +1,7 @@
 uniform vec3 color1;
 uniform vec3 color2;
 
+
 varying vec2 vUv;
 varying vec3 vNormal;
 
@@ -10,14 +11,12 @@ float stroke (float x, float s, float w){
 
 
 void main()	{
+    float circle = length(vUv - 0.5); 
 
-    float overlay = stroke(vUv.y, 0.5, 0.45) - 0.5;
-
-    // vec3 color = mix(color2, color1, vUv.y-0.5);
+    float overlay = stroke(circle, 0.1, 0.4);
     vec3 color = mix(color2, color1, vUv.y-0.5);
-
   
-    gl_FragColor = vec4(color, 1.);
+    gl_FragColor = vec4(color,overlay);
 
     
 }
