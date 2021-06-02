@@ -36,7 +36,7 @@ export default class cameraPath {
   positionCameraLarge() {
     this.camera.position.x = 25.615060574826202;
     this.camera.position.y = -3280;
-    this.camera.position.z = 2000;
+    this.camera.position.z = 1400;
     this.posCameraLarge = new THREE.Vector3(196.7571580388389, -3000, -2369.896873902935);
   }
 

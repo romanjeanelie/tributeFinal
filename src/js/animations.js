@@ -371,7 +371,7 @@ export default class Animations {
     // this.progress2 = this.time * 0.2;
     // this.progress = this.time;
     // this.progress2 = 1;
-    // document.body.classList.remove("scroll");
+    document.body.classList.remove("scroll");
     // this.gui.show();
     // this.points.pointsMaterial1.uniforms.opacity.value = 1;
     // this.points.pointsMaterial2.uniforms.opacity.value = 1;
