@@ -96,6 +96,7 @@ export default class cameraPath {
     this.folderCamera = this.gui.addFolder("Camera");
     this.folderCamera.add(this.params, "animationView").onChange(() => {
       this.animateCamera();
+      document.body.classList.toggle("scroll");
     });
     this.folderCamera.add(this.params, "cameraHelper").onChange(() => {
       this.toggleCameraHelper();
