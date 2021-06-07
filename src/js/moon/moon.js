@@ -43,6 +43,8 @@ export default class Moon {
         color2: { value: new THREE.Color(this.debugObject.moonColor2) },
       },
       transparent: true,
+      depthWrite: false,
+
       vertexShader: vertex,
       fragmentShader: fragment,
     });

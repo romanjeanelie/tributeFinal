@@ -22,22 +22,22 @@ export default class cameraPath {
     this.params = {
       extrusionSegments: 100,
       radiusSegments: 3,
-      animationView: true,
+      animationView: false,
       lookAhead: false,
       cameraHelper: false,
     };
 
     this.progress = 0;
 
-    //this.positionCameraLarge();
+    this.positionCameraLarge();
     this.init();
   }
 
   positionCameraLarge() {
-    this.camera.position.x = 25.615060574826202;
-    this.camera.position.y = -3280;
-    this.camera.position.z = 1400;
-    this.posCameraLarge = new THREE.Vector3(196.7571580388389, -3000, -2369.896873902935);
+    this.camera.position.x = 40;
+    this.camera.position.y = -3180;
+    this.camera.position.z = 1150;
+    this.posCameraLarge = new THREE.Vector3(210, -3000, -2369.896873902935);
   }
 
   addTube(curve) {
@@ -126,7 +126,7 @@ export default class cameraPath {
 
     this.cameraPath(this.progress);
 
-    //this.camera.lookAt(this.posCameraLarge);
+    this.camera.lookAt(this.posCameraLarge);
 
     this.renderer.render(this.scene, this.params.animationView === true ? this.splineCamera : this.camera);
   }

@@ -367,15 +367,15 @@ export default class Animations {
     this.computeDelta(this.progress);
 
     ///////////////////////////////////////// Test without scrollBar
-    // this.progress = this.time;
-    // this.progress2 = this.time * 0.2;
-    // this.progress = this.time;
-    // this.progress2 = 1;
-    //document.body.classList.remove("scroll");
-    // this.gui.show();
-    // this.points.pointsMaterial1.uniforms.opacity.value = 1;
-    // this.points.pointsMaterial2.uniforms.opacity.value = 1;
-    // this.points.pointsMaterial3.uniforms.opacity.value = 1;
+    this.progress = this.time;
+    this.progress2 = this.time * 0.2;
+    this.progress = this.time;
+    this.progress2 = 1;
+    document.body.classList.remove("scroll");
+    this.gui.show();
+    this.points.pointsMaterial1.uniforms.opacity.value = 1;
+    this.points.pointsMaterial2.uniforms.opacity.value = 1;
+    this.points.pointsMaterial3.uniforms.opacity.value = 1;
     ///////////////////////////////////////// End Test without scrollBar
 
     // Animation objects
