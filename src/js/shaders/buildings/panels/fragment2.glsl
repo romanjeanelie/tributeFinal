@@ -25,6 +25,6 @@ void main()	{
     //  float strength =  min(strengthHor, strengthVert);
 
     color += rect; 
-    gl_FragColor = vec4(vec3(1.), rect);
+    gl_FragColor = vec4(vec3(1.), .9);
 
 }
