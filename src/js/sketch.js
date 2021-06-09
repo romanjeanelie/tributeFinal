@@ -49,6 +49,8 @@ export default class Sketch {
     this.setupResize();
     this.setClearColor();
 
+    this.addFog();
+
     //this.addObject();
     this.animations = new Animations({
       camera: this.camera,
@@ -76,11 +78,16 @@ export default class Sketch {
   }
 
   setClearColor() {
-    this.debugObject.clearColor = "#01011c";
+    this.debugObject.clearColor = "#06063f";
     this.renderer.setClearColor(this.debugObject.clearColor);
     this.folderSketch
       .addColor(this.debugObject, "clearColor")
       .onChange(() => this.renderer.setClearColor(this.debugObject.clearColor));
+  }
+
+  addFog() {
+    const fog = new THREE.Fog("#06063f", 1, 2000);
+    this.scene.fog = fog;
   }
 
   render() {

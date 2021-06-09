@@ -22,7 +22,7 @@ export default class Plane {
 
       gltf.scene.rotation.y = 1.6;
       gltf.scene.scale.set(4, 4, 4);
-      gltf.scene.position.set(-1000, -1700, 400);
+      gltf.scene.position.set(-1000, -2300, 400);
       this.scene.add(gltf.scene);
     });
   }

@@ -5,8 +5,11 @@ import vertex from "../shaders/buildings/windows/vertex";
 import fragment from "../shaders/buildings/windows/fragment";
 import vertex2 from "../shaders/buildings/panels/vertex2";
 import fragment2 from "../shaders/buildings/panels/fragment2";
+import positionsWindows from "./positionsWindows.json";
 
-import clamp from "../utils/clamp";
+import CityLights from "./cityLights";
+import TextBuilding from "./textBuilding";
+import Teddy from "./teddy";
 
 export default class Road {
   constructor(options) {
@@ -21,8 +24,31 @@ export default class Road {
     this.city = new THREE.Group();
   }
 
+  downloadObjectAsJson(exportObj, exportName) {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
   init() {
     this.addBuildings();
+
+    this.cityLights = new CityLights({ scene: this.city, gui: this.gui });
+    this.cityLights.init();
+
+    this.textBuidling = new TextBuilding({ scene: this.city, gui: this.gui });
+    this.textBuidling.init();
+
+    this.teddy = new Teddy({ scene: this.city, gui: this.gui });
+    this.teddy.init();
+
+    this.addFloor();
+
+    this.addComputer();
 
     this.city.position.y = -3300;
     this.city.position.z = 900;
@@ -43,43 +69,45 @@ export default class Road {
       color: 0x0000000,
       side: THREE.DoubleSide,
       transparent: false,
+      //depthWrite: false,
     });
 
-    this.materialPanel = new THREE.ShaderMaterial({
-      vertexShader: vertex2,
-      fragmentShader: fragment2,
-      color: 0x00000ff,
-      side: THREE.DoubleSide,
+    this.materialPanel = new THREE.MeshBasicMaterial({
+      color: 0x0000ff,
       transparent: true,
+      opacity: 0,
+      depthWrite: false,
+    });
+    this.materialComputer = new THREE.MeshBasicMaterial({
+      color: 0x0000ff,
+      depthWrite: false,
+      transparent: true,
+      opacity: 0,
     });
 
     this.gltfLoader.load("/models/city.glb", (gltf) => {
-      let positionsWindow = [];
-      let boxBuilding = [];
-
       gltf.scene.traverse((child) => {
         this.positionBuilding = null;
         this.coordBuilding = null;
         if (child.name.includes("Building")) {
           child.material = this.materialBuilding;
-          console.log(child.geometry.boundingBox);
-          boxBuilding.push(child.geometry.boundingBox);
         }
         if (child.name.includes("Window")) {
           child.material = materialTransparent;
-          positionsWindow.push(child.position);
         }
         if (child.name.includes("Panel")) {
           child.material = this.materialPanel;
+        }
+        if (child.name.includes("Computer")) {
+          child.material = this.materialComputer;
         }
       });
 
       this.city.add(gltf.scene);
 
-      this.createLightWindow(positionsWindow);
+      this.createLightWindow(positionsWindows);
     });
   }
-
   createLightWindow(positionsWindow) {
     const count = positionsWindow.length;
     this.pointsMaterial = new THREE.ShaderMaterial({
@@ -105,7 +133,7 @@ export default class Road {
       positions[i3 + 1] = positionsWindow[i].y;
       positions[i3 + 2] = positionsWindow[i].z;
 
-      size[i] = 500;
+      size[i] = 600;
       opacity[i] = Math.random() * 0.6;
     }
 
@@ -116,5 +144,43 @@ export default class Road {
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
     this.city.add(points);
+    console.log(points);
+  }
+  addFloor() {
+    this.floorGeometry = new THREE.PlaneGeometry(1, 1);
+    this.floorMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+    this.floor = new THREE.Mesh(this.floorGeometry, this.floorMaterial);
+
+    this.floor.rotation.x = Math.PI * 0.5;
+    this.floor.position.y = -2;
+    this.floor.scale.set(500, 1000, 500);
+
+    this.city.add(this.floor);
+  }
+
+  addComputer() {
+    const video = document.getElementById("video");
+    const videoTexture = new THREE.VideoTexture(video);
+    this.computerMaterial = new THREE.MeshBasicMaterial({
+      //color: 0x0000ff,
+      map: videoTexture,
+    });
+    video.play();
+    this.computerGeometry = new THREE.PlaneGeometry(1, 1);
+    //   this.computerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+    this.computer = new THREE.Mesh(this.computerGeometry, this.computerMaterial);
+
+    //this.computer.rotation.x = Math.PI * 0.5;
+    this.computer.position.x = -70;
+    this.computer.position.y = 11.7;
+    this.computer.position.z = 139.5;
+    this.computer.rotation.y = -0.2;
+    this.computer.scale.set(2, 1.5, 1);
+
+    this.city.add(this.computer);
+  }
+
+  anim(progress, time) {
+    this.textBuidling.anim(progress, time);
   }
 }

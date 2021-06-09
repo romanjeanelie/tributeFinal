@@ -248,6 +248,7 @@ export default class Animations {
   }
 
   stepFour() {
+    const camera = this.createPath.cameraPath.splineCamera;
     const tl = gsap.timeline();
     this.progress2 = 0;
 
@@ -317,11 +318,23 @@ export default class Animations {
 
       "<"
     );
+
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 19500,
+        progress: 19690,
         delay: 10,
+        duration: 10,
+        //  ease: "linear",
+      },
+
+      "<"
+    );
+    // Change LOOK AT DIRECTION
+    this.tl4.to(
+      camera.rotation,
+      {
+        y: -0.2,
         duration: 10,
         ease: "linear",
       },
@@ -356,6 +369,7 @@ export default class Animations {
     this.textGod.anim(progress * 12, time);
     // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
+    this.road.anim(progress * 12, time);
   }
 
   render() {
@@ -367,15 +381,15 @@ export default class Animations {
     this.computeDelta(this.progress);
 
     ///////////////////////////////////////// Test without scrollBar
-    this.progress = this.time;
-    this.progress2 = this.time * 0.2;
-    this.progress = this.time;
-    this.progress2 = 1;
-    document.body.classList.remove("scroll");
-    this.gui.show();
-    this.points.pointsMaterial1.uniforms.opacity.value = 1;
-    this.points.pointsMaterial2.uniforms.opacity.value = 1;
-    this.points.pointsMaterial3.uniforms.opacity.value = 1;
+    // this.progress = this.time;
+    // this.progress2 = this.time * 0.2;
+    // this.progress = this.time;
+    // this.progress2 = 1;
+    // document.body.classList.remove("scroll");
+    // this.gui.show();
+    // this.points.pointsMaterial1.uniforms.opacity.value = 1;
+    // this.points.pointsMaterial2.uniforms.opacity.value = 1;
+    // this.points.pointsMaterial3.uniforms.opacity.value = 1;
     ///////////////////////////////////////// End Test without scrollBar
 
     // Animation objects

@@ -14,7 +14,6 @@ export default class cameraPath {
     this.binormal = new THREE.Vector3();
     this.normal = new THREE.Vector3();
     this.position = new THREE.Vector3();
-    this.lookAt = new THREE.Vector3();
 
     this.tubeGeometry = null;
     this.mesh = null;
@@ -22,21 +21,21 @@ export default class cameraPath {
     this.params = {
       extrusionSegments: 100,
       radiusSegments: 3,
-      animationView: false,
+      animationView: true,
       lookAhead: false,
       cameraHelper: false,
     };
 
     this.progress = 0;
 
-    this.positionCameraLarge();
+    //this.positionCameraLarge();
     this.init();
   }
 
   positionCameraLarge() {
-    this.camera.position.x = 40;
+    this.camera.position.x = -690;
     this.camera.position.y = -3180;
-    this.camera.position.z = 1150;
+    this.camera.position.z = 2320;
     this.posCameraLarge = new THREE.Vector3(210, -3000, -2369.896873902935);
   }
 
@@ -115,8 +114,7 @@ export default class cameraPath {
     this.pos2 = this.mesh.geometry.parameters.path.getPointAt(this.t2);
 
     this.splineCamera.position.copy(this.pos2);
-    //this.splineCamera.lookAt(this.pos2);
-    //this.splineCamera.lookAt(this.pos);
+
     this.cameraHelper.update();
   }
 
@@ -125,8 +123,7 @@ export default class cameraPath {
     this.camera.updateProjectionMatrix();
 
     this.cameraPath(this.progress);
-
-    this.camera.lookAt(this.posCameraLarge);
+    //this.camera.lookAt(this.posCameraLarge);
 
     this.renderer.render(this.scene, this.params.animationView === true ? this.splineCamera : this.camera);
   }

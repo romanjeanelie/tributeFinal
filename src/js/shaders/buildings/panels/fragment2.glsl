@@ -1,30 +1,38 @@
-uniform vec3 color1;
+uniform float time;
+uniform float activeLines;
+uniform float progress;
+uniform float opacity;
+uniform vec3 uColor; 
 
-varying float vOpacity; 
 varying vec2 vUv;
 
-float rectSDF (vec2 st, vec2 s){
-    st = st*2.-1.;
-    return max(abs(st.x/s.x), abs(st.y/s.y));
-}
 
-float fill (float x, float s){
-    return 1. - smoothstep(s,s + 0.09, x);
-}
+float stroke(float x, float s, float w){
+  float d = smoothstep(s, s+0.3,x + w) - smoothstep(s-0.2,s, x-w);
+  // float d = step(s, x + w) - step(s, x-w);
+  return d; 
+ }
 
 void main()	{
-    vec3 color = vec3(0.);
 
-    float rect = rectSDF(vUv, vec2(0.9));
-    rect = fill(rect, 0.93);
+   // BARS
+  float speed =  time * 2.;
+  // float animShutter = (200. * activeLines) * speed ;
+  // float factorDivision = .04;
+  // float thickness = 0.5 ;
+  float animShutter = time * .5;
+  float factorDivision = 100.5;
+  float thickness = 0.8 ;
 
-    // float distanceHor = distance(vUv.x, 0.5);
-    // float distanceVert = distance(vUv.y, 0.5);
-    //   float strengthHor = 0.45 / (distanceHor) - 0.6;
-    //   float strengthVert = 3.9 / (distanceVert) -8.2;
-    //  float strength =  min(strengthHor, strengthVert);
 
-    color += rect; 
-    gl_FragColor = vec4(vec3(1.), .9);
+  float littleLines = stroke(fract((vUv.y + animShutter)*factorDivision), .7, thickness);
 
+  float strobe = sin(time * 330.);
+  float strobeLight = mix(0.93, 1., strobe);
+
+  float color = strobeLight * opacity;
+
+    gl_FragColor = vec4(vec3(1.), color);
+
+    
 }
