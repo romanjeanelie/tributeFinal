@@ -15,7 +15,7 @@ export default class SinglePoint {
 
     this.positionX = 0;
     this.positionY = 0;
-    this.positionZ = -30;
+    this.positionZ = -130;
   }
 
   init() {
@@ -46,13 +46,13 @@ export default class SinglePoint {
     this.mesh.position.y = this.positionY;
     this.mesh.position.z = this.positionZ;
 
-    this.mesh.scale.set(10, 10, 10);
+    this.mesh.scale.set(40, 40, 40);
 
     this.scene.add(this.mesh);
   }
 
   setColors() {
-    this.debugObject.color1 = "#ff0559";
+    this.debugObject.color1 = "#ffffff";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))

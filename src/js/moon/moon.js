@@ -23,7 +23,7 @@ export default class Moon {
     this.atmosphere.init();
     // this.textMoon.init();
 
-    this.moon.position.y = -2300;
+    this.moon.position.y = -3000;
     this.moon.position.z = -400;
     // this.moon.position.y = -0;
     // this.moon.position.z = -1000;

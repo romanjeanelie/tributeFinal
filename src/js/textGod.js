@@ -68,7 +68,7 @@ export default class TextGod {
           activeLines: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
-          uColor: { value: new THREE.Color("#ff0559") },
+          uColor: { value: new THREE.Color("#ffffff") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

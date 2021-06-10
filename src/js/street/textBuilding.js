@@ -14,81 +14,98 @@ export default class TextBuilding {
   }
 
   init() {
-    this.textDance();
+    this.texts = [
+      {
+        text: "DANCE",
+        posX: -45,
+        posY: 22,
+        posZ: 12,
+        scale: 6,
+        color: "#FFB200",
+      },
+      {
+        text: "WITH ME",
+        posX: -29,
+        posY: 10,
+        posZ: 12,
+        scale: 6,
+        color: "#FFB200",
+      },
+      {
+        text: "ON THE FLOOR",
+        posX: -14,
+        posY: 19,
+        posZ: -4,
+        scale: 6,
+        color: "#FFB200",
+      },
+      {
+        text: "WE CAN DANCE",
+        posX: 75,
+        posY: 14,
+        posZ: 29,
+        rotateZ: -1.2,
+        scale: 10,
+        color: "#FFE53F",
+      },
+      {
+        text: "ON THE STREETS",
+        posX: 75,
+        posY: 4,
+        posZ: 50,
+        rotateZ: -1.5,
+        scale: 12,
+        color: "#FFE53F",
+      },
+    ];
+    this.loader.load("/fonts/Moniqa-Display_Bold.json", (font, options) => {
+      this.texts.forEach((textOptions) => {
+        this.createText(font, textOptions);
+      });
+    });
   }
 
-  textDance() {
-    this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
-      this.textDanceGeometry = new THREE.TextGeometry("DANCE", {
-        font: font,
-        size: 0.5,
-        height: 0.001,
-        curveSegments: 10,
-        bevelEnabled: true,
-        bevelThickness: 0.005,
-        bevelSize: 0.001,
-        bevelOffset: 0,
-        bevelSegments: 0,
-      });
-      this.textWithGeometry = new THREE.TextGeometry("WITH ME", {
-        font: font,
-        size: 0.5,
-        height: 0.0001,
-        curveSegments: 10,
-        bevelEnabled: true,
-        bevelThickness: 0.02,
-        bevelSize: 0.003,
-        bevelSegments: 3,
-      });
-      this.textStreetGeometry = new THREE.TextGeometry("IN THE STREET", {
-        font: font,
-        size: 0.5,
-        height: 0.0001,
-        curveSegments: 10,
-        bevelEnabled: true,
-        bevelThickness: 0.02,
-        bevelSize: 0.003,
-        bevelSegments: 3,
-      });
-
-      this.textMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 },
-          activeLines: { value: 0 },
-          progress: { value: 0 },
-          opacity: { value: 1 },
-          uColor: { value: new THREE.Color("#FFB200") },
-        },
-        vertexShader: vertex,
-        fragmentShader: fragment,
-        transparent: true,
-      });
-
-      this.textDance = new THREE.Mesh(this.textDanceGeometry, this.textMaterial);
-      this.textWith = new THREE.Mesh(this.textWithGeometry, this.textMaterial);
-      this.textStreet = new THREE.Mesh(this.textStreetGeometry, this.textMaterial);
-
-      this.textDanceGeometry.center();
-      this.textWithGeometry.center();
-
-      this.textDance.scale.set(6, 6, 6);
-      this.textDance.position.x = -45;
-      this.textDance.position.y = 22;
-      this.textDance.position.z = 12;
-
-      this.textWith.scale.set(6, 6, 6);
-      this.textWith.position.x = -29;
-      this.textWith.position.y = 10;
-      this.textWith.position.z = 12;
-
-      this.textStreet.scale.set(6, 6, 6);
-      this.textStreet.position.x = -14;
-      this.textStreet.position.y = 19;
-      this.textStreet.position.z = -4;
-
-      this.scene.add(this.textDance, this.textWith, this.textStreet);
-      // this.addStructure();
+  createText(font, options) {
+    this.textGeometry = new THREE.TextGeometry(options.text, {
+      font: font,
+      size: 0.5,
+      height: 0.001,
+      curveSegments: 10,
+      bevelEnabled: true,
+      bevelThickness: 0.005,
+      bevelSize: 0.001,
+      bevelOffset: 0,
+      bevelSegments: 0,
     });
+
+    this.textMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        activeLines: { value: 0 },
+        progress: { value: 0 },
+        opacity: { value: 1 },
+        uColor: { value: new THREE.Color(options.color) },
+      },
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+    });
+
+    this.textMesh = new THREE.Mesh(this.textGeometry, this.textMaterial);
+
+    this.textGeometry.center();
+
+    this.textMesh.position.x = options.posX;
+    this.textMesh.position.y = options.posY;
+    this.textMesh.position.z = options.posZ;
+
+    if (options.rotateZ) {
+      this.textMesh.rotation.y = options.rotateZ;
+    }
+    this.textMesh.scale.set(options.scale, options.scale, options.scale);
+
+    this.scene.add(this.textMesh);
+    // this.addStructure();
   }
 
   addStructure() {

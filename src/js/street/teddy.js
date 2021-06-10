@@ -15,7 +15,6 @@ export default class Teddy {
 
   addTeddy() {
     const matcapTexture = this.textureLoader.load("/textures/teddy/matcap1.png");
-    console.log(matcapTexture);
 
     const material = new THREE.MeshMatcapMaterial({
       matcap: matcapTexture,

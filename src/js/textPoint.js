@@ -49,11 +49,11 @@ export default class TextPoint {
 
   addText() {
     const texts = [
-      "THERE'S A REASON WE ARE TOGETHER",
-      "TAKE ME BACK",
-      "CATCH ME IN THE MOMENT WHEN YOU SAID YOU LOVE ME",
+      "there's a reason we are together",
+      "take me back",
+      "catch me in the moment when you said you loved me",
     ];
-    this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
+    this.loader.load("/fonts/Soleil_Regular.json", (font) => {
       if (this.index > texts.length - 1) {
         this.textGroup.position.y = -55;
         this.textGroup.position.z = -80;
@@ -84,7 +84,7 @@ export default class TextPoint {
           time: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
-          color1: { value: new THREE.Color("#ff0559") },
+          color1: { value: new THREE.Color("#ffffff") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

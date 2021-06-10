@@ -78,7 +78,7 @@ export default class Sketch {
   }
 
   setClearColor() {
-    this.debugObject.clearColor = "#06063f";
+    this.debugObject.clearColor = "#1F0114";
     this.renderer.setClearColor(this.debugObject.clearColor);
     this.folderSketch
       .addColor(this.debugObject, "clearColor")
@@ -86,7 +86,7 @@ export default class Sketch {
   }
 
   addFog() {
-    const fog = new THREE.Fog("#06063f", 1, 2000);
+    const fog = new THREE.Fog("#1F0114", 1, 2000);
     this.scene.fog = fog;
   }
 

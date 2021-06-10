@@ -50,7 +50,7 @@ export default class Road {
 
     this.addComputer();
 
-    this.city.position.y = -3300;
+    this.city.position.y = -4000;
     this.city.position.z = 900;
     this.city.scale.set(10, 10, 10);
 
@@ -144,7 +144,6 @@ export default class Road {
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
     this.city.add(points);
-    console.log(points);
   }
   addFloor() {
     this.floorGeometry = new THREE.PlaneGeometry(1, 1);

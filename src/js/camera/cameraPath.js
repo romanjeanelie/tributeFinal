@@ -34,8 +34,9 @@ export default class cameraPath {
 
   positionCameraLarge() {
     this.camera.position.x = -690;
-    this.camera.position.y = -3180;
-    this.camera.position.z = 2320;
+    this.camera.position.y = -3880;
+    // this.camera.position.z = 2320;
+    this.camera.position.z = 2120;
     this.posCameraLarge = new THREE.Vector3(210, -3000, -2369.896873902935);
   }
 
@@ -80,7 +81,7 @@ export default class cameraPath {
       70,
       this.container.offsetWidth / this.container.offsetHeight,
       0.01,
-      3000
+      7000
     );
 
     var vector = new THREE.Vector3(); // create once and reuse it!
@@ -123,7 +124,7 @@ export default class cameraPath {
     this.camera.updateProjectionMatrix();
 
     this.cameraPath(this.progress);
-    //this.camera.lookAt(this.posCameraLarge);
+    // this.camera.lookAt(this.posCameraLarge);
 
     this.renderer.render(this.scene, this.params.animationView === true ? this.splineCamera : this.camera);
   }

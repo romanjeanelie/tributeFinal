@@ -8,7 +8,9 @@ varying vec2 vUv;
 void main() {
     vec3 newposition = position;
 
-    vec4 modelPosition = modelMatrix * vec4(position, 1.); 
+    newposition.y += sin(time  + newposition.z * 100.) * 15.;
+
+    vec4 modelPosition = modelMatrix * vec4(newposition, 1.); 
     vec4 viewPosition = viewMatrix * modelPosition; 
     vec4 projectionPosition = projectionMatrix * viewPosition; 
 

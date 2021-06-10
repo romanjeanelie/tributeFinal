@@ -3,10 +3,12 @@ import gsap from "gsap";
 import TextIntro from "./textIntro";
 import TextGod from "./textGod";
 import TextPoint from "./textPoint";
+import TextStars from "./textStars/textStars";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
 import Clouds from "./clouds";
+import Sky from "./sky";
 import Plane from "./plane";
 import Moon from "./moon/moon";
 import Road from "./street/road";
@@ -65,7 +67,6 @@ export default class Animations {
       let index = -1;
 
       window.addEventListener("touchstart", (event) => {
-        console.log(this.mouse.x);
         this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
         if (this.intersects.length) {
@@ -93,11 +94,13 @@ export default class Animations {
     this.textIntro = new TextIntro({ scene: this.scene, scroll: this.scrollValue });
     this.textGod = new TextGod({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
     this.textPoint = new TextPoint({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
+    this.textStars = new TextStars({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
 
     this.circle = new Circle({ scene: this.scene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
     this.points = new Points({ scene: this.scene, gui: this.gui });
     this.clouds = new Clouds({ scene: this.scene, gui: this.gui });
+    this.sky = new Sky({ scene: this.scene, gui: this.gui });
     this.plane = new Plane({ scene: this.scene, gui: this.gui });
     this.moon = new Moon({ scene: this.scene, gui: this.gui });
     this.road = new Road({ scene: this.scene, gui: this.gui });
@@ -105,11 +108,12 @@ export default class Animations {
     this.textIntro.init();
     this.textGod.init();
     this.textPoint.init();
+    this.textStars.init();
 
     this.circle.init();
     this.singlePoint.init();
     this.points.init();
-    this.clouds.init();
+    this.sky.init();
     this.plane.init();
     this.moon.init();
     this.road.init();
@@ -159,7 +163,7 @@ export default class Animations {
   anim() {
     this.stepOne();
     this.stepTwo();
-    //this.stepFour();
+    //  this.stepFour();
   }
 
   stepOne() {
@@ -193,16 +197,6 @@ export default class Animations {
       }
     );
 
-    // FADE IN Text God
-    this.tl2.to(
-      this.textGod.opacity,
-      {
-        value: 1,
-        duration: 5,
-        delay: 2,
-      },
-      "<"
-    );
     // FADE OUT Circle
     this.tl2.to(
       this.circle.material.uniforms.opacity,
@@ -257,8 +251,18 @@ export default class Animations {
     // DEZOOM Single point
     tl.to(this.singlePoint.mesh.position, {
       duration: 6,
-      z: -60.5,
+      z: -300,
     });
+
+    // FADE IN Text God
+    tl.to(
+      this.textGod.opacity,
+      {
+        value: 1,
+        duration: 12,
+      },
+      "<"
+    );
 
     // DEZOOM Text God
     tl.to(
@@ -272,15 +276,15 @@ export default class Animations {
     );
 
     // FADE IN Sky
-    tl.to(
-      this.clouds.material.uniforms.opacity,
-      {
-        value: 1,
-        delay: 1,
-        duration: 10,
-      },
-      "<"
-    );
+    // tl.to(
+    //   this.clouds.material.uniforms.opacity,
+    //   {
+    //     value: 1,
+    //     delay: 1,
+    //     duration: 10,
+    //   },
+    //   "<"
+    // );
 
     // FADE IN All Points
     tl.to(
@@ -322,7 +326,7 @@ export default class Animations {
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 19690,
+        progress: 19750,
         delay: 10,
         duration: 10,
         //  ease: "linear",
@@ -350,7 +354,7 @@ export default class Animations {
 
   animObjects(progress, time) {
     this.tl.progress(progress * 0.3);
-    this.tl4.progress(this.progress2 * 0.7);
+    this.tl4.progress(this.progress2 * 0.4);
     this.singlePoint.anim(progress, time);
 
     if (this.progress > this.steps[0]) {
@@ -369,7 +373,10 @@ export default class Animations {
     this.textGod.anim(progress * 12, time);
     // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
+    this.textStars.anim(progress * 12, time);
+
     this.road.anim(progress * 12, time);
+    this.points.anim(progress * 12, time);
   }
 
   render() {
@@ -382,9 +389,8 @@ export default class Animations {
 
     ///////////////////////////////////////// Test without scrollBar
     // this.progress = this.time;
-    // this.progress2 = this.time * 0.2;
-    // this.progress = this.time;
-    // this.progress2 = 1;
+    // // this.progress2 = this.time * 0.2;
+    // this.progress2 = 0.25;
     // document.body.classList.remove("scroll");
     // this.gui.show();
     // this.points.pointsMaterial1.uniforms.opacity.value = 1;

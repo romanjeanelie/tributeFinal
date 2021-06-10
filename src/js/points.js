@@ -24,23 +24,23 @@ export default class Points {
       minZ: -300,
       maxZ: -100,
       material: this.pointsMaterial1,
-      qty: 100,
+      qty: 40,
     });
-    this.addPoints({
-      minX: 0,
-      maxX: 4000,
-      minY: -150,
-      maxY: 100,
-      minZ: -100,
-      maxZ: -2000,
-      material: this.pointsMaterial2,
-      qty: 4000,
-    });
+    // this.addPoints({
+    //   minX: 0,
+    //   maxX: 4000,
+    //   minY: -150,
+    //   maxY: 100,
+    //   minZ: -100,
+    //   maxZ: -2000,
+    //   material: this.pointsMaterial2,
+    //   qty: 4000,
+    // });
     this.addPoints({
       minX: 0,
       maxX: 800,
       minY: -700,
-      maxY: 1000,
+      maxY: 3000,
       minZ: -100,
       maxZ: -500,
       material: this.pointsMaterial3,
@@ -118,5 +118,9 @@ export default class Points {
 
     this.pointsGroup.add(points);
     this.scene.add(this.pointsGroup);
+  }
+
+  anim(progress, time) {
+    this.pointsMaterial3.uniforms.time.value = time;
   }
 }
