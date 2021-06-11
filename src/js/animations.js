@@ -246,8 +246,6 @@ export default class Animations {
     const tl = gsap.timeline();
     this.progress2 = 0;
 
-    console.log("step four", this.progress2);
-
     // DEZOOM Single point
     tl.to(this.singlePoint.mesh.position, {
       duration: 6,
@@ -326,7 +324,7 @@ export default class Animations {
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 19750,
+        progress: 19950,
         delay: 10,
         duration: 10,
         //  ease: "linear",
@@ -334,13 +332,38 @@ export default class Animations {
 
       "<"
     );
-    // Change LOOK AT DIRECTION
+    // ROTATION Camera
+
     this.tl4.to(
       camera.rotation,
       {
-        y: -0.2,
+        z: Math.PI * 2,
+        duration: 7,
+        ease: "power4.inOut",
+        // ease: "linear",
+      },
+
+      "<"
+    );
+
+    this.tl4.to(
+      camera.rotation,
+      {
+        y: -0.4,
         duration: 10,
         ease: "linear",
+      },
+
+      "<"
+    );
+
+    this.tl4.to(
+      this.createPath.cameraPath,
+      {
+        progress: 19990,
+        delay: 10,
+        duration: 10,
+        //  ease: "linear",
       },
 
       "<"

@@ -11,7 +11,7 @@ varying vec2 vUv;
 
 
 float stroke (float x, float s, float w){
-    return smoothstep(s, s + 0.4,x + w ) - smoothstep(s-0.4,s,x-w);
+    return smoothstep(s, s + w/2.,x + w ) - smoothstep(s-w/2.,s,x-w);
 }
 
 void main()	{
@@ -22,8 +22,16 @@ void main()	{
     
     vec3 color = vec3(0.);
 
-    color += mix(mix(color1, color1, vUv.y), mix(color3, color4, vUv.y), vUv.y);
+    //color += mix(mix(color1, color1, vUv.y), mix(color3, color4, vUv.y), vUv.y);
 
+    float step1 = smoothstep(1., 1. + 0.3,vUv.y + 0.2 ) - smoothstep(1.,1. - 0.2, vUv.y);
+
+    float step2 = smoothstep(0.85, 0.85 + 0.6,vUv.y + 0.3 ) - smoothstep(0.85,0.85  - 0.8, vUv.y);
+
+    vec3 stroke1 = mix(black, color1, step1);
+    vec3 stroke2 = mix(black, color2, step2);
+    color = stroke1;
+    color += stroke2;
     
     gl_FragColor = vec4(color, 1.);
   //  gl_FragColor = vec4(vec3(vUv, 1.), 1.);

@@ -38,13 +38,13 @@ export default class Points {
     // });
     this.addPoints({
       minX: 0,
-      maxX: 800,
+      maxX: 12000,
       minY: -700,
       maxY: 3000,
       minZ: -100,
       maxZ: -500,
       material: this.pointsMaterial3,
-      qty: 100,
+      qty: 300,
     });
     this.addPoints(10, 80, this.pointsMaterial3, 150);
   }

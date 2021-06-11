@@ -10,25 +10,28 @@ export default class Sky {
     this.debugObject = {};
 
     this.positionX = 2000;
-    this.positionY = -410;
-    this.positionZ = -3000;
+    this.positionY = 1200;
+    this.positionZ = -1500;
+
+    this.material = null;
   }
 
   init() {
-    this.setColors();
-    this.createClouds();
+    this.createSky();
   }
 
-  createClouds() {
+  createSky() {
+    this.setColors();
+
     this.geometry = new THREE.PlaneGeometry(1, 1);
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         progress: { value: 0 },
-        color1: { value: new THREE.Color("#000000") },
-        color2: { value: new THREE.Color("#051C70") },
-        color3: { value: new THREE.Color("#553533") },
-        color4: { value: new THREE.Color("#3B191D") },
+        color1: { value: new THREE.Color(this.debugObject.color1) },
+        color2: { value: new THREE.Color(this.debugObject.color2) },
+        color3: { value: new THREE.Color(this.debugObject.color3) },
+        color4: { value: new THREE.Color(this.debugObject.color4) },
         opacity: { value: 0 },
       },
       side: THREE.DoubleSide,
@@ -40,7 +43,7 @@ export default class Sky {
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.mesh.scale.set(24000, 7000, 100);
+    this.mesh.scale.set(50000, 10000, 100);
 
     this.mesh.position.x = this.positionX;
     this.mesh.position.y = this.positionY;
@@ -52,11 +55,16 @@ export default class Sky {
   }
 
   setColors() {
-    this.debugObject.color1 = "#3B003D";
+    this.debugObject.color1 = "#430000";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
-      .name("skyColor");
+      .name("skyColor1");
+    this.debugObject.color2 = "#1b263a";
+    this.gui
+      .addColor(this.debugObject, "color2")
+      .onChange(() => (this.material.uniforms.color2.value = new THREE.Color(this.debugObject.color2)))
+      .name("skyColor2");
   }
 
   anim(time, progress) {

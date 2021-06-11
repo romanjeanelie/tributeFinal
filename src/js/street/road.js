@@ -10,6 +10,7 @@ import positionsWindows from "./positionsWindows.json";
 import CityLights from "./cityLights";
 import TextBuilding from "./textBuilding";
 import Teddy from "./teddy";
+import Wheel from "./wheel";
 
 export default class Road {
   constructor(options) {
@@ -43,21 +44,25 @@ export default class Road {
     this.textBuidling = new TextBuilding({ scene: this.city, gui: this.gui });
     this.textBuidling.init();
 
-    this.teddy = new Teddy({ scene: this.city, gui: this.gui });
-    this.teddy.init();
+    // this.teddy = new Teddy({ scene: this.city, gui: this.gui });
+    // this.teddy.init();
+
+    this.wheel = new Wheel({ scene: this.city, gui: this.gui });
+    this.wheel.init();
 
     this.addFloor();
 
     this.addComputer();
 
     this.city.position.y = -4000;
-    this.city.position.z = 900;
-    this.city.scale.set(10, 10, 10);
+    this.city.position.z = 1500;
+    this.city.scale.set(25, 25, 25);
 
     this.scene.add(this.city);
   }
 
   addBuildings() {
+    this.positionsWindow = [];
     const materialTransparent = new THREE.MeshBasicMaterial({
       color: 0x0000ff,
       transparent: true,
@@ -94,6 +99,7 @@ export default class Road {
         }
         if (child.name.includes("Window")) {
           child.material = materialTransparent;
+          this.positionsWindow.push(child.position);
         }
         if (child.name.includes("Panel")) {
           child.material = this.materialPanel;
@@ -105,7 +111,7 @@ export default class Road {
 
       this.city.add(gltf.scene);
 
-      this.createLightWindow(positionsWindows);
+      this.createLightWindow(this.positionsWindow);
     });
   }
   createLightWindow(positionsWindow) {
@@ -170,9 +176,9 @@ export default class Road {
     this.computer = new THREE.Mesh(this.computerGeometry, this.computerMaterial);
 
     //this.computer.rotation.x = Math.PI * 0.5;
-    this.computer.position.x = -70;
-    this.computer.position.y = 11.7;
-    this.computer.position.z = 139.5;
+    this.computer.position.x = -57.3;
+    this.computer.position.y = 6;
+    this.computer.position.z = 107.5;
     this.computer.rotation.y = -0.2;
     this.computer.scale.set(2, 1.5, 1);
 
@@ -181,5 +187,6 @@ export default class Road {
 
   anim(progress, time) {
     this.textBuidling.anim(progress, time);
+    this.wheel.anim(progress, time);
   }
 }

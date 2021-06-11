@@ -28,15 +28,18 @@ export default class cameraPath {
 
     this.progress = 0;
 
-    //this.positionCameraLarge();
+    // this.positionCameraLarge();
     this.init();
   }
 
   positionCameraLarge() {
-    this.camera.position.x = -690;
-    this.camera.position.y = -3880;
-    // this.camera.position.z = 2320;
-    this.camera.position.z = 2120;
+    this.camera.position.x = -1411.5991435141848;
+    this.camera.position.y = -3842.8312122797024;
+    // this.camera.position.z = 4268.2339635688463;
+    this.camera.position.z = 4180.2339635688463;
+    // this.camera.position.x = -11.5991435141848;
+    // this.camera.position.y = -4000.8312122797024;
+    // this.camera.position.z = 1800.2339635688463;
     this.posCameraLarge = new THREE.Vector3(210, -3000, -2369.896873902935);
   }
 
@@ -81,7 +84,7 @@ export default class cameraPath {
       70,
       this.container.offsetWidth / this.container.offsetHeight,
       0.01,
-      7000
+      15000
     );
 
     var vector = new THREE.Vector3(); // create once and reuse it!
