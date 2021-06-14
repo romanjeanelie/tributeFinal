@@ -3,6 +3,8 @@ import * as THREE from "three";
 
 import fragment from "./shaders/singlePoint/fragment.glsl";
 import vertex from "./shaders/singlePoint/vertex.glsl";
+import fragmentBG from "./shaders/singlePoint/fragmentBG.glsl";
+import vertexBG from "./shaders/singlePoint/vertexBG.glsl";
 
 export default class SinglePoint {
   constructor(options) {
@@ -21,6 +23,7 @@ export default class SinglePoint {
   init() {
     this.setColors();
     this.createPoint();
+    this.createBackground();
   }
 
   createPoint() {
@@ -40,7 +43,6 @@ export default class SinglePoint {
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.geometry.center();
 
     this.mesh.position.x = this.positionX;
     this.mesh.position.y = this.positionY;
@@ -51,12 +53,44 @@ export default class SinglePoint {
     this.scene.add(this.mesh);
   }
 
+  createBackground() {
+    this.geometryBG = new THREE.PlaneGeometry(1, 1);
+    this.materialBG = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        color1: { value: new THREE.Color(this.debugObject.colorBG) },
+        opacity: { value: 0 },
+        wide: { value: 0 },
+      },
+      side: THREE.DoubleSide,
+      vertexShader: vertexBG,
+      fragmentShader: fragmentBG,
+      transparent: true,
+      depthWrite: false,
+    });
+
+    this.background = new THREE.Mesh(this.geometryBG, this.materialBG);
+
+    this.background.position.x = this.positionX;
+    this.background.position.y = this.positionY;
+    this.background.position.z = this.positionZ - 10;
+
+    this.background.scale.set(500, 500, 1);
+
+    this.scene.add(this.background);
+  }
+
   setColors() {
-    this.debugObject.color1 = "#ffffff";
+    this.debugObject.color1 = "#ff00ff";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("singlePointColor");
+    this.debugObject.colorBG = "#000064";
+    this.gui
+      .addColor(this.debugObject, "colorBG")
+      .onChange(() => (this.materialBG.uniforms.color1.value = new THREE.Color(this.debugObject.colorBG)))
+      .name("singleBGPointColor");
   }
 
   move(time) {
@@ -66,5 +100,6 @@ export default class SinglePoint {
   }
   anim(progress, time) {
     this.material.uniforms.time.value = time;
+    this.materialBG.uniforms.time.value = time;
   }
 }

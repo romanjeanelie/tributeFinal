@@ -15,6 +15,7 @@ import Road from "./street/road";
 import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
+import debounce from "./utils/debounce";
 
 export default class Animations {
   constructor(options) {
@@ -52,7 +53,7 @@ export default class Animations {
     this.objectsToTest = [this.singlePoint.mesh];
     this.render();
 
-    this.onMouseMove();
+    this.eventsAnim();
   }
 
   rayCaster() {
@@ -61,7 +62,20 @@ export default class Animations {
     this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
   }
 
-  onMouseMove() {
+  eventsAnim() {
+    // STEP ONE
+    let indexOne = 0;
+    window.addEventListener("mousewheel", () => {
+      if (this.textIntro.animComplete && indexOne < this.textIntro.materialsText.length + 1) {
+        this.stepOne(indexOne);
+        indexOne++;
+        if (indexOne === this.textIntro.materialsText.length + 1) {
+          this.tl2.play();
+        }
+      }
+    });
+
+    // STEP THREE
     const tl = gsap.timeline();
     if (ios()) {
       let index = -1;
@@ -81,6 +95,7 @@ export default class Animations {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       });
+
       window.addEventListener("click", () => {
         if (this.intersects.length) {
           this.stepThree(index);
@@ -161,31 +176,17 @@ export default class Animations {
   }
 
   anim() {
-    this.stepOne();
     this.stepTwo();
     //  this.stepFour();
   }
 
-  stepOne() {
-    this.tl.to(this.circle.circleMesh.position, {
-      y: 0,
-      duration: 60,
-    });
-
-    // ZOOM Circle
-    this.tl.to(
-      this.circle.circleMesh.position,
-      {
-        z: 20,
-        delay: 20,
-        duration: 100,
-      },
-      "<"
-    );
+  stepOne(index) {
+    console.log(index);
+    this.textIntro.animText(index);
   }
 
   stepTwo() {
-    // FADE IN Single point
+    // FADE IN  Single point
     this.tl2.fromTo(
       this.singlePoint.material.uniforms.opacity,
       {
@@ -193,31 +194,21 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 10,
+        duration: 20,
       }
     );
-
-    // FADE OUT Circle
-    this.tl2.to(
-      this.circle.material.uniforms.opacity,
+    // FADE IN  BG Single point
+    this.tl2.fromTo(
+      this.singlePoint.materialBG.uniforms.opacity,
       {
         value: 0,
-        duration: 5,
-        delay: 0,
+      },
+      {
+        value: 1,
+        duration: 20,
       },
       "<"
     );
-
-    // // FADE OUT Text God
-    // this.tl2.to(
-    //   this.textGod.opacity,
-    //   {
-    //     value: 0,
-    //     duration: 10,
-    //     delay: 10,
-    //   },
-    //   "<"
-    // );
   }
 
   stepThree(index) {
@@ -246,17 +237,29 @@ export default class Animations {
     const tl = gsap.timeline();
     this.progress2 = 0;
 
-    // DEZOOM Single point
-    tl.to(this.singlePoint.mesh.position, {
-      duration: 6,
-      z: -300,
+    // OPEN Wide BG
+    tl.to(this.singlePoint.materialBG.uniforms.wide, {
+      duration: 12,
+      value: 0.3,
+      ease: "Power3.in",
     });
+
+    // DEZOOM Single point
+    tl.to(
+      this.singlePoint.mesh.position,
+      {
+        duration: 6,
+        z: -300,
+      },
+      "<"
+    );
 
     // FADE IN Text God
     tl.to(
       this.textGod.opacity,
       {
         value: 1,
+        delay: 1,
         duration: 12,
       },
       "<"
@@ -266,8 +269,8 @@ export default class Animations {
     tl.to(
       this.textGod.textGroup.position,
       {
-        z: -90,
-        duration: 6,
+        z: -115,
+        duration: 12,
       },
 
       "<"
@@ -381,7 +384,6 @@ export default class Animations {
     this.singlePoint.anim(progress, time);
 
     if (this.progress > this.steps[0]) {
-      this.tl2.play();
     }
   }
 
@@ -392,7 +394,6 @@ export default class Animations {
 
   animText(progress, time) {
     this.textIntro.anim(progress * 12, time);
-    this.textIntro.animText(progress * 1);
     this.textGod.anim(progress * 12, time);
     // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
@@ -429,9 +430,9 @@ export default class Animations {
     this.circle.anim(this.time, this.progress);
 
     // Animation Text
-    setTimeout(() => {
+    if (this.textIntro.isLoaded) {
       this.animText(this.progress, this.time);
-    }, 1000);
+    }
 
     // Animation camera
     this.animCamera(this.progress, this.time);

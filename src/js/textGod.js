@@ -35,7 +35,7 @@ export default class TextGod {
 
   addText() {
     const texts = ["OH LIFE IS A GRAIN OF SALT", "IN THE EYES OF GOD"];
-    this.loader.load("/fonts/Moniqa-Display_Bold.json", (font) => {
+    this.loader.load("/fonts/Oswald_Regular.json", (font) => {
       if (this.index > texts.length - 1) {
         this.textGroup.position.z = -80;
         // Position

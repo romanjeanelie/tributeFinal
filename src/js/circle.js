@@ -43,7 +43,7 @@ export default class Circle {
     this.circleMesh.position.y = this.positionY;
     this.circleMesh.position.z = this.positionZ;
 
-    this.scene.add(this.circleMesh);
+    //  this.scene.add(this.circleMesh);
   }
 
   setColors() {

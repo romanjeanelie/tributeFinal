@@ -55,7 +55,7 @@ export default class TextPoint {
     ];
     this.loader.load("/fonts/Soleil_Regular.json", (font) => {
       if (this.index > texts.length - 1) {
-        this.textGroup.position.y = -55;
+        this.textGroup.position.y = -25;
         this.textGroup.position.z = -80;
         this.scene.add(this.textGroup);
         return;

@@ -52,9 +52,6 @@ export default class Wheel {
           child.material = material;
           this.seatPositions.push(child.position);
         }
-        if (child.name.includes("joint22")) {
-          console.log(child);
-        }
       });
       this.mainWheel.add(gltf.scene);
 
