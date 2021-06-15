@@ -11,6 +11,7 @@ export default class TextBuilding {
 
     this.loader = new THREE.FontLoader();
     this.textureLoader = new THREE.TextureLoader();
+    this.materialsText = [];
   }
 
   init() {
@@ -58,7 +59,7 @@ export default class TextBuilding {
         color: "#FFE53F",
       },
     ];
-    this.loader.load("/fonts/Moniqa-Display_Bold.json", (font, options) => {
+    this.loader.load("/fonts/Gala2.json", (font, options) => {
       this.texts.forEach((textOptions) => {
         this.createText(font, textOptions);
       });
@@ -78,7 +79,7 @@ export default class TextBuilding {
       bevelSegments: 0,
     });
 
-    this.textMaterial = new THREE.ShaderMaterial({
+    const textMaterial = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         activeLines: { value: 0 },
@@ -88,10 +89,12 @@ export default class TextBuilding {
       },
       vertexShader: vertex,
       fragmentShader: fragment,
-      transparent: true,
+      // transparent: true,
     });
 
-    this.textMesh = new THREE.Mesh(this.textGeometry, this.textMaterial);
+    this.materialsText.push(textMaterial);
+
+    this.textMesh = new THREE.Mesh(this.textGeometry, textMaterial);
 
     this.textGeometry.center();
 
@@ -124,9 +127,11 @@ export default class TextBuilding {
   }
 
   anim(progress, time) {
-    this.textMaterial.uniforms.time.value = time;
-    this.textMaterial.uniforms.progress.value = progress;
+    this.materialsText.forEach((material) => {
+      material.uniforms.time.value = time;
+      material.uniforms.progress.value = progress;
 
-    this.textMaterial.uniforms.activeLines.value = progress;
+      material.uniforms.activeLines.value = progress;
+    });
   }
 }

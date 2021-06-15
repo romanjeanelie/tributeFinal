@@ -42,6 +42,9 @@ export default class Animations {
     this.delta = 0;
     this.currentScroll = 0;
 
+    this.backstage = false;
+    this.positionTimeline = 2;
+
     this.init();
   }
 
@@ -65,7 +68,7 @@ export default class Animations {
   eventsAnim() {
     // STEP ONE
     let indexOne = 0;
-    window.addEventListener("mousewheel", () => {
+    window.addEventListener("scroll", () => {
       if (this.textIntro.animComplete && indexOne < this.textIntro.materialsText.length + 1) {
         this.stepOne(indexOne);
         indexOne++;
@@ -177,7 +180,9 @@ export default class Animations {
 
   anim() {
     this.stepTwo();
-    //  this.stepFour();
+    if (this.backstage) {
+      this.stepFour();
+    }
   }
 
   stepOne(index) {
@@ -205,7 +210,7 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 20,
+        duration: 10,
       },
       "<"
     );
@@ -221,12 +226,30 @@ export default class Animations {
     this.tl3.to(this.singlePoint.material.uniforms.isPressed, {
       value: 2.5,
     });
+    // SMALLER BG Point
+    this.tl3.to(
+      this.singlePoint.materialBG.uniforms.isPressed,
+      {
+        value: 2.5,
+      },
+      "<"
+    );
 
     // BIGGER Points
     this.tl3.to(this.singlePoint.material.uniforms.isPressed, {
       duration: 2,
       value: 1,
     });
+
+    // BIGGER BG Points
+    this.tl3.to(
+      this.singlePoint.materialBG.uniforms.isPressed,
+      {
+        duration: 2,
+        value: 1,
+      },
+      "<"
+    );
     if (index === 3) {
       this.stepFour();
     }
@@ -243,6 +266,17 @@ export default class Animations {
       value: 0.3,
       ease: "Power3.in",
     });
+
+    // FADE OUT Opacity Light BG
+    tl.to(
+      this.singlePoint.materialBG.uniforms.opacity,
+      {
+        duration: 12,
+        value: 0,
+        ease: "Power3.in",
+      },
+      "<"
+    );
 
     // DEZOOM Single point
     tl.to(
@@ -276,37 +310,8 @@ export default class Animations {
       "<"
     );
 
-    // FADE IN Sky
-    // tl.to(
-    //   this.clouds.material.uniforms.opacity,
-    //   {
-    //     value: 1,
-    //     delay: 1,
-    //     duration: 10,
-    //   },
-    //   "<"
-    // );
-
-    // FADE IN All Points
     tl.to(
-      this.points.pointsMaterial1.uniforms.opacity,
-      {
-        value: 1,
-        delay: 1,
-        duration: 10,
-      },
-      "<"
-    );
-    tl.to(
-      this.points.pointsMaterial2.uniforms.opacity,
-      {
-        value: 1,
-        duration: 10,
-      },
-      "<"
-    );
-    tl.to(
-      this.points.pointsMaterial3.uniforms.opacity,
+      this.points.pointsMaterial.uniforms.opacity,
       {
         value: 1,
         duration: 10,
@@ -316,9 +321,21 @@ export default class Animations {
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 9350,
+        progress: 4300,
         duration: 10,
         ease: "linear",
+        onComplete: () => {
+          gsap.to(this.moon.moonMaterial.uniforms.changeColor, {
+            value: 3.5,
+            duration: 8,
+            ease: "linear",
+          });
+          gsap.to(this.sky.material.uniforms.changeColor, {
+            value: 0.5,
+            duration: 8,
+            ease: "linear",
+          });
+        },
       },
 
       "<"
@@ -330,19 +347,19 @@ export default class Animations {
         progress: 19950,
         delay: 10,
         duration: 10,
-        //  ease: "linear",
+        ease: "linear",
       },
 
       "<"
     );
-    // ROTATION Camera
+    //ROTATION Camera
 
     this.tl4.to(
       camera.rotation,
       {
         z: Math.PI * 2,
-        duration: 7,
-        ease: "power4.inOut",
+        duration: 12,
+        ease: "power2.inOut",
         // ease: "linear",
       },
 
@@ -352,7 +369,7 @@ export default class Animations {
     this.tl4.to(
       camera.rotation,
       {
-        y: -0.4,
+        y: -0.2,
         duration: 10,
         ease: "linear",
       },
@@ -380,7 +397,7 @@ export default class Animations {
 
   animObjects(progress, time) {
     this.tl.progress(progress * 0.3);
-    this.tl4.progress(this.progress2 * 0.4);
+    this.tl4.progress(this.progress2 * 0.25);
     this.singlePoint.anim(progress, time);
 
     if (this.progress > this.steps[0]) {
@@ -412,14 +429,14 @@ export default class Animations {
     this.computeDelta(this.progress);
 
     ///////////////////////////////////////// Test without scrollBar
-    // this.progress = this.time;
-    // // this.progress2 = this.time * 0.2;
-    // this.progress2 = 0.25;
-    // document.body.classList.remove("scroll");
-    // this.gui.show();
-    // this.points.pointsMaterial1.uniforms.opacity.value = 1;
-    // this.points.pointsMaterial2.uniforms.opacity.value = 1;
-    // this.points.pointsMaterial3.uniforms.opacity.value = 1;
+    if (this.backstage) {
+      this.progress = this.time;
+      // this.progress2 = this.time * 0.2;
+      this.progress2 = this.positionTimeline;
+      document.body.classList.remove("scroll");
+      this.gui.show();
+      this.points.pointsMaterial.uniforms.opacity.value = 1;
+    }
     ///////////////////////////////////////// End Test without scrollBar
 
     // Animation objects

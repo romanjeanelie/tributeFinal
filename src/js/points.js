@@ -16,65 +16,22 @@ export default class Points {
 
   init() {
     this.createPointsMaterials();
+
     this.addPoints({
       minX: 0,
-      maxX: 800,
-      minY: -10,
-      maxY: 600,
-      minZ: -300,
-      maxZ: -100,
-      material: this.pointsMaterial1,
-      qty: 40,
-    });
-    // this.addPoints({
-    //   minX: 0,
-    //   maxX: 4000,
-    //   minY: -150,
-    //   maxY: 100,
-    //   minZ: -100,
-    //   maxZ: -2000,
-    //   material: this.pointsMaterial2,
-    //   qty: 4000,
-    // });
-    this.addPoints({
-      minX: 0,
-      maxX: 12000,
+      maxX: 35000,
       minY: -700,
-      maxY: 3000,
-      minZ: -100,
-      maxZ: -500,
-      material: this.pointsMaterial3,
-      qty: 300,
+      maxY: 10000,
+      minZ: -500,
+      maxZ: 5500,
+      material: this.pointsMaterial,
+      qty: 30000,
     });
-    this.addPoints(10, 80, this.pointsMaterial3, 150);
+    this.addPoints(10, 80, this.pointsMaterial, 150);
   }
 
   createPointsMaterials() {
-    this.pointsMaterial1 = new THREE.ShaderMaterial({
-      uniforms: {
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        time: { value: 0 },
-        color1: { value: new THREE.Color("#ff0559") },
-        opacity: { value: 0 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
-      transparent: true,
-      depthWrite: false,
-    });
-    this.pointsMaterial2 = new THREE.ShaderMaterial({
-      uniforms: {
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        time: { value: 0 },
-        color1: { value: new THREE.Color("#ff0559") },
-        opacity: { value: 0 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
-      transparent: true,
-      depthWrite: false,
-    });
-    this.pointsMaterial3 = new THREE.ShaderMaterial({
+    this.pointsMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         time: { value: 0 },
@@ -121,6 +78,6 @@ export default class Points {
   }
 
   anim(progress, time) {
-    this.pointsMaterial3.uniforms.time.value = time;
+    this.pointsMaterial.uniforms.time.value = time;
   }
 }

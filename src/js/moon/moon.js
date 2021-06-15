@@ -10,6 +10,7 @@ export default class Moon {
     this.gui = options.gui;
     this.debugObject = {};
     this.folderMoon = this.gui.addFolder("Moon");
+    this.folderMoon.open();
 
     this.scene = options.scene;
     this.moon = new THREE.Group();
@@ -20,21 +21,25 @@ export default class Moon {
 
   init() {
     this.addMoon();
-    this.atmosphere.init();
-    // this.textMoon.init();
+    //  this.atmosphere.init();
 
-    this.moon.position.x = -90;
-    this.moon.position.y = -3000;
-    this.moon.position.z = -400;
-    // this.moon.position.y = -0;
-    // this.moon.position.z = -1000;
+    this.moon.position.x = -30;
+    this.moon.position.y = -5000;
+    this.moon.position.z = -800;
   }
 
   addMoon() {
-    this.debugObject.moonColor1 = "#F81C39";
-    this.debugObject.moonColor2 = "#EE31C3";
+    this.debugObject.moonColor1 = "#000000";
+    this.debugObject.moonColor2 = "#ff4600";
+    this.debugObject.moonColor3 = "#820000";
     this.folderMoon.addColor(this.debugObject, "moonColor1").onChange(() => {
-      this.moonMaterial.color = new THREE.Color(this.debugObject.moonColor);
+      this.moonMaterial.uniforms.color1.value = new THREE.Color(this.debugObject.moonColor1);
+    });
+    this.folderMoon.addColor(this.debugObject, "moonColor2").onChange(() => {
+      this.moonMaterial.uniforms.color2.value = new THREE.Color(this.debugObject.moonColor2);
+    });
+    this.folderMoon.addColor(this.debugObject, "moonColor3").onChange(() => {
+      this.moonMaterial.uniforms.color3.value = new THREE.Color(this.debugObject.moonColor3);
     });
 
     this.geometry = new THREE.SphereGeometry(60, 70, 70);
@@ -42,6 +47,8 @@ export default class Moon {
       uniforms: {
         color1: { value: new THREE.Color(this.debugObject.moonColor1) },
         color2: { value: new THREE.Color(this.debugObject.moonColor2) },
+        color3: { value: new THREE.Color(this.debugObject.moonColor3) },
+        changeColor: { value: 5 },
       },
       transparent: true,
       depthWrite: false,
@@ -51,11 +58,9 @@ export default class Moon {
     });
     this.sphere = new THREE.Mesh(this.geometry, this.moonMaterial);
 
-    this.sphere.position.y = -21;
-    this.sphere.position.z = -2;
     this.moon.add(this.sphere);
 
-    this.moon.scale.set(10, 10, 10);
+    this.moon.scale.set(20, 20, 20);
 
     this.scene.add(this.moon);
   }

@@ -1,4 +1,3 @@
-
 uniform float time;
 uniform vec3 color1;
 uniform float opacity; 
@@ -23,8 +22,12 @@ void main()	{
 
     float growth =1. - sin(time * 3.) * 0.1;
 
-     float distanceToCenter = distance(vUv, vec2(0.5)) * growth * isPressed;
-    float strength = (0.25 / distanceToCenter - 0.5) * opacity;
+    float distanceToCenter = distance(vUv, vec2(0.5)) * growth * isPressed;
+     
+    float strobe = sin(time * 2000.);
+    float strobeLight = mix(0.9, 1., strobe);
+
+    float strength = (0.25 / distanceToCenter - 0.5) * strobeLight * opacity;
 
     //float finalColor = mix(1., 0.1, strength * 3.);
 

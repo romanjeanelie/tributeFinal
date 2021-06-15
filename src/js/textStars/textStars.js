@@ -34,6 +34,7 @@ export default class TextStars {
         posY: -818,
         posZ: -300,
         scale: 10,
+        color: "#fff",
       },
       {
         text: "they keep running on my feet",
@@ -41,6 +42,7 @@ export default class TextStars {
         posY: -1500,
         posZ: -300,
         scale: 15,
+        color: "#fff",
       },
       {
         text: "it helped the days complete",
@@ -48,6 +50,7 @@ export default class TextStars {
         posY: -2300,
         posZ: -300,
         scale: 25,
+        color: "#fff",
       },
       {
         text: "don't get hurt",
@@ -55,13 +58,15 @@ export default class TextStars {
         posY: -3000,
         posZ: -150,
         scale: 40,
+        color: "#fff",
       },
       {
         text: "I'm lock in your dreams",
         posX: -6,
-        posY: -3200,
-        posZ: -150,
-        scale: 40,
+        posY: -5000,
+        posZ: -600,
+        scale: 180,
+        color: "#EE31C3",
       },
     ];
     this.loader.load("/fonts/Moniqa-Display_Italic.json", (font) => {
@@ -87,6 +92,7 @@ export default class TextStars {
         activeLines: { value: 0 },
         progress: { value: 0 },
         opacity: { value: 1 },
+        uColor: { value: new THREE.Color(options.color) },
       },
       vertexShader: vertex,
       fragmentShader: fragment,

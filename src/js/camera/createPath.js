@@ -38,12 +38,13 @@ export default class CreatePath {
     this.codeCurve = [
       new THREE.Vector3(0, 0, 10),
       new THREE.Vector3(0, -1166.9731913336884, 10),
-      new THREE.Vector3(25.615060574826202, -1950, 200),
-      new THREE.Vector3(-185.06376641874743, -3492.706109254184, 550),
-      new THREE.Vector3(-445.8421287713089, -3540.70741370326, 1425.962391316232),
-      new THREE.Vector3(-499.146567990431, -3811.2968851245064, 2561.983150360197),
-      new THREE.Vector3(-695.4608795847688, -3756.6329468722106, 4000),
-      new THREE.Vector3(-1411.5991435141848, -3842.8312122797024, 4268.2339635688463),
+      new THREE.Vector3(0, -1950, 200),
+      new THREE.Vector3(0, -5300, 1000.8460226248202),
+      new THREE.Vector3(183.82949204866054, -6030.296278552792, 2760.6148215013404),
+      new THREE.Vector3(3606.694469630239, -7526.275083051892, 4952.427437217433),
+      new THREE.Vector3(3000, -8636.157055144544, 7753.034758708986),
+      new THREE.Vector3(5000, -9876.515695994762, 13069.328249021653),
+      new THREE.Vector3(4500, -9896.795085304992, 13413.898582520838),
     ];
 
     this.params = {
@@ -156,9 +157,9 @@ export default class CreatePath {
     if (position) {
       this.object.position.copy(position);
     } else {
-      this.object.position.x = Math.random() * 1000 - 500;
-      this.object.position.y = Math.random() * 600;
-      this.object.position.z = Math.random() * 800 - 400;
+      this.object.position.x = Math.random() * 1000;
+      this.object.position.y = Math.random() * 1000 - 10000;
+      this.object.position.z = 10000 + Math.random() * 1000;
     }
 
     this.object.scale.set(0.5, 0.5, 0.5);

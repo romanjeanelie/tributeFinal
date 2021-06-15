@@ -1,9 +1,8 @@
-
 uniform float time;
 uniform float opacity; 
 uniform float wide; 
 uniform vec3 color1; 
-
+uniform float isPressed; 
 
 varying vec2 vUv;
 
@@ -109,12 +108,13 @@ void main()	{
     rect = fill(rect, 1.);
 
     float growth = 1. - sin(time * 3.) * 0.1;
+    float distanceToCenter = 1. - distance(vUv, vec2(0.5)) * growth * isPressed;
 
-     float distanceToCenter = 1. - distance(vUv, vec2(0.5));
-   // float strength = (0.005 / distanceToCenter - 0.001) * opacity;
+   float strobe = sin(time * 2000.);
+    float strobeLight = mix(0.98, 1., strobe);
 
 
-    float result = rect  *  distanceToCenter - 0.75;
+    float result = rect  *  (distanceToCenter - 0.55) * strobeLight * opacity;
 
 
     color = mix(vec3(0.), vec3(1.), result);
@@ -124,6 +124,6 @@ void main()	{
 
   
 
-    gl_FragColor = vec4(color, opacity);
+    gl_FragColor = vec4(color, result);
 
 }

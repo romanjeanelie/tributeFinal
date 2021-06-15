@@ -14,25 +14,19 @@ float stroke(float x, float s, float w){
  }
 
 void main()	{
-
-   // BARS
-  float speed =  time * 2.;
-  // float animShutter = (200. * activeLines) * speed ;
-  // float factorDivision = .04;
-  // float thickness = 0.5 ;
-  float animShutter = time * 0.;
-  float factorDivision = 50.5;
-  float thickness = 0.3 ;
-
-
-  float littleLines = stroke(fract((vUv.y + animShutter)*factorDivision), .7, thickness);
+  vec3 color = vec3(0.);
 
   float strobe = sin(time * 230.);
   float strobeLight = mix(0.9, 1., strobe);
 
-  float color =  strobeLight  * opacity;
+  float distanceToCenter = distance(vUv, vec2(0.9, 0.1) + sin(time * .5) * 1.5);
+  float strength = (0.2 / distanceToCenter - 0.1) * opacity;
 
-    gl_FragColor = vec4(vec3(uColor), color);
+  color = mix(vec3(0.), vec3(1.), strength * 5.);
+
+
+
+  gl_FragColor = vec4(color, 1.);
 
     
 }

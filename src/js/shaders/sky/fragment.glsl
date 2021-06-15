@@ -5,6 +5,7 @@ uniform vec3 color1;
 uniform vec3 color2;
 uniform vec3 color3;
 uniform vec3 color4;
+uniform float changeColor; 
 uniform float opacity; 
 
 varying vec2 vUv;
@@ -32,8 +33,10 @@ void main()	{
     vec3 stroke2 = mix(black, color2, step2);
     color = stroke1;
     color += stroke2;
+
+    vec3 finalColor = mix(vec3(0.), color, changeColor);
     
-    gl_FragColor = vec4(color, 1.);
+    gl_FragColor = vec4(finalColor, 1.);
   //  gl_FragColor = vec4(vec3(vUv, 1.), 1.);
 
 }

@@ -28,19 +28,25 @@ export default class cameraPath {
 
     this.progress = 0;
 
-    // this.positionCameraLarge();
+    this.isActive = false;
+
+    this.positionCameraLarge();
     this.init();
   }
 
   positionCameraLarge() {
-    this.camera.position.x = -1411.5991435141848;
-    this.camera.position.y = -3842.8312122797024;
-    // this.camera.position.z = 4268.2339635688463;
-    this.camera.position.z = 4180.2339635688463;
-    // this.camera.position.x = -11.5991435141848;
-    // this.camera.position.y = -4000.8312122797024;
-    // this.camera.position.z = 1800.2339635688463;
-    this.posCameraLarge = new THREE.Vector3(210, -3000, -2369.896873902935);
+    if (this.isActive) {
+      this.camera.position.x = -1411.5991435141848;
+      this.camera.position.y = -9500;
+      this.camera.position.z = 12500;
+
+      this.posCameraLarge = new THREE.Vector3(210, -9000, -2369.896873902935);
+
+      this.params.animationView = false;
+      document.body.classList.remove("scroll");
+    } else {
+      document.body.classList.add("scroll");
+    }
   }
 
   addTube(curve) {
@@ -84,7 +90,7 @@ export default class cameraPath {
       70,
       this.container.offsetWidth / this.container.offsetHeight,
       0.01,
-      15000
+      85000
     );
 
     var vector = new THREE.Vector3(); // create once and reuse it!
@@ -98,8 +104,9 @@ export default class cameraPath {
     // GUI
     this.folderCamera = this.gui.addFolder("Camera");
     this.folderCamera.add(this.params, "animationView").onChange(() => {
-      this.animateCamera();
-      document.body.classList.toggle("scroll");
+      this.isActive = !this.isActive;
+      this.positionCameraLarge();
+      console.log(this.isActive);
     });
     this.folderCamera.add(this.params, "cameraHelper").onChange(() => {
       this.toggleCameraHelper();
@@ -127,7 +134,9 @@ export default class cameraPath {
     this.camera.updateProjectionMatrix();
 
     this.cameraPath(this.progress);
-    // this.camera.lookAt(this.posCameraLarge);
+    if (this.isActive) {
+      this.camera.lookAt(this.posCameraLarge);
+    }
 
     this.renderer.render(this.scene, this.params.animationView === true ? this.splineCamera : this.camera);
   }

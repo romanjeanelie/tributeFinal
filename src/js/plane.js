@@ -21,8 +21,8 @@ export default class Plane {
       });
 
       gltf.scene.rotation.y = 1.6;
-      gltf.scene.scale.set(4, 4, 4);
-      gltf.scene.position.set(-500, -3200, 300);
+      gltf.scene.scale.set(7, 7, 7);
+      gltf.scene.position.set(2000, -8400, 5000);
       this.scene.add(gltf.scene);
     });
   }

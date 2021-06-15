@@ -1,3 +1,4 @@
+uniform vec3 uColor;
 uniform float time;
 uniform float uStrength;
 uniform float activeLines;
@@ -91,9 +92,9 @@ void main()	{
 
   vec3 color = vec3(1.); 
 
-float noise = cnoise(vec3(vUv *.3, time *.4)) + 0.6;
+  float noise = cnoise(vec3(vUv *.3, time *.4)) + 0.6;
 
-    gl_FragColor = vec4(vec3(color), noise);
+    gl_FragColor = vec4(vec3(uColor), noise);
 
     
 }

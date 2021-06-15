@@ -8,7 +8,7 @@ export default class Sketch {
   constructor(options) {
     this.gui = new dat.GUI();
     this.debugObject = {};
-    //this.gui.hide();
+    this.gui.hide();
     this.gui.hideable = true;
 
     // GUI
@@ -78,7 +78,8 @@ export default class Sketch {
   }
 
   setClearColor() {
-    this.debugObject.clearColor = "#140822";
+    this.debugObject.clearColor = "#000";
+    // this.debugObject.clearColor = "#ffffff";
     this.renderer.setClearColor(this.debugObject.clearColor);
     this.folderSketch
       .addColor(this.debugObject, "clearColor")
@@ -86,7 +87,7 @@ export default class Sketch {
   }
 
   addFog() {
-    this.debugObject.fogColor = "#140822";
+    this.debugObject.fogColor = "#000";
     this.folderSketch
       .addColor(this.debugObject, "fogColor")
       .onChange(() => (fog.color = new THREE.Color(this.debugObject.fogColor)));

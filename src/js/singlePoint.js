@@ -61,6 +61,7 @@ export default class SinglePoint {
         color1: { value: new THREE.Color(this.debugObject.colorBG) },
         opacity: { value: 0 },
         wide: { value: 0 },
+        isPressed: { value: 1 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertexBG,

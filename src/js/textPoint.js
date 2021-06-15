@@ -57,6 +57,8 @@ export default class TextPoint {
       if (this.index > texts.length - 1) {
         this.textGroup.position.y = -25;
         this.textGroup.position.z = -80;
+
+        this.textGroup.scale.set(0.7, 0.7, 0.7);
         this.scene.add(this.textGroup);
         return;
       }
@@ -100,9 +102,7 @@ export default class TextPoint {
 
       this.textGroup.add(textMesh);
       if (textMesh) {
-        setTimeout(() => {
-          resolve();
-        }, 100);
+        resolve();
       }
     });
   }
