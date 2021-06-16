@@ -28,7 +28,9 @@ export default class cameraPath {
 
     this.progress = 0;
 
+    // ACTIVE CAMERA /////////////////
     this.isActive = false;
+    // ACTIVE CAMERA /////////////////
 
     this.positionCameraLarge();
     this.init();
@@ -36,11 +38,11 @@ export default class cameraPath {
 
   positionCameraLarge() {
     if (this.isActive) {
-      this.camera.position.x = -1411.5991435141848;
+      this.camera.position.x = 4411.5991435141848;
       this.camera.position.y = -9500;
       this.camera.position.z = 12500;
 
-      this.posCameraLarge = new THREE.Vector3(210, -9000, -2369.896873902935);
+      this.posCameraLarge = new THREE.Vector3(4210, -9000, -2369.896873902935);
 
       this.params.animationView = false;
       document.body.classList.remove("scroll");

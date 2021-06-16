@@ -23,7 +23,7 @@ export default class Sketch {
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
 
-    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 40000);
+    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 100000);
     this.camera.position.z = 10;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -37,6 +37,8 @@ export default class Sketch {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.update();
     this.controls.enableDamping = true;
+
+    this.finalScene = new THREE.Group();
 
     this.init();
   }
@@ -54,6 +56,7 @@ export default class Sketch {
     //this.addObject();
     this.animations = new Animations({
       camera: this.camera,
+      finalScene: this.finalScene,
       scene: this.scene,
       gui: this.gui,
       container: this.container,
@@ -61,6 +64,8 @@ export default class Sketch {
       controls: this.controls,
     });
     this.animations.anim();
+
+    this.scene.add(this.finalScene);
 
     this.render();
   }
@@ -92,7 +97,7 @@ export default class Sketch {
       .addColor(this.debugObject, "fogColor")
       .onChange(() => (fog.color = new THREE.Color(this.debugObject.fogColor)));
     const fog = new THREE.Fog(this.debugObject.fogColor, 1, 2000);
-    this.scene.fog = fog;
+    //  this.scene.fog = fog;
   }
 
   render() {

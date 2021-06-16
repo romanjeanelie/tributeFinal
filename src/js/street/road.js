@@ -11,6 +11,8 @@ import CityLights from "./cityLights";
 import TextBuilding from "./textBuilding";
 import Teddy from "./teddy";
 import Wheel from "./wheel";
+import Landscape from "./landscape";
+import Clouds from "./clouds";
 
 export default class Road {
   constructor(options) {
@@ -47,16 +49,20 @@ export default class Road {
     // this.teddy = new Teddy({ scene: this.city, gui: this.gui });
     // this.teddy.init();
 
+    this.landscape = new Landscape({ scene: this.city, gui: this.gui });
+    this.landscape.init();
+
+    this.clouds = new Clouds({ scene: this.city, gui: this.gui });
+    this.clouds.init();
+
     this.wheel = new Wheel({ scene: this.city, gui: this.gui });
     this.wheel.init();
 
     this.addFloor();
 
-    this.addComputer();
-
     this.city.position.x = 5000;
     this.city.position.y = -10000;
-    this.city.position.z = 10000;
+    this.city.position.z = 6000;
     this.city.scale.set(25, 25, 25);
 
     this.scene.add(this.city);
@@ -162,28 +168,6 @@ export default class Road {
     this.floor.scale.set(500, 1000, 500);
 
     this.city.add(this.floor);
-  }
-
-  addComputer() {
-    const video = document.getElementById("video");
-    const videoTexture = new THREE.VideoTexture(video);
-    this.computerMaterial = new THREE.MeshBasicMaterial({
-      //color: 0x0000ff,
-      map: videoTexture,
-    });
-    video.play();
-    this.computerGeometry = new THREE.PlaneGeometry(1, 1);
-    //   this.computerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
-    this.computer = new THREE.Mesh(this.computerGeometry, this.computerMaterial);
-
-    //this.computer.rotation.x = Math.PI * 0.5;
-    this.computer.position.x = -57.3;
-    this.computer.position.y = 6;
-    this.computer.position.z = 107.5;
-    this.computer.rotation.y = -0.2;
-    this.computer.scale.set(2, 1.5, 1);
-
-    this.city.add(this.computer);
   }
 
   anim(progress, time) {

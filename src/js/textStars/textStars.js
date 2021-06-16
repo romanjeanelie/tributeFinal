@@ -54,9 +54,9 @@ export default class TextStars {
       },
       {
         text: "don't get hurt",
-        posX: -1500,
-        posY: -3000,
-        posZ: -150,
+        posX: 400,
+        posY: -6600,
+        posZ: 3200,
         scale: 40,
         color: "#fff",
       },
@@ -67,6 +67,14 @@ export default class TextStars {
         posZ: -600,
         scale: 180,
         color: "#EE31C3",
+      },
+      {
+        text: "There's a reason we're together",
+        posX: 18000,
+        posY: 13000,
+        posZ: 10600,
+        scale: 2600,
+        color: "#E90405",
       },
     ];
     this.loader.load("/fonts/Moniqa-Display_Italic.json", (font) => {

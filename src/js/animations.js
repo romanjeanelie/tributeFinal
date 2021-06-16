@@ -12,6 +12,8 @@ import Sky from "./sky";
 import Plane from "./plane";
 import Moon from "./moon/moon";
 import Road from "./street/road";
+import Planet from "./planet";
+
 import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
@@ -24,6 +26,7 @@ export default class Animations {
     this.timeText = start;
 
     this.scene = options.scene;
+    this.finalScene = options.finalScene;
     this.gui = options.gui;
     this.camera = options.camera;
     this.container = options.container;
@@ -42,8 +45,11 @@ export default class Animations {
     this.delta = 0;
     this.currentScroll = 0;
 
+    // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 2;
+    this.positionTimeline = 0.8;
+    this.start = 0;
+    // DEBUG MODE ////////////////////////////
 
     this.init();
   }
@@ -67,7 +73,7 @@ export default class Animations {
 
   eventsAnim() {
     // STEP ONE
-    let indexOne = 0;
+    let indexOne = this.start;
     window.addEventListener("scroll", () => {
       if (this.textIntro.animComplete && indexOne < this.textIntro.materialsText.length + 1) {
         this.stepOne(indexOne);
@@ -109,19 +115,20 @@ export default class Animations {
   }
 
   addObject() {
-    this.textIntro = new TextIntro({ scene: this.scene, scroll: this.scrollValue });
-    this.textGod = new TextGod({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
-    this.textPoint = new TextPoint({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
-    this.textStars = new TextStars({ scene: this.scene, scroll: this.scrollValue, gui: this.gui });
+    this.textIntro = new TextIntro({ scene: this.finalScene, scroll: this.scrollValue });
+    this.textGod = new TextGod({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
+    this.textPoint = new TextPoint({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
+    this.textStars = new TextStars({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
 
-    this.circle = new Circle({ scene: this.scene, gui: this.gui });
-    this.singlePoint = new SinglePoint({ scene: this.scene, gui: this.gui });
-    this.points = new Points({ scene: this.scene, gui: this.gui });
-    this.clouds = new Clouds({ scene: this.scene, gui: this.gui });
-    this.sky = new Sky({ scene: this.scene, gui: this.gui });
-    this.plane = new Plane({ scene: this.scene, gui: this.gui });
-    this.moon = new Moon({ scene: this.scene, gui: this.gui });
-    this.road = new Road({ scene: this.scene, gui: this.gui });
+    this.circle = new Circle({ scene: this.finalScene, gui: this.gui });
+    this.singlePoint = new SinglePoint({ scene: this.finalScene, gui: this.gui });
+    this.points = new Points({ scene: this.finalScene, gui: this.gui });
+    this.clouds = new Clouds({ scene: this.finalScene, gui: this.gui });
+    this.sky = new Sky({ scene: this.finalScene, gui: this.gui });
+    this.plane = new Plane({ scene: this.finalScene, gui: this.gui });
+    this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
+    this.road = new Road({ scene: this.finalScene, gui: this.gui });
+    this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
 
     this.textIntro.init();
     this.textGod.init();
@@ -132,9 +139,10 @@ export default class Animations {
     this.singlePoint.init();
     this.points.init();
     this.sky.init();
-    this.plane.init();
     this.moon.init();
     this.road.init();
+    this.plane.init();
+    this.planet.init();
   }
 
   manageCamera() {
@@ -206,7 +214,7 @@ export default class Animations {
     this.tl2.fromTo(
       this.singlePoint.materialBG.uniforms.opacity,
       {
-        value: 0,
+        value: 1,
       },
       {
         value: 1,
@@ -318,21 +326,46 @@ export default class Animations {
       },
       "<"
     );
+    tl.to(
+      this.points.pointsMaterial2.uniforms.opacity,
+      {
+        value: 1,
+        duration: 10,
+      },
+      "<"
+    );
+
+    const steps = {
+      step1: {
+        duration: 8,
+        progress: 1100,
+      },
+      step2: {
+        duration: 8,
+        progress: 5500,
+      },
+      step3: {
+        duration: 8,
+        progress: 19500,
+      },
+    };
+
+    // PROGRESSION CAM 1 UNtil Moon
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 4300,
-        duration: 10,
+        progress: steps.step1.progress,
+        duration: steps.step1.duration,
         ease: "linear",
         onComplete: () => {
-          gsap.to(this.moon.moonMaterial.uniforms.changeColor, {
-            value: 3.5,
-            duration: 8,
+          gsap.to(this.moon.moonMaterial.uniforms.wide, {
+            duration: 5,
+            value: 5.5,
             ease: "linear",
           });
           gsap.to(this.sky.material.uniforms.changeColor, {
-            value: 0.5,
-            duration: 8,
+            duration: 5,
+            value: 1,
             ease: "linear",
           });
         },
@@ -341,26 +374,27 @@ export default class Animations {
       "<"
     );
 
+    // PROGRESSION CAM 2 Until buildings
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 19950,
-        delay: 10,
-        duration: 10,
+        progress: steps.step2.progress,
+        delay: steps.step1.duration,
+        duration: steps.step2.duration,
         ease: "linear",
+        onComplete: () => {},
       },
 
       "<"
     );
-    //ROTATION Camera
 
     this.tl4.to(
       camera.rotation,
       {
-        z: Math.PI * 2,
-        duration: 12,
-        ease: "power2.inOut",
-        // ease: "linear",
+        y: 0.3,
+        // delay: steps.step1.duration,
+        duration: 10,
+        ease: "linear",
       },
 
       "<"
@@ -377,13 +411,39 @@ export default class Animations {
       "<"
     );
 
+    // PROGRESSION CAM 3 Until Planet
     this.tl4.to(
       this.createPath.cameraPath,
       {
-        progress: 19990,
-        delay: 10,
-        duration: 10,
-        //  ease: "linear",
+        progress: steps.step3.progress,
+        delay: steps.step2.duration,
+        duration: steps.step3.duration,
+        ease: "linear",
+        onStart: () => {
+          gsap.to(this.planet.planetMaterial.uniforms.changeColor, {
+            value: 1,
+            duration: 8,
+            ease: "linear",
+          });
+        },
+        onComplete: () => {
+          gsap.to(this.moon.moonMaterial.uniforms.wide, {
+            value: 1,
+            duration: 8,
+            ease: "linear",
+          });
+          gsap.to(this.planet.planetMaterial.uniforms.wide, {
+            value: 1,
+            duration: 8,
+            ease: "linear",
+          });
+          gsap.to(this.finalScene.rotation, {
+            y: Math.PI,
+            delay: 8,
+            duration: 40,
+            ease: "linear",
+          });
+        },
       },
 
       "<"
@@ -436,9 +496,9 @@ export default class Animations {
       document.body.classList.remove("scroll");
       this.gui.show();
       this.points.pointsMaterial.uniforms.opacity.value = 1;
+      this.points.pointsMaterial2.uniforms.opacity.value = 1;
     }
     ///////////////////////////////////////// End Test without scrollBar
-
     // Animation objects
     this.animObjects(this.progress, this.time);
     this.progress2 += this.delta;

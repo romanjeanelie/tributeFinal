@@ -19,10 +19,8 @@ void main()	{
   float strobe = sin(time * 230.);
   float strobeLight = mix(0.9, 1., strobe);
 
-  float distanceToCenter = distance(vUv, vec2(0.9, 0.1) + sin(time * .5) * 1.5);
-  float strength = (0.2 / distanceToCenter - 0.1) * opacity;
 
-  color = mix(vec3(0.), vec3(1.), strength * 5.);
+  color = mix(vec3(0.), vec3(1.), 1.);
 
 
 

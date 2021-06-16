@@ -19,15 +19,26 @@ export default class Points {
 
     this.addPoints({
       minX: 0,
+      maxX: 1300,
+      minY: -700,
+      maxY: 9000,
+      minZ: -500,
+      maxZ: 550,
+      material: this.pointsMaterial,
+      qty: 200,
+      size: 9000,
+    });
+    this.addPoints({
+      minX: 0,
       maxX: 35000,
       minY: -700,
       maxY: 10000,
       minZ: -500,
       maxZ: 5500,
-      material: this.pointsMaterial,
-      qty: 30000,
+      material: this.pointsMaterial2,
+      qty: 1000,
+      size: 20000,
     });
-    this.addPoints(10, 80, this.pointsMaterial, 150);
   }
 
   createPointsMaterials() {
@@ -42,6 +53,18 @@ export default class Points {
       fragmentShader: fragment,
       transparent: true,
       depthWrite: false,
+    });
+    this.pointsMaterial2 = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        time: { value: 0 },
+        color1: { value: new THREE.Color("#ff0559") },
+        opacity: { value: 0 },
+      },
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      //depthWrite: false,
     });
   }
 
@@ -66,7 +89,7 @@ export default class Points {
       positions[i3 + 1] = minPosY + (Math.random() - 0.5) * maxPosY;
       positions[i3 + 2] = minPosZ + Math.random() * maxPosZ;
 
-      size[i] = 500 + Math.random() * 9000;
+      size[i] = 500 + Math.random() * options.size;
     }
     pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     pointsGeometry.setAttribute("size", new THREE.BufferAttribute(size, 1));
@@ -79,5 +102,6 @@ export default class Points {
 
   anim(progress, time) {
     this.pointsMaterial.uniforms.time.value = time;
+    this.pointsMaterial2.uniforms.time.value = time;
   }
 }

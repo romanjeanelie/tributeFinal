@@ -114,10 +114,10 @@ void main()	{
     float strobeLight = mix(0.98, 1., strobe);
 
 
-    float result = rect  *  (distanceToCenter - 0.55) * strobeLight * opacity;
+    float result = rect  *  (distanceToCenter - 0.55) * strobeLight * 0.8;
 
 
-    color = mix(vec3(0.), vec3(1.), result);
+    color = mix(vec3(0.), vec3(1.), result * opacity);
 
 
 

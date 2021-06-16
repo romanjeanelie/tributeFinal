@@ -59,7 +59,7 @@ export default class SinglePoint {
       uniforms: {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.colorBG) },
-        opacity: { value: 0 },
+        opacity: { value: 1 },
         wide: { value: 0 },
         isPressed: { value: 1 },
       },
