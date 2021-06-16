@@ -35,9 +35,40 @@ body {
 
 .home__start {
   font-family: Soleil;
+  text-transform: uppercase;
   position: absolute;
   bottom: 100px;
-  text-transform: uppercase;
+}
+
+.home__help {
+  position: fixed;
+  bottom: 100px;
+  background: black;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll__help {
+  width: 4px;
+  height: 100%;
+  background: rgb(66, 66, 66);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll__bar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  transform-origin: top;
+  transform: scaleY(0.2);
 }
 
 @media (max-width: 750px) {
