@@ -19,7 +19,6 @@ export default class Clouds {
       gltf.scene.traverse((child) => {
         //child.material = this.material;
       });
-      console.log("clouds");
       gltf.scene.rotation.y = Math.PI * 0.5;
       gltf.scene.scale.set(60, 80, 60);
       gltf.scene.position.x = -500;

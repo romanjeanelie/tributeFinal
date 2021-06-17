@@ -7,7 +7,6 @@ import TextStars from "./textStars/textStars";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
-import Clouds from "./clouds";
 import Sky from "./sky";
 import Plane from "./plane";
 import Moon from "./moon/moon";
@@ -17,7 +16,8 @@ import Planet from "./planet";
 import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
-import debounce from "./utils/debounce";
+import Help from "./domElements/help";
+import Message from "./domElements/message";
 
 export default class Animations {
   constructor(options) {
@@ -47,9 +47,12 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 0.8;
+    this.positionTimeline = 5;
     this.start = 0;
     // DEBUG MODE ////////////////////////////
+
+    this.help = new Help();
+    this.scrollActive = false;
 
     this.init();
   }
@@ -60,9 +63,8 @@ export default class Animations {
     this.createTimelines();
     this.getScroll();
     this.objectsToTest = [this.singlePoint.mesh];
+    this.anim();
     this.render();
-
-    this.eventsAnim();
   }
 
   rayCaster() {
@@ -74,15 +76,42 @@ export default class Animations {
   eventsAnim() {
     // STEP ONE
     let indexOne = this.start;
+
     window.addEventListener("scroll", () => {
+      this.scrollActive = true;
+      this.help.inactive();
+
       if (this.textIntro.animComplete && indexOne < this.textIntro.materialsText.length + 1) {
         this.stepOne(indexOne);
         indexOne++;
         if (indexOne === this.textIntro.materialsText.length + 1) {
           this.tl2.play();
         }
+
+        /// HELP SECTION
+        setTimeout(() => {
+          this.scrollActive = false;
+        }, this.help.waitDuration - 500);
+        setTimeout(() => {
+          if (!this.scrollActive) {
+            console.log("help scroll");
+            this.scrollActive = true;
+            this.help.active();
+            this.help.scroll();
+          }
+        }, this.help.waitDuration);
       }
     });
+
+    /// HELP SECTION
+    setTimeout(() => {
+      if (!this.scrollActive) {
+        console.log("help scroll before scrolling");
+        this.scrollActive = true;
+        this.help.active();
+        this.help.scroll();
+      }
+    }, 2000);
 
     // STEP THREE
     const tl = gsap.timeline();
@@ -123,12 +152,13 @@ export default class Animations {
     this.circle = new Circle({ scene: this.finalScene, gui: this.gui });
     this.singlePoint = new SinglePoint({ scene: this.finalScene, gui: this.gui });
     this.points = new Points({ scene: this.finalScene, gui: this.gui });
-    this.clouds = new Clouds({ scene: this.finalScene, gui: this.gui });
     this.sky = new Sky({ scene: this.finalScene, gui: this.gui });
     this.plane = new Plane({ scene: this.finalScene, gui: this.gui });
     this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
     this.road = new Road({ scene: this.finalScene, gui: this.gui });
     this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
+
+    this.message = new Message();
 
     this.textIntro.init();
     this.textGod.init();
@@ -427,6 +457,11 @@ export default class Animations {
           });
         },
         onComplete: () => {
+          gsap.to(camera.rotation, {
+            x: 1.5,
+            duration: 70,
+            ease: "linear",
+          });
           gsap.to(this.moon.moonMaterial.uniforms.wide, {
             value: 1,
             duration: 8,
@@ -437,12 +472,13 @@ export default class Animations {
             duration: 8,
             ease: "linear",
           });
-          gsap.to(this.finalScene.rotation, {
-            y: Math.PI,
-            delay: 8,
-            duration: 40,
-            ease: "linear",
-          });
+          this.message.anim();
+          // gsap.to(this.finalScene.rotation, {
+          //   y: Math.PI,
+          //   delay: 8,
+          //   duration: 40,
+          //   ease: "linear",
+          // });
         },
       },
 
@@ -494,7 +530,8 @@ export default class Animations {
       // this.progress2 = this.time * 0.2;
       this.progress2 = this.positionTimeline;
       document.body.classList.remove("scroll");
-      this.gui.show();
+      document.querySelector(".home").style.opacity = 0;
+      //this.gui.show();
       this.points.pointsMaterial.uniforms.opacity.value = 1;
       this.points.pointsMaterial2.uniforms.opacity.value = 1;
     }

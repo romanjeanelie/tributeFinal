@@ -24,7 +24,6 @@ export default class Plane {
       gltf.scene.scale.set(10, 10, 10);
       gltf.scene.position.set(0, -6600, 3200);
       this.scene.add(gltf.scene);
-      console.log("plane");
     });
   }
 }
