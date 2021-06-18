@@ -42,7 +42,6 @@ export default class Sketch {
     this.finalScene = new THREE.Group();
 
     this.init();
-    this.start();
   }
 
   init() {
@@ -99,27 +98,6 @@ export default class Sketch {
       .onChange(() => (fog.color = new THREE.Color(this.debugObject.fogColor)));
     const fog = new THREE.Fog(this.debugObject.fogColor, 1, 2000);
     //  this.scene.fog = fog;
-  }
-
-  start() {
-    const startBtn = document.getElementById("start");
-    const tl = gsap.timeline();
-
-    startBtn.addEventListener("click", () => {
-      tl.to(".home__title", {
-        autoAlpha: 0,
-        duration: 1,
-      });
-      tl.to(
-        ".home",
-        {
-          autoAlpha: 0,
-          duration: 1,
-          onComplete: () => this.animations.eventsAnim(),
-        },
-        "<"
-      );
-    });
   }
 
   render() {

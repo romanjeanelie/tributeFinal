@@ -16,6 +16,7 @@ import Planet from "./planet";
 import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
+import debounce from "./utils/debounce";
 import Help from "./domElements/help";
 import Message from "./domElements/message";
 
@@ -65,6 +66,36 @@ export default class Animations {
     this.objectsToTest = [this.singlePoint.mesh];
     this.anim();
     this.render();
+
+    this.helpListener();
+    this.startListener();
+    this.startProject();
+  }
+
+  startListener() {
+    const startBtn = document.getElementById("start");
+
+    startBtn.addEventListener("click", () => {
+      this.startProject();
+    });
+  }
+
+  startProject() {
+    const tl = gsap.timeline();
+
+    tl.to(".home__title", {
+      autoAlpha: 0,
+      duration: 1,
+    });
+    tl.to(
+      ".home",
+      {
+        autoAlpha: 0,
+        duration: 1,
+        onComplete: () => this.eventsAnim(),
+      },
+      "<"
+    );
   }
 
   rayCaster() {
@@ -73,12 +104,22 @@ export default class Animations {
     this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
   }
 
+  helpListener() {
+    /// Step 1
+    window.addEventListener(
+      "scroll",
+      debounce(() => {
+        this.help.active();
+        this.help.scroll();
+      }, 5000)
+    );
+  }
+
   eventsAnim() {
     // STEP ONE
     let indexOne = this.start;
 
     window.addEventListener("scroll", () => {
-      this.scrollActive = true;
       this.help.inactive();
 
       if (this.textIntro.animComplete && indexOne < this.textIntro.materialsText.length + 1) {
@@ -87,31 +128,8 @@ export default class Animations {
         if (indexOne === this.textIntro.materialsText.length + 1) {
           this.tl2.play();
         }
-
-        /// HELP SECTION
-        setTimeout(() => {
-          this.scrollActive = false;
-        }, this.help.waitDuration - 500);
-        setTimeout(() => {
-          if (!this.scrollActive) {
-            console.log("help scroll");
-            this.scrollActive = true;
-            this.help.active();
-            this.help.scroll();
-          }
-        }, this.help.waitDuration);
       }
     });
-
-    /// HELP SECTION
-    setTimeout(() => {
-      if (!this.scrollActive) {
-        console.log("help scroll before scrolling");
-        this.scrollActive = true;
-        this.help.active();
-        this.help.scroll();
-      }
-    }, 2000);
 
     // STEP THREE
     const tl = gsap.timeline();
