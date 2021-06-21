@@ -17,6 +17,7 @@ export default class CreatePath {
     this.controls = options.controls;
     this.gui = options.gui;
     this.folderPath = this.gui.addFolder("Path");
+    this.sizes = options.sizes;
 
     this.splineHelperObjects = [];
     this.splinePointsLength = 4;
@@ -104,6 +105,7 @@ export default class CreatePath {
       gui: this.gui,
       renderer: this.renderer,
       container: this.container,
+      sizes: this.sizes,
     });
     this.cameraPath.addTube(this.codeCurve);
   }

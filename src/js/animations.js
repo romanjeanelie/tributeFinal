@@ -33,6 +33,7 @@ export default class Animations {
     this.container = options.container;
     this.renderer = options.renderer;
     this.controls = options.controls;
+    this.sizes = options.sizes;
 
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
@@ -48,8 +49,8 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 5;
-    this.start = 0;
+    this.positionTimeline = 1.8;
+    this.start = 5;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
@@ -70,6 +71,8 @@ export default class Animations {
     this.helpListener();
     this.startListener();
     this.startProject();
+    if (this.backstage) {
+    }
   }
 
   startListener() {
@@ -201,6 +204,7 @@ export default class Animations {
       controls: this.controls,
       renderer: this.renderer,
       gui: this.gui,
+      sizes: this.sizes,
     });
 
     this.createPath.cameraPath.cameraSpeed = 0;
@@ -282,6 +286,7 @@ export default class Animations {
     this.tl3.to(this.singlePoint.material.uniforms.isPressed, {
       value: 2.5,
     });
+
     // SMALLER BG Point
     this.tl3.to(
       this.singlePoint.materialBG.uniforms.isPressed,
@@ -312,16 +317,36 @@ export default class Animations {
   }
 
   stepFour() {
-    const camera = this.createPath.cameraPath.splineCamera;
     const tl = gsap.timeline();
     this.progress2 = 0;
-
-    // OPEN Wide BG
-    tl.to(this.singlePoint.materialBG.uniforms.wide, {
-      duration: 12,
-      value: 0.3,
+    // ZOOM Lines
+    tl.to(this.createPath.cameraPath.screenMaterial.uniforms.thickFactor, {
+      duration: 3,
+      value: 0,
       ease: "Power3.in",
     });
+
+    // OPEN Wide BG
+    tl.to(
+      this.createPath.cameraPath.screenMaterial.uniforms.wide,
+      {
+        duration: 12,
+        value: 1,
+        ease: "Power3.in",
+      },
+      "<"
+    );
+
+    // FADE OUT Screen
+    tl.to(
+      this.createPath.cameraPath.screenMaterial.uniforms.opacity,
+      {
+        duration: 12,
+        value: 0,
+        ease: "Power3.in",
+      },
+      "<"
+    );
 
     // FADE OUT Opacity Light BG
     tl.to(
@@ -351,6 +376,16 @@ export default class Animations {
         value: 1,
         delay: 1,
         duration: 12,
+      },
+      "<"
+    );
+
+    // SQUEEZE Text God
+    tl.to(
+      this.textGod.squeeze,
+      {
+        value: 0,
+        duration: 4,
       },
       "<"
     );
@@ -385,7 +420,7 @@ export default class Animations {
 
     const steps = {
       step1: {
-        duration: 8,
+        duration: 4,
         progress: 1100,
       },
       step2: {
@@ -407,18 +442,28 @@ export default class Animations {
         ease: "linear",
         onComplete: () => {
           gsap.to(this.moon.moonMaterial.uniforms.wide, {
-            duration: 5,
-            value: 5.5,
+            duration: 15,
+            value: 3,
             ease: "linear",
           });
-          gsap.to(this.sky.material.uniforms.changeColor, {
+          gsap.to(this.moon.moonMaterial.uniforms.opacity, {
             duration: 5,
             value: 1,
             ease: "linear",
           });
         },
       },
+      "<"
+    );
 
+    // SKY Getting lighter
+    this.tl4.to(
+      this.sky.material.uniforms.changeColor,
+      {
+        duration: 5,
+        value: 1,
+        ease: "linear",
+      },
       "<"
     );
 
@@ -431,29 +476,6 @@ export default class Animations {
         duration: steps.step2.duration,
         ease: "linear",
         onComplete: () => {},
-      },
-
-      "<"
-    );
-
-    this.tl4.to(
-      camera.rotation,
-      {
-        y: 0.3,
-        // delay: steps.step1.duration,
-        duration: 10,
-        ease: "linear",
-      },
-
-      "<"
-    );
-
-    this.tl4.to(
-      camera.rotation,
-      {
-        y: -0.2,
-        duration: 10,
-        ease: "linear",
       },
 
       "<"
@@ -474,39 +496,63 @@ export default class Animations {
             ease: "linear",
           });
         },
-        onComplete: () => {
-          gsap.to(camera.rotation, {
-            x: 1.5,
-            duration: 70,
-            ease: "linear",
-          });
-          gsap.to(this.moon.moonMaterial.uniforms.wide, {
-            value: 1,
-            duration: 8,
-            ease: "linear",
-          });
-          gsap.to(this.planet.planetMaterial.uniforms.wide, {
-            value: 1,
-            duration: 8,
-            ease: "linear",
-          });
-          this.message.anim();
-          // gsap.to(this.finalScene.rotation, {
-          //   y: Math.PI,
-          //   delay: 8,
-          //   duration: 40,
-          //   ease: "linear",
-          // });
-        },
+        onComplete: () => this.finalStep(),
       },
 
       "<"
     );
   }
 
+  finalStep() {
+    const camera = this.createPath.cameraPath.cameraAndScreen;
+    // FADE IN Screen
+    gsap.to(
+      this.createPath.cameraPath.screenMaterial.uniforms.opacity,
+      {
+        duration: 12,
+        value: 1,
+        ease: "Power3.in",
+      },
+      "<"
+    );
+
+    // CLOSE Wide BG
+    gsap.to(this.createPath.cameraPath.screenMaterial.uniforms.wide, {
+      duration: 20,
+      value: 0,
+      ease: "Power3.in",
+    });
+
+    // DEZOOM Lines
+    gsap.to(this.createPath.cameraPath.screenMaterial.uniforms.thickFactor, {
+      duration: 3,
+      value: 1,
+      ease: "Power3.in",
+    });
+
+    gsap.to(camera.rotation, {
+      x: 1.5,
+      duration: 70,
+      ease: "linear",
+    });
+    gsap.to(this.moon.moonMaterial.uniforms.wide, {
+      value: 1,
+      duration: 8,
+      ease: "linear",
+    });
+    gsap.to(this.planet.planetMaterial.uniforms.wide, {
+      value: 1,
+      duration: 8,
+      ease: "linear",
+    });
+    setTimeout(() => {
+      this.message.anim();
+    }, 6000);
+  }
+
   animCamera(progress, time) {
     this.createPath.anim();
-    this.createPath.cameraPath.anim(progress);
+    this.createPath.cameraPath.anim(progress, time);
   }
 
   animObjects(progress, time) {

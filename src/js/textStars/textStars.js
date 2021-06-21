@@ -54,7 +54,7 @@ export default class TextStars {
       },
       {
         text: "don't get hurt",
-        posX: 400,
+        posX: 1400,
         posY: -6600,
         posZ: 3200,
         scale: 40,

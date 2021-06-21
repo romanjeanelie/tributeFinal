@@ -1,11 +1,15 @@
 import * as THREE from "three";
 
+import vertex from "../shaders/screen/vertex.glsl";
+import fragment from "../shaders/screen/fragment.glsl";
+
 export default class cameraPath {
   constructor(options) {
     this.camera = options.camera;
     this.scene = options.scene;
     this.renderer = options.renderer;
     this.container = options.container;
+    this.sizes = options.sizes;
     this.gui = options.gui;
     this.splineCamera = null;
     this.cameraHelper = null;
@@ -86,18 +90,54 @@ export default class cameraPath {
     this.cameraHelper.visible = !this.params.cameraHelper;
   }
 
+  addScreen(ratio) {
+    this.screenGeometry = new THREE.PlaneBufferGeometry(0.1, 2);
+    this.screenMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        thickFactor: { value: 1 },
+        progress: { value: 0 },
+        opacity: { value: 1 },
+        wide: { value: 0 },
+        uColor: { value: new THREE.Color("#ffffff") },
+      },
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+    });
+
+    this.screen = new THREE.Mesh(this.screenGeometry, this.screenMaterial);
+    this.screen.position.z = -1;
+
+    this.cameraAndScreen.add(this.screen);
+
+    this.screenGeometry.center();
+  }
+
+  resize(width, height) {
+    this.sizes.width = width;
+    this.sizes.height = height;
+    const ratio = this.sizes.width / this.sizes.height;
+    this.splineCamera.aspect = ratio;
+    this.splineCamera.updateProjectionMatrix();
+
+    const widthScreen = Math.tan(70 / 2) / Math.abs(this.screen.position.z);
+    this.screen.scale.x = ratio * 14;
+  }
+
   init() {
     // Camera
-    this.splineCamera = new THREE.PerspectiveCamera(
-      70,
-      this.container.offsetWidth / this.container.offsetHeight,
-      0.01,
-      85000
-    );
+    this.cameraAndScreen = new THREE.Group();
+
+    this.addScreen();
+
+    this.splineCamera = new THREE.PerspectiveCamera(70, this.sizes.width / this.sizes.height, 0.01, 85000);
 
     var vector = new THREE.Vector3(); // create once and reuse it!
 
-    this.scene.add(this.splineCamera);
+    this.cameraAndScreen.add(this.splineCamera);
+
+    this.scene.add(this.cameraAndScreen);
 
     this.cameraHelper = new THREE.CameraHelper(this.splineCamera);
     this.scene.add(this.cameraHelper);
@@ -126,12 +166,12 @@ export default class cameraPath {
     this.pos = this.mesh.geometry.parameters.path.getPointAt(this.t);
     this.pos2 = this.mesh.geometry.parameters.path.getPointAt(this.t2);
 
-    this.splineCamera.position.copy(this.pos2);
+    this.cameraAndScreen.position.copy(this.pos2);
 
     this.cameraHelper.update();
   }
 
-  anim(progress) {
+  anim(progress, time) {
     // animate camera along spline
     this.camera.updateProjectionMatrix();
 
@@ -141,6 +181,10 @@ export default class cameraPath {
     }
 
     this.renderer.render(this.scene, this.params.animationView === true ? this.splineCamera : this.camera);
+
+    // Update screen
+    this.screenMaterial.uniforms.time.value = time;
+    this.screenMaterial.uniforms.progress.value = progress;
   }
 }
 

@@ -49,7 +49,7 @@ export default class Moon {
         color2: { value: new THREE.Color(this.debugObject.moonColor2) },
         color3: { value: new THREE.Color(this.debugObject.moonColor3) },
         wide: { value: 25 },
-        changeColor: { value: 5 },
+        opacity: { value: 0 },
       },
       transparent: true,
       depthWrite: false,

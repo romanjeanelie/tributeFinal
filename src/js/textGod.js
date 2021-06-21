@@ -25,6 +25,8 @@ export default class TextGod {
     this.textGroup = new THREE.Group();
 
     this.opacity = { value: 0 };
+    this.squeeze = { value: 1 };
+    this.isLoaded = false;
 
     this.index = 0;
   }
@@ -42,6 +44,7 @@ export default class TextGod {
         this.textGroup.children[0].position.y = 20;
         this.textGroup.children[1].position.y = -20;
         this.scene.add(this.textGroup);
+        this.isLoaded = true;
         return;
       }
       const text = texts[this.index];
@@ -68,6 +71,7 @@ export default class TextGod {
           activeLines: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
+          squeeze: { value: 1 },
           uColor: { value: new THREE.Color("#ffffff") },
         },
         vertexShader: vertex,
@@ -94,6 +98,7 @@ export default class TextGod {
       material.uniforms.progress.value = progress;
 
       material.uniforms.opacity.value = this.opacity.value;
+      material.uniforms.squeeze.value = this.squeeze.value;
       material.uniforms.activeLines.value = progress;
     });
   }

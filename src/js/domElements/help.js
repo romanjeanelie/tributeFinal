@@ -7,7 +7,7 @@ export default class Help {
 
   active() {
     gsap.to(".help", {
-      autoAlpha: 1,
+      autoAlpha: 0, //////////////////// DISABLE HELP
     });
   }
   inactive() {

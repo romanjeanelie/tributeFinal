@@ -48,7 +48,6 @@ export default class Sketch {
     window.onbeforeunload = function () {
       window.scrollTo(0, 0);
     };
-    this.resize();
     this.setupResize();
     this.setClearColor();
 
@@ -63,11 +62,16 @@ export default class Sketch {
       container: this.container,
       renderer: this.renderer,
       controls: this.controls,
+      sizes: {
+        width: this.width,
+        height: this.height,
+      },
     });
 
     this.scene.add(this.finalScene);
 
     this.render();
+    this.resize();
   }
 
   setupResize() {
@@ -80,6 +84,8 @@ export default class Sketch {
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
+
+    this.animations.createPath.cameraPath.resize(this.width, this.height);
   }
 
   setClearColor() {

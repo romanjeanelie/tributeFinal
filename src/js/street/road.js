@@ -62,7 +62,7 @@ export default class Road {
 
     this.city.position.x = 5000;
     this.city.position.y = -10000;
-    this.city.position.z = 6000;
+    this.city.position.z = 4000;
     this.city.scale.set(25, 25, 25);
 
     this.scene.add(this.city);
