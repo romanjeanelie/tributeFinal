@@ -17,9 +17,9 @@ export default class Planet {
   init() {
     this.addPlanet();
 
-    this.planet.position.x = 20350;
+    this.planet.position.x = 35350;
     this.planet.position.y = 13000;
-    this.planet.position.z = -800;
+    this.planet.position.z = -40500;
   }
 
   addPlanet() {
@@ -42,6 +42,7 @@ export default class Planet {
         color2: { value: new THREE.Color(this.debugObject.planetColor2) },
         color3: { value: new THREE.Color(this.debugObject.planetColor3) },
         wide: { value: 8.5 },
+        opacity: { value: 0 },
 
         changeColor: { value: 0 },
       },

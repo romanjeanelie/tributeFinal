@@ -1,4 +1,6 @@
 uniform float time;
+uniform float squeeze;
+
 
 varying vec2 vUv;
 
@@ -81,9 +83,6 @@ void main() {
     vec3 newposition = position;
 
     newposition.y += cnoise(vec3(newposition.x, 1., time)) * 0.1;
-
-    // newposition.x += (newposition.y*sin(time * .05)*10.);
-    // newposition.y += (newposition.x*sin(time * .5));
 
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4( newposition, 1.0 );

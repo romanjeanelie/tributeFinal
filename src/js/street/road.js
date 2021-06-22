@@ -62,7 +62,7 @@ export default class Road {
 
     this.city.position.x = 5000;
     this.city.position.y = -10000;
-    this.city.position.z = 4000;
+    this.city.position.z = 2000;
     this.city.scale.set(25, 25, 25);
 
     this.scene.add(this.city);
@@ -90,12 +90,6 @@ export default class Road {
       opacity: 0,
       depthWrite: false,
     });
-    this.materialComputer = new THREE.MeshBasicMaterial({
-      color: 0x0000ff,
-      depthWrite: false,
-      transparent: true,
-      opacity: 0,
-    });
 
     this.gltfLoader.load("/models/city.glb", (gltf) => {
       gltf.scene.traverse((child) => {
@@ -111,9 +105,6 @@ export default class Road {
         if (child.name.includes("Panel")) {
           child.material = this.materialPanel;
         }
-        if (child.name.includes("Computer")) {
-          child.material = this.materialComputer;
-        }
       });
 
       this.city.add(gltf.scene);
@@ -121,6 +112,7 @@ export default class Road {
       this.createLightWindow(this.positionsWindow);
     });
   }
+
   createLightWindow(positionsWindow) {
     const count = positionsWindow.length;
     this.pointsMaterial = new THREE.ShaderMaterial({

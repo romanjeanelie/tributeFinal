@@ -17,10 +17,6 @@ float stroke(float x, float s, float w){
 void main()	{
 
    // BARS
-  float speed =  time * 2.;
-  // float animShutter = (200. * activeLines) * speed ;
-  // float factorDivision = .04;
-  // float thickness = 0.5 ;
   float animShutter = time * .5;
   float factorDivision = 1.5;
   float thickness = 0.3 ;

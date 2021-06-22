@@ -4,6 +4,8 @@ import StructureText from "./structureText";
 import vertex from "../shaders/buildings/text/vertex";
 import fragment from "../shaders/buildings/text/fragment";
 
+import TextDance from "./textDance";
+
 export default class TextBuilding {
   constructor(options) {
     this.gui = options.gui;
@@ -15,17 +17,21 @@ export default class TextBuilding {
   }
 
   init() {
+    new TextDance({
+      text: "Dance",
+      font: "Dancing-Script",
+      posX: -60,
+      posY: 22,
+      posZ: 12,
+      rotateZ: 0.12,
+      scale: 4,
+      color: "#FFB200",
+      scene: this.scene,
+    });
     this.texts = [
       {
-        text: "DANCE",
-        posX: -45,
-        posY: 22,
-        posZ: 12,
-        scale: 6,
-        color: "#FFB200",
-      },
-      {
         text: "WITH ME",
+        font: "Gala2",
         posX: -29,
         posY: 10,
         posZ: 12,
@@ -34,6 +40,8 @@ export default class TextBuilding {
       },
       {
         text: "ON THE FLOOR",
+        font: "Gala2",
+
         posX: -14,
         posY: 19,
         posZ: -4,
@@ -42,6 +50,8 @@ export default class TextBuilding {
       },
       {
         text: "WE CAN DANCE",
+        font: "Gala2",
+
         posX: 75,
         posY: 14,
         posZ: 29,
@@ -51,6 +61,8 @@ export default class TextBuilding {
       },
       {
         text: "ON THE STREETS",
+        font: "Gala2",
+
         posX: 75,
         posY: 4,
         posZ: 50,
@@ -59,8 +71,8 @@ export default class TextBuilding {
         color: "#FFE53F",
       },
     ];
-    this.loader.load("/fonts/Gala2.json", (font, options) => {
-      this.texts.forEach((textOptions) => {
+    this.texts.forEach((textOptions) => {
+      this.loader.load(`/fonts/${textOptions.font}.json`, (font) => {
         this.createText(font, textOptions);
       });
     });
@@ -70,13 +82,13 @@ export default class TextBuilding {
     this.textGeometry = new THREE.TextGeometry(options.text, {
       font: font,
       size: 0.5,
-      height: 0.001,
+      height: 0.05,
       curveSegments: 10,
-      bevelEnabled: true,
-      bevelThickness: 0.005,
-      bevelSize: 0.001,
-      bevelOffset: 0,
-      bevelSegments: 0,
+      bevelEnabled: false,
+      bevelThickness: 0.04,
+      bevelSize: 0.0001,
+      bevelOffset: 0.006,
+      bevelSegments: 0.5,
     });
 
     const textMaterial = new THREE.ShaderMaterial({
@@ -89,7 +101,7 @@ export default class TextBuilding {
       },
       vertexShader: vertex,
       fragmentShader: fragment,
-      // transparent: true,
+      transparent: true,
     });
 
     this.materialsText.push(textMaterial);

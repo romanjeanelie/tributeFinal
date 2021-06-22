@@ -5,6 +5,8 @@ uniform float opacity;
 uniform vec3 uColor; 
 
 varying vec2 vUv;
+varying vec3 vNormal;
+
 
 
 float stroke(float x, float s, float w){
@@ -16,15 +18,18 @@ float stroke(float x, float s, float w){
 void main()	{
   vec3 color = vec3(0.);
 
-  float strobe = sin(time * 230.);
-  float strobeLight = mix(0.9, 1., strobe);
+  float strobe = sin(time * 200.);
+  float strobeLight = mix(0.8, 1., strobe);
 
 
   color = mix(vec3(0.), vec3(1.), 1.);
 
+vec3 shapeText = vec3(vNormal.xy, 0.8);
 
+vec3 result = mix(uColor, vec3(0.),  shapeText);
 
-  gl_FragColor = vec4(color, 1.);
+  // gl_FragColor = vec4(color, newNormal);
+  gl_FragColor = vec4(result, strobeLight);
 
     
 }

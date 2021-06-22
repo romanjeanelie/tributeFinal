@@ -34,7 +34,7 @@ export default class TextStars {
         posY: -818,
         posZ: -300,
         scale: 10,
-        color: "#fff",
+        color: "#ff0000",
       },
       {
         text: "they keep running on my feet",
@@ -70,9 +70,10 @@ export default class TextStars {
       },
       {
         text: "There's a reason we're together",
-        posX: 18000,
+        // posX: 25000,
+        posX: 250000, ////// DEBUG
         posY: 13000,
-        posZ: 10600,
+        posZ: -20600,
         scale: 2600,
         color: "#E90405",
       },
@@ -101,6 +102,7 @@ export default class TextStars {
         progress: { value: 0 },
         opacity: { value: 1 },
         uColor: { value: new THREE.Color(options.color) },
+        squeeze: { value: 0 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -122,13 +124,13 @@ export default class TextStars {
     this.scene.add(textMesh);
   }
 
-  anim(progress, time) {
+  anim(progress, time, scrollSpeed) {
     this.materialsText.forEach((material) => {
       material.uniforms.time.value = time;
       material.uniforms.progress.value = progress;
       // SPEED Volets
-      const velocity = progress * 0.1;
       material.uniforms.activeLines.value = progress;
+      material.uniforms.squeeze.value = Math.abs(scrollSpeed);
     });
   }
 }

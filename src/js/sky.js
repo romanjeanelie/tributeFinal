@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { gsap } from "gsap";
 
 import fragment from "./shaders/sky/fragment.glsl";
 import vertex from "./shaders/sky/vertex.glsl";
@@ -18,6 +19,8 @@ export default class Sky {
 
   init() {
     this.createSky();
+
+    // this.animThick();
   }
 
   createSky() {
@@ -34,6 +37,8 @@ export default class Sky {
         color4: { value: new THREE.Color(this.debugObject.color4) },
         changeColor: { value: 0 },
         opacity: { value: 0 },
+        opacityLines: { value: 0 },
+        thickFactor: { value: 0.5 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -68,8 +73,24 @@ export default class Sky {
       .name("skyColor2");
   }
 
-  anim(time, progress) {
+  animThick() {
+    window.addEventListener("scroll", () => {
+      if (this.material.uniforms.thickFactor.value < 3) {
+        gsap.to(this.material.uniforms.thickFactor, {
+          value: 4,
+          duration: 1,
+        });
+      }
+      gsap.to(this.material.uniforms.thickFactor, {
+        value: 1,
+        duration: 3,
+      });
+    });
+  }
+
+  anim(time, progress, scrollSpeedEased) {
     this.material.uniforms.time.value = time;
     this.material.uniforms.progress.value = progress;
+    this.material.uniforms.thickFactor.value = scrollSpeedEased.value;
   }
 }

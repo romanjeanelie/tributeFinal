@@ -10,6 +10,8 @@ export default class Landscape {
 
   init() {
     this.addLandscape();
+    this.addLandscape2();
+    this.addLandscape3();
   }
 
   addLandscape() {
@@ -25,6 +27,40 @@ export default class Landscape {
       gltf.scene.position.x = 300;
       gltf.scene.position.y = -10;
       gltf.scene.position.z = -600;
+
+      this.scene.add(gltf.scene);
+    });
+  }
+  addLandscape2() {
+    this.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+    this.gltfLoader.load("/models/landscape2.glb", (gltf) => {
+      gltf.scene.traverse((child) => {
+        //  child.material = this.material;
+      });
+
+      gltf.scene.rotation.y = Math.PI * 0.5;
+      gltf.scene.scale.set(200, 130, 120);
+      gltf.scene.position.x = -250;
+      gltf.scene.position.y = -10;
+      gltf.scene.position.z = 100;
+
+      this.scene.add(gltf.scene);
+    });
+  }
+  addLandscape3() {
+    this.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+    this.gltfLoader.load("/models/landscape3.glb", (gltf) => {
+      gltf.scene.traverse((child) => {
+        //  child.material = this.material;
+      });
+
+      gltf.scene.rotation.y = Math.PI * 0.5;
+      gltf.scene.scale.set(200, 130, 120);
+      gltf.scene.position.x = -650;
+      gltf.scene.position.y = -10;
+      gltf.scene.position.z = 800;
 
       this.scene.add(gltf.scene);
     });

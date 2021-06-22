@@ -48,6 +48,7 @@ export default class Points {
         time: { value: 0 },
         color1: { value: new THREE.Color("#ff0559") },
         opacity: { value: 0 },
+        squeeze: { value: 0 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -100,8 +101,9 @@ export default class Points {
     this.scene.add(this.pointsGroup);
   }
 
-  anim(progress, time) {
+  anim(progress, time, scrollSpeed) {
     this.pointsMaterial.uniforms.time.value = time;
     this.pointsMaterial2.uniforms.time.value = time;
+    this.pointsMaterial.uniforms.squeeze.value = Math.abs(scrollSpeed);
   }
 }

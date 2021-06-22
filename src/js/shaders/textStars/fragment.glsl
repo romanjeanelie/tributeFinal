@@ -5,6 +5,7 @@ uniform float activeLines;
 uniform float progress;
 uniform float opacity;
 
+
 varying vec2 vUv;
 
 //	Classic Perlin 3D Noise 
@@ -94,7 +95,12 @@ void main()	{
 
   float noise = cnoise(vec3(vUv *.3, time *.4)) + 0.6;
 
-    gl_FragColor = vec4(vec3(uColor), noise);
+  // float strobe = sin(time * 190.);
+  // float strobeLight = mix(0.7, 1., strobe);
+
+  float result = noise;
+
+    gl_FragColor = vec4(vec3(uColor), result);
 
     
 }

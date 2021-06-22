@@ -2,6 +2,7 @@ uniform vec3 color1;
 uniform vec3 color2;
 uniform vec3 color3;
 uniform float wide;
+uniform float opacity;
 
 uniform float changeColor;
 
@@ -22,7 +23,7 @@ void main()	{
     color += mix(color1 * changeColor, color2 * changeColor, 1. - vUv.x * wide);
 
   
-    gl_FragColor = vec4(color, 1.);
+    gl_FragColor = vec4(color, opacity);
 
     
 }

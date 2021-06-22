@@ -17,6 +17,8 @@ import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
 import debounce from "./utils/debounce";
+import { checkScrollSpeed } from "./utils/checkScrollSpeed";
+
 import Help from "./domElements/help";
 import Message from "./domElements/message";
 
@@ -41,6 +43,8 @@ export default class Animations {
     this.intersects = null;
 
     this.scrollValue = 0;
+    this.scrollSpeed = 0;
+    this.scrollSpeedEased = { value: 0 };
     this.progress2 = 0;
 
     this.steps = [1.4];
@@ -49,8 +53,8 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 1.8;
-    this.start = 5;
+    this.positionTimeline = 2;
+    this.start = 0;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
@@ -64,6 +68,7 @@ export default class Animations {
     this.manageCamera();
     this.createTimelines();
     this.getScroll();
+    this.getScrollSpeed();
     this.objectsToTest = [this.singlePoint.mesh];
     this.anim();
     this.render();
@@ -238,6 +243,17 @@ export default class Animations {
     });
   }
 
+  getScrollSpeed() {
+    window.addEventListener("scroll", () => {
+      this.scrollSpeed = checkScrollSpeed({ delay: 40 });
+
+      gsap.to(this.scrollSpeedEased, {
+        value: this.scrollSpeed,
+        duration: 1,
+      });
+    });
+  }
+
   anim() {
     this.stepTwo();
     if (this.backstage) {
@@ -246,7 +262,6 @@ export default class Animations {
   }
 
   stepOne(index) {
-    console.log(index);
     this.textIntro.animText(index);
   }
 
@@ -317,6 +332,8 @@ export default class Animations {
   }
 
   stepFour() {
+    const camera = this.createPath.cameraPath.cameraAndScreen;
+
     const tl = gsap.timeline();
     this.progress2 = 0;
     // ZOOM Lines
@@ -374,8 +391,7 @@ export default class Animations {
       this.textGod.opacity,
       {
         value: 1,
-        delay: 1,
-        duration: 12,
+        duration: 20,
       },
       "<"
     );
@@ -385,7 +401,8 @@ export default class Animations {
       this.textGod.squeeze,
       {
         value: 0,
-        duration: 4,
+        delay: 0.3,
+        duration: 3,
       },
       "<"
     );
@@ -395,6 +412,17 @@ export default class Animations {
       this.textGod.textGroup.position,
       {
         z: -115,
+        duration: 12,
+      },
+
+      "<"
+    );
+
+    // FADE IN Lines sky
+    tl.to(
+      this.sky.material.uniforms.opacityLines,
+      {
+        value: 0.1,
         duration: 12,
       },
 
@@ -456,17 +484,6 @@ export default class Animations {
       "<"
     );
 
-    // SKY Getting lighter
-    this.tl4.to(
-      this.sky.material.uniforms.changeColor,
-      {
-        duration: 5,
-        value: 1,
-        ease: "linear",
-      },
-      "<"
-    );
-
     // PROGRESSION CAM 2 Until buildings
     this.tl4.to(
       this.createPath.cameraPath,
@@ -478,6 +495,17 @@ export default class Animations {
         onComplete: () => {},
       },
 
+      "<"
+    );
+
+    // SKY Getting lighter
+    this.tl4.to(
+      this.sky.material.uniforms.changeColor,
+      {
+        duration: 5,
+        value: 1,
+        ease: "linear",
+      },
       "<"
     );
 
@@ -496,9 +524,28 @@ export default class Animations {
             ease: "linear",
           });
         },
-        onComplete: () => this.finalStep(),
+        // onComplete: () => this.finalStep(),
       },
 
+      "<"
+    );
+
+    this.tl4.to(
+      camera.rotation,
+      {
+        z: Math.PI * 0.5,
+        duration: steps.step3.duration,
+        ease: "linear",
+      },
+      "<"
+    );
+    this.tl4.to(
+      camera.rotation,
+      {
+        x: Math.PI * 0.5,
+        duration: steps.step3.duration,
+        ease: "linear",
+      },
       "<"
     );
   }
@@ -559,6 +606,7 @@ export default class Animations {
     this.tl.progress(progress * 0.3);
     this.tl4.progress(this.progress2 * 0.25);
     this.singlePoint.anim(progress, time);
+    this.sky.anim(progress, time, this.scrollSpeedEased);
 
     if (this.progress > this.steps[0]) {
     }
@@ -574,10 +622,10 @@ export default class Animations {
     this.textGod.anim(progress * 12, time);
     // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
-    this.textStars.anim(progress * 12, time);
+    this.textStars.anim(progress * 12, time, this.scrollSpeedEased.value);
 
     this.road.anim(progress * 12, time);
-    this.points.anim(progress * 12, time);
+    this.points.anim(progress * 12, time, this.scrollSpeedEased.value);
   }
 
   render() {
