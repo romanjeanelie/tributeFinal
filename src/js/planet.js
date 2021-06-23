@@ -17,9 +17,9 @@ export default class Planet {
   init() {
     this.addPlanet();
 
-    this.planet.position.x = 35350;
-    this.planet.position.y = 13000;
-    this.planet.position.z = -40500;
+    this.planet.position.x = 10350;
+    this.planet.position.y = 5000;
+    this.planet.position.z = 10500;
   }
 
   addPlanet() {
@@ -42,7 +42,7 @@ export default class Planet {
         color2: { value: new THREE.Color(this.debugObject.planetColor2) },
         color3: { value: new THREE.Color(this.debugObject.planetColor3) },
         wide: { value: 8.5 },
-        opacity: { value: 0 },
+        opacity: { value: 1 },
 
         changeColor: { value: 0 },
       },
@@ -56,7 +56,7 @@ export default class Planet {
 
     this.planet.add(this.sphere);
 
-    this.planet.scale.set(300, 300, 300);
+    this.planet.scale.set(110, 110, 110);
 
     this.scene.add(this.planet);
   }

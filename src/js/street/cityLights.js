@@ -14,11 +14,11 @@ export default class CityLights {
     this.createPointsMaterials();
     this.addPoints({
       minX: 0,
-      maxX: 400,
+      maxX: 800,
       minY: 0,
       maxY: 0,
       minZ: -300,
-      maxZ: 400,
+      maxZ: 1000,
       material: this.pointsMaterial1,
       qty: 500,
     });

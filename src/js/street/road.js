@@ -13,6 +13,7 @@ import Teddy from "./teddy";
 import Wheel from "./wheel";
 import Landscape from "./landscape";
 import Clouds from "./clouds";
+import AdBoard from "./adBoard";
 
 export default class Road {
   constructor(options) {
@@ -58,7 +59,10 @@ export default class Road {
     this.wheel = new Wheel({ scene: this.city, gui: this.gui });
     this.wheel.init();
 
-    this.addFloor();
+    this.adBoard = new AdBoard({ scene: this.city, gui: this.gui });
+    this.adBoard.init();
+
+    // this.addFloor();
 
     this.city.position.x = 5000;
     this.city.position.y = -10000;
@@ -157,7 +161,7 @@ export default class Road {
 
     this.floor.rotation.x = Math.PI * 0.5;
     this.floor.position.y = -2;
-    this.floor.scale.set(500, 1000, 500);
+    this.floor.scale.set(2900, 1000, 500);
 
     this.city.add(this.floor);
   }
@@ -165,5 +169,6 @@ export default class Road {
   anim(progress, time) {
     this.textBuidling.anim(progress, time);
     this.wheel.anim(progress, time);
+    this.adBoard.anim(progress, time);
   }
 }

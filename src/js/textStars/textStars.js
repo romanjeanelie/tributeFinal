@@ -70,11 +70,11 @@ export default class TextStars {
       },
       {
         text: "There's a reason we're together",
-        // posX: 25000,
-        posX: 250000, ////// DEBUG
-        posY: 13000,
-        posZ: -20600,
-        scale: 2600,
+        posX: 7000,
+        // posX: 250000, ////// DEBUG
+        posY: 2500,
+        posZ: 21600,
+        scale: 800,
         color: "#E90405",
       },
     ];

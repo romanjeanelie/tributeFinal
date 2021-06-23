@@ -42,9 +42,12 @@ export default class cameraPath {
 
   positionCameraLarge() {
     if (this.isActive) {
+      // this.camera.position.x = 3411.5991435141848;
+      // this.camera.position.y = -9500;
+      // this.camera.position.z = 2500;
       this.camera.position.x = 3411.5991435141848;
       this.camera.position.y = -9500;
-      this.camera.position.z = 2500;
+      this.camera.position.z = 8000;
 
       this.posCameraLarge = new THREE.Vector3(4210, -9000, -2369.896873902935);
 
@@ -131,7 +134,7 @@ export default class cameraPath {
 
     this.addScreen();
 
-    this.splineCamera = new THREE.PerspectiveCamera(70, this.sizes.width / this.sizes.height, 0.01, 85000);
+    this.splineCamera = new THREE.PerspectiveCamera(70, this.sizes.width / this.sizes.height, 0.01, 115000);
 
     var vector = new THREE.Vector3(); // create once and reuse it!
 

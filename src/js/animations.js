@@ -12,6 +12,8 @@ import Plane from "./plane";
 import Moon from "./moon/moon";
 import Road from "./street/road";
 import Planet from "./planet";
+import Buttons from "./buttons";
+import BackSky from "./backSky";
 
 import CreatePath from "./camera/createPath";
 
@@ -53,7 +55,7 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 2;
+    this.positionTimeline = 2.5;
     this.start = 0;
     // DEBUG MODE ////////////////////////////
 
@@ -64,8 +66,8 @@ export default class Animations {
   }
 
   init() {
-    this.addObject();
     this.manageCamera();
+    this.addObject();
     this.createTimelines();
     this.getScroll();
     this.getScrollSpeed();
@@ -75,8 +77,8 @@ export default class Animations {
 
     this.helpListener();
     this.startListener();
-    this.startProject();
     if (this.backstage) {
+      this.startProject();
     }
   }
 
@@ -183,6 +185,14 @@ export default class Animations {
     this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
     this.road = new Road({ scene: this.finalScene, gui: this.gui });
     this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
+    this.backSky = new BackSky({ scene: this.finalScene, gui: this.gui });
+    this.buttons = new Buttons({
+      scene: this.scene,
+      gui: this.gui,
+      mouse: this.mouse,
+      camera: this.createPath.cameraPath.splineCamera,
+      finalScene: this.finalScene,
+    });
 
     this.message = new Message();
 
@@ -199,6 +209,8 @@ export default class Animations {
     this.road.init();
     this.plane.init();
     this.planet.init();
+    this.backSky.init();
+    this.buttons.init();
   }
 
   manageCamera() {
@@ -529,72 +541,10 @@ export default class Animations {
 
       "<"
     );
-
-    this.tl4.to(
-      camera.rotation,
-      {
-        z: Math.PI * 0.5,
-        duration: steps.step3.duration,
-        ease: "linear",
-      },
-      "<"
-    );
-    this.tl4.to(
-      camera.rotation,
-      {
-        x: Math.PI * 0.5,
-        duration: steps.step3.duration,
-        ease: "linear",
-      },
-      "<"
-    );
   }
 
   finalStep() {
     const camera = this.createPath.cameraPath.cameraAndScreen;
-    // FADE IN Screen
-    gsap.to(
-      this.createPath.cameraPath.screenMaterial.uniforms.opacity,
-      {
-        duration: 12,
-        value: 1,
-        ease: "Power3.in",
-      },
-      "<"
-    );
-
-    // CLOSE Wide BG
-    gsap.to(this.createPath.cameraPath.screenMaterial.uniforms.wide, {
-      duration: 20,
-      value: 0,
-      ease: "Power3.in",
-    });
-
-    // DEZOOM Lines
-    gsap.to(this.createPath.cameraPath.screenMaterial.uniforms.thickFactor, {
-      duration: 3,
-      value: 1,
-      ease: "Power3.in",
-    });
-
-    gsap.to(camera.rotation, {
-      x: 1.5,
-      duration: 70,
-      ease: "linear",
-    });
-    gsap.to(this.moon.moonMaterial.uniforms.wide, {
-      value: 1,
-      duration: 8,
-      ease: "linear",
-    });
-    gsap.to(this.planet.planetMaterial.uniforms.wide, {
-      value: 1,
-      duration: 8,
-      ease: "linear",
-    });
-    setTimeout(() => {
-      this.message.anim();
-    }, 6000);
   }
 
   animCamera(progress, time) {
@@ -665,5 +615,6 @@ export default class Animations {
 
     // RayCasting
     this.rayCaster();
+    this.buttons.rayCaster();
   }
 }

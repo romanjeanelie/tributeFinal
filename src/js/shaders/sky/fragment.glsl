@@ -35,8 +35,8 @@ void main()	{
 
      // BARS
   float animShutter = time * .01;
-  float factorDivision = 100. - 4. * thickFactor;
-  float thickness = 0.3 + .01 * thickFactor;
+  float factorDivision = 100. - 4.;
+  float thickness = 0.3 + .01;
 
 
   float littleLines = stroke(fract((vUv.y + animShutter)*factorDivision), .7, thickness);
@@ -65,8 +65,8 @@ void main()	{
   color *= rect;
 
   // ADD LINES
-  // vec3 finalColor = mix(vec3(0.), color,changeColor) / 1. + lines * opacityLines ;
-  vec3 finalColor = mix(vec3(0.), color,changeColor);
+  vec3 finalColor = mix(vec3(0.), color,changeColor) / 1. + lines * 0.1 ;
+//   vec3 finalColor = mix(vec3(0.), color,changeColor);
   
   gl_FragColor = vec4(finalColor, 1.);
   //  gl_FragColor = vec4(vec3(vUv, 1.), 1.);

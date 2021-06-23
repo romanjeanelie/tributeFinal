@@ -10,7 +10,7 @@ export default class Sky {
     this.gui = options.gui;
     this.debugObject = {};
 
-    this.positionX = 5000;
+    this.positionX = 0;
     this.positionY = 7500;
     this.positionZ = -8500;
 

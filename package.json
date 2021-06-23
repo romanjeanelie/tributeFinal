@@ -13,6 +13,7 @@
     "dat.gui": "^0.7.7",
     "fs": "^0.0.1-security",
     "gsap": "file:gsap-bonus.tgz",
+    "img": "^3.0.3",
     "js": "^0.1.0",
     "scss": "^0.2.4",
     "three": "^0.126.1"
