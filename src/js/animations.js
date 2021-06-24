@@ -55,8 +55,8 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 2.5;
-    this.start = 0;
+    this.positionTimeline = 5;
+    this.start = 5;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
@@ -77,9 +77,9 @@ export default class Animations {
 
     this.helpListener();
     this.startListener();
-    if (this.backstage) {
-      this.startProject();
-    }
+
+    //////// START DIRECTLY
+    // this.startProject();
   }
 
   startListener() {
@@ -93,19 +93,48 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    tl.to(".home__title", {
-      autoAlpha: 0,
-      duration: 1,
+    tl.to(".home .bg__top", {
+      scaleY: 0.4,
+      duration: 2,
     });
     tl.to(
-      ".home",
+      ".home .bg__bottom",
+      {
+        scaleY: 0.4,
+        duration: 2,
+      },
+      "<"
+    );
+    tl.to(
+      ".home .title__top",
+      {
+        y: "-40vh",
+        autoAlpha: 0,
+        duration: 2,
+      },
+      "<"
+    );
+    tl.to(
+      ".home .title__bottom",
+      {
+        y: "40vh",
+        autoAlpha: 0,
+        duration: 2,
+      },
+      "<"
+    );
+    tl.to(
+      "#start",
       {
         autoAlpha: 0,
-        duration: 1,
+        duration: 2,
         onComplete: () => this.eventsAnim(),
       },
       "<"
     );
+    tl.to(".home .bg", {
+      autoAlpha: 0,
+    });
   }
 
   rayCaster() {
@@ -432,9 +461,9 @@ export default class Animations {
 
     // FADE IN Lines sky
     tl.to(
-      this.sky.material.uniforms.opacityLines,
+      this.sky.material.uniforms.opacity,
       {
-        value: 0.1,
+        value: 0.01,
         duration: 12,
       },
 
@@ -534,6 +563,12 @@ export default class Animations {
             value: 1,
             duration: 8,
             ease: "linear",
+          });
+          // FADE IN MoreLines sky
+          gsap.to(this.sky.material.uniforms.opacity, {
+            value: 0.06,
+            delay: 6,
+            duration: 12,
           });
         },
         // onComplete: () => this.finalStep(),

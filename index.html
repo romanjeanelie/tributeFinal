@@ -34,14 +34,18 @@
 
   <body class="scroll">
     <div id="container"></div>
-    <video id="video" src="assets/video/screen.mp4" style="display: none" muted></video>
-    <div class="tv">
-      <img src="./assets/img/TV.png" alt="tv" />
-    </div>
+    <video id="video" src="assets/video/screen2.mov" style="display: none" muted></video>
+
     <div class="home">
+      <div class="bg bg__top"></div>
+      <div class="bg bg__bottom"></div>
       <div class="home__title">
-        <h1>Tribute to Beau</h1>
-        <p>Created with Beau's lyrics</p>
+        <div class="title__top">
+          <h1>Tribute to Beau</h1>
+        </div>
+        <div class="title__bottom">
+          <p>Created with Beau's lyrics</p>
+        </div>
       </div>
       <button class="home__start" id="start">start</button>
     </div>
@@ -52,33 +56,8 @@
         </div>
       </div>
     </div>
-    <div class="window">
-      <div class="window__rect">
-        <svg xmlns="http://www.w3.org/2000/svg"><rect stroke="#fff" fill="none" id="rect" /></svg>
-      </div>
 
-      <div class="window__wrapper">
-        <div class="window__top">
-          <div class="window__top__wrapper">
-            <p class="name">@beau_band</p>
-            <p class="status">Active 7h ago</p>
-          </div>
-        </div>
-        <div class="window__messages">
-          <div class="window__messages__wrapper">
-            <div class="old-message message">
-              <p class="message__date">11 mars 2021</p>
-              <p class="message__text">I will send you a gift in one month</p>
-            </div>
-            <div class="new-message message">
-              <p class="message__date">11 juil 2021</p>
-              <p class="message__text">This is the gift. Sorry for the late.</p>
-              <p class="message__text">www.tributetobeau.com</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <script src="src/index.js"></script>
   </body>
 </html>
+<!--  -->

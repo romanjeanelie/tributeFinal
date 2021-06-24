@@ -19,20 +19,20 @@ export default class Points {
 
     this.addPoints({
       minX: 0,
-      maxX: 1300,
+      maxX: 3300,
       minY: -700,
       maxY: 9000,
       minZ: -500,
       maxZ: 550,
       material: this.pointsMaterial,
-      qty: 800,
+      qty: 100,
       size: 9000,
     });
     this.addPoints({
       minX: 0,
-      maxX: 35000,
-      minY: -700,
-      maxY: 10000,
+      maxX: 56000,
+      minY: 7700,
+      maxY: 24000,
       minZ: -500,
       maxZ: 5500,
       material: this.pointsMaterial2,
@@ -104,6 +104,6 @@ export default class Points {
   anim(progress, time, scrollSpeed) {
     this.pointsMaterial.uniforms.time.value = time;
     this.pointsMaterial2.uniforms.time.value = time;
-    this.pointsMaterial.uniforms.squeeze.value = Math.abs(scrollSpeed);
+    this.pointsMaterial.uniforms.squeeze.value = Math.min(100, Math.abs(scrollSpeed));
   }
 }

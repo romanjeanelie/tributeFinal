@@ -20,10 +20,10 @@ export default class Clouds {
         //child.material = this.material;
       });
       gltf.scene.rotation.y = Math.PI * 0.5;
-      gltf.scene.scale.set(60, 80, 60);
-      gltf.scene.position.x = -500;
-      gltf.scene.position.y = 20;
-      gltf.scene.position.z = -600;
+      gltf.scene.scale.set(40, 40, 40);
+      gltf.scene.position.x = -600;
+      gltf.scene.position.y = 5;
+      gltf.scene.position.z = -300;
 
       this.scene.add(gltf.scene);
     });

@@ -7,6 +7,9 @@ varying vec2 vUv;
 
 
 void main()	{
-    gl_FragColor = vec4(color1, opacity * 0.6);
+
+     float strobe = sin(time * 2000.);
+    float strobeLight = mix(0.9, 1., strobe); 
+    gl_FragColor = vec4(color1, opacity * strobeLight);
     
 }

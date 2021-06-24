@@ -94,7 +94,7 @@ export default class TextIntro {
       "HOW DO I FORGIVE MYSELF FOR MY OWN MISTAKES ?",
       "COULD YOU POSSIBLY HELP ME UNDERSTAND ?",
       "WOULD YOU EVEN HOLD MY HAND SPEAKING SOFTLY IN MY HEAR ?",
-      "COULD YOU POSSIBLY HELP ME",
+      "COULD YOU POSSIBLY HELP ME ?",
       "PLEASE",
     ];
     this.loader.load("/fonts/Oswald_Regular.json", (font) => {

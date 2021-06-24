@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { gsap } from "gsap";
 
+import ios from "./utils/ios";
+
 // import fragment from "../shaders/moon/fragment.glsl";
 // import vertex from "../shaders/moon/vertex.glsl";
 
@@ -45,13 +47,28 @@ export default class Buttons {
   }
 
   checkRaycaster() {
+    if (ios()) {
+      window.addEventListener("touchstart", (event) => {
+        this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+        if (this.intersects.length) {
+          this.video.play();
+          if (this.intersects[0].object.position.x > 2000) {
+            gsap.to(this.finalScene.rotation, {
+              y: Math.PI,
+              duration: 30,
+            });
+          }
+        }
+      });
+    }
     window.addEventListener("click", () => {
       if (this.intersects.length) {
         this.video.play();
         if (this.intersects[0].object.position.x > 2000) {
           gsap.to(this.finalScene.rotation, {
             y: Math.PI,
-            duration: 30,
+            duration: 5,
           });
         }
       }

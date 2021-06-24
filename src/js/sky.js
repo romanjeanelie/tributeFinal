@@ -37,7 +37,6 @@ export default class Sky {
         color4: { value: new THREE.Color(this.debugObject.color4) },
         changeColor: { value: 0 },
         opacity: { value: 0 },
-        opacityLines: { value: 0 },
         thickFactor: { value: 0.5 },
       },
       side: THREE.DoubleSide,

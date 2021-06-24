@@ -90,12 +90,12 @@ void main()	{
   vec3 color=vec3(0.,0.,0.);
 
   float noise =  cnoise(vec3(vUv  * 500.,  time * 10.))* 100.;
-  float noiseB =  cnoise(vec3(vUv.yy  * 300.,  time * 1.));
+  float noiseB =  cnoise(vec3(vUv.yy  * 30.,  time * 10.));
   float noiseProgress = noise;
 
-  float result =noiseB * noise;
+  float result = mix(1., 0.5, noiseB);
 
-  float strokeSDF = stroke(vUv.y + (1.2-progress), 0.5, .9) * result * opacity; 
+  float strokeSDF = stroke(vUv.y + (0.9-progress), 0.5, .9) * result  * opacity; 
 
 
     color += strokeSDF;

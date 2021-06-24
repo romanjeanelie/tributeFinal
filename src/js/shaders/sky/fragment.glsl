@@ -8,7 +8,6 @@ uniform vec3 color4;
 uniform float changeColor; 
 uniform float thickFactor; 
 uniform float opacity; 
-uniform float opacityLines; 
 
 varying vec2 vUv;
 
@@ -65,7 +64,7 @@ void main()	{
   color *= rect;
 
   // ADD LINES
-  vec3 finalColor = mix(vec3(0.), color,changeColor) / 1. + lines * 0.1 ;
+  vec3 finalColor = mix(vec3(0.), color,changeColor) / 1. + lines * opacity ;
 //   vec3 finalColor = mix(vec3(0.), color,changeColor);
   
   gl_FragColor = vec4(finalColor, 1.);

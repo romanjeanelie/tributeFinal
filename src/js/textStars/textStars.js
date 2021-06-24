@@ -34,7 +34,7 @@ export default class TextStars {
         posY: -818,
         posZ: -300,
         scale: 10,
-        color: "#ff0000",
+        color: "#ffffff",
       },
       {
         text: "they keep running on my feet",
@@ -54,9 +54,9 @@ export default class TextStars {
       },
       {
         text: "don't get hurt",
-        posX: 1400,
-        posY: -6600,
-        posZ: 3200,
+        posX: 2200,
+        posY: -7600,
+        posZ: 1200,
         scale: 40,
         color: "#fff",
       },
@@ -69,11 +69,11 @@ export default class TextStars {
         color: "#EE31C3",
       },
       {
-        text: "There's a reason we're together",
+        text: "You got the melody and the words",
         posX: 7000,
         // posX: 250000, ////// DEBUG
         posY: 2500,
-        posZ: 21600,
+        posZ: 18600,
         scale: 800,
         color: "#E90405",
       },

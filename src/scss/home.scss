@@ -11,10 +11,28 @@
   justify-content: center;
   align-items: center;
   font-family: Soleil;
+}
+
+.home .bg {
+  height: 50vh;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  z-index: 0;
   background: #000;
+}
+.home .bg__top {
+  top: 0;
+  transform-origin: top;
+}
+
+.home .bg__bottom {
+  bottom: 0;
+  transform-origin: bottom;
 }
 
 .home__title {
+  z-index: 1;
   text-align: center;
   text-transform: uppercase;
 }

@@ -72,7 +72,7 @@ export default class TextGod {
           progress: { value: 0 },
           opacity: { value: 0 },
           squeeze: { value: 1 },
-          uColor: { value: new THREE.Color("#0000ff") },
+          uColor: { value: new THREE.Color("#ffffff") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

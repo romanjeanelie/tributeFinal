@@ -41,7 +41,7 @@ void main()	{
 
   float lines = strobeLight * littleLines;
 
-    vec4 textureImage = texture2D(uTexture, vec2(1. - vUv.x, vUv.y)) * lines * 2.;
+    vec4 textureImage = texture2D(uTexture, vec2(1. - vUv.x, 1.-vUv.y)) * lines * 2.;
    
  
   

@@ -9,13 +9,13 @@ export default class Landscape {
 
     this.scene = options.scene;
 
-    // this.textLandscape = new TextLandscape({ scene: this.scene });
+    this.textLandscape = new TextLandscape({ scene: this.scene });
   }
 
   init() {
-    this.addLandscape({ x: 300, y: -35, z: -600 });
+    this.addLandscape({ x: 300, y: -35, z: -300 });
     this.addLandscape2({ x: -250, y: 1, z: 100 });
-    this.addLandscape3({ x: -950, y: -10, z: 800 });
+    this.addLandscape3({ x: -650, y: -10, z: 500 });
   }
 
   addLandscape(options) {
@@ -32,7 +32,6 @@ export default class Landscape {
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;
 
-      // this.textLandscape.addtext1(options);
       this.scene.add(gltf.scene);
     });
   }
@@ -50,6 +49,8 @@ export default class Landscape {
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;
 
+      this.textLandscape.addText1(options);
+
       this.scene.add(gltf.scene);
     });
   }
@@ -61,11 +62,13 @@ export default class Landscape {
         //  child.material = this.material;
       });
 
-      gltf.scene.rotation.y = Math.PI * 0.5;
-      gltf.scene.scale.set(200, 130, 120);
+      gltf.scene.rotation.y = -Math.PI * 0.5;
+      gltf.scene.scale.set(1, 120, 80);
       gltf.scene.position.x = options.x;
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;
+
+      this.textLandscape.addText2(options);
 
       this.scene.add(gltf.scene);
     });
