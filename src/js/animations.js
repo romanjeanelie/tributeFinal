@@ -54,7 +54,7 @@ export default class Animations {
     this.currentScroll = 0;
 
     // DEBUG MODE ////////////////////////////
-    this.backstage = false;
+    this.backstage = true;
     this.positionTimeline = 5;
     this.start = 5;
     // DEBUG MODE ////////////////////////////
@@ -592,6 +592,7 @@ export default class Animations {
     this.tl4.progress(this.progress2 * 0.25);
     this.singlePoint.anim(progress, time);
     this.sky.anim(progress, time, this.scrollSpeedEased);
+    this.buttons.anim(progress, time);
 
     if (this.progress > this.steps[0]) {
     }
