@@ -33,7 +33,7 @@ export default class TextLandscape {
         this.textGroup1.position.y = optionsPositions.y + 10;
         this.textGroup1.position.z = optionsPositions.z + 200;
 
-        this.textGroup1.scale.set(0.2, 0.2, 0.2);
+        this.textGroup1.scale.set(0.05, 0.05, 0.05);
         // Position
         this.textGroup1.children[0].position.y = 30;
         this.textGroup1.children[1].position.y = 0;

@@ -65,7 +65,7 @@ void main()	{
 
   // ADD LINES
   vec3 finalColor = mix(vec3(0.), color,changeColor) / 1. + lines * opacity ;
-//   vec3 finalColor = mix(vec3(0.), color,changeColor);
+  // vec3 finalColor = mix(vec3(0.), color,changeColor) / 1. + lines * 1. ;
   
   gl_FragColor = vec4(finalColor, 1.);
   //  gl_FragColor = vec4(vec3(vUv, 1.), 1.);

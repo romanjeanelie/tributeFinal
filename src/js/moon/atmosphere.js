@@ -7,7 +7,7 @@ export default class Atmosphere {
   constructor(options) {
     this.gui = options.gui;
     this.debugObject = {};
-    this.folderMoon = this.gui.addFolder("Moon");
+    // this.folderMoon = this.gui.addFolder("Moon");
 
     this.scene = options.scene;
   }

@@ -31,15 +31,48 @@
   transform-origin: bottom;
 }
 
-.home__title {
+.line {
+  background: #f00;
+  width: 100%;
+  height: 1px;
   z-index: 1;
-  text-align: center;
+  position: fixed;
+  left: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.progress {
+  background: #f00;
+  width: 100%;
+  height: 5px;
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  bottom: 8vh;
+  transform-origin: left;
+  transform: scaleX(0.1);
+  opacity: 0.2;
+}
+
+.home__title {
+  margin-left: -600px;
+  z-index: 1;
   text-transform: uppercase;
+  .title__bottom {
+    margin-top: 6px;
+  }
 }
 
 .home__start {
   font-family: Soleil;
   text-transform: uppercase;
   position: absolute;
-  bottom: 100px;
+  left: 65%;
+  bottom: 400px;
+  transition: opacity 0.2s ease;
+  opacity: 1;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }

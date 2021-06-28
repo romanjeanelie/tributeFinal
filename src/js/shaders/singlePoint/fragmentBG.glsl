@@ -42,7 +42,7 @@ void main()	{
     float result = (distanceToCenter - 0.55) * strobeLight * 0.8;
 
 
-    color = mix(vec3(0.), vec3(1.), result * opacity);
+    color = mix(vec3(0.), color1, result *  opacity * 0.8);
 
 
 

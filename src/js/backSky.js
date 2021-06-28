@@ -8,8 +8,8 @@ export default class BackSky {
     this.debugObject = {};
 
     this.positionX = 0;
-    this.positionY = 7500;
-    this.positionZ = -8510;
+    this.positionY = -3800;
+    this.positionZ = -1500;
 
     this.material = null;
 
@@ -23,9 +23,9 @@ export default class BackSky {
   createBackSky() {
     this.geometry = new THREE.PlaneGeometry(1, 1);
     this.material = new THREE.MeshBasicMaterial({
-      color: 0xff0000,
       opacity: 0.7,
       transparent: true,
+      side: THREE.DoubleSide,
     });
 
     const videoTexture = new THREE.VideoTexture(this.video);
@@ -34,7 +34,7 @@ export default class BackSky {
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.mesh.scale.set(70000, 35000, 100);
+    this.mesh.scale.set(10000, 6000, 100);
 
     this.mesh.position.x = this.positionX;
     this.mesh.position.y = this.positionY;

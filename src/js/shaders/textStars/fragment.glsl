@@ -1,4 +1,5 @@
 uniform vec3 uColor;
+uniform vec3 uColor2;
 uniform float time;
 uniform float uStrength;
 uniform float activeLines;
@@ -100,7 +101,9 @@ void main()	{
 
   float result = noise;
 
-    gl_FragColor = vec4(vec3(uColor), result);
+  vec3 finalColor = mix(uColor2, uColor, result);
+
+    gl_FragColor = vec4(finalColor, result);
 
     
 }

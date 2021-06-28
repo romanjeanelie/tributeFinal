@@ -21,8 +21,8 @@ export default class Clouds {
       });
       gltf.scene.rotation.y = Math.PI * 0.5;
       gltf.scene.scale.set(40, 40, 40);
-      gltf.scene.position.x = -600;
-      gltf.scene.position.y = 5;
+      gltf.scene.position.x = -400;
+      gltf.scene.position.y = 10;
       gltf.scene.position.z = -300;
 
       this.scene.add(gltf.scene);

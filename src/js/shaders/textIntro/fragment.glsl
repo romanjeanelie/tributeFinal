@@ -2,6 +2,8 @@ uniform float time;
 uniform float progress;
 uniform float opacity;
 
+uniform vec3 uColor;
+
 varying vec2 vUv;
 
 //	Classic Perlin 3D Noise 
@@ -99,8 +101,10 @@ void main()	{
 
 
     color += strokeSDF;
+
+    vec3 finalColor = mix(vec3(0.), uColor, color);
     //float color = noise(vUv);
-    gl_FragColor = vec4(vec3(color), color);
+    gl_FragColor = vec4(finalColor, color);
 
     
 }

@@ -43,7 +43,7 @@ export default class TextGod {
         // Position
         this.textGroup.children[0].position.y = 20;
         this.textGroup.children[1].position.y = -20;
-        this.scene.add(this.textGroup);
+        // this.scene.add(this.textGroup);
         this.isLoaded = true;
         return;
       }
@@ -72,7 +72,7 @@ export default class TextGod {
           progress: { value: 0 },
           opacity: { value: 0 },
           squeeze: { value: 1 },
-          uColor: { value: new THREE.Color("#ffffff") },
+          uColor: { value: new THREE.Color("#FF00BB") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

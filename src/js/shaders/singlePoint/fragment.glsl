@@ -20,7 +20,7 @@ void main()	{
     vec3 finalColor = mix(color1, vec3(1.), sin(time * .2));
     float alpha = circle; 
 
-    float growth =1. - sin(time * 3.) * 0.1;
+    float growth = 1. - sin(time * 3.) * 0.1;
 
     float distanceToCenter = distance(vUv, vec2(0.5)) * growth * isPressed;
      
@@ -31,6 +31,6 @@ void main()	{
 
     //float finalColor = mix(1., 0.1, strength * 3.);
 
-    gl_FragColor = vec4(vec3(1.), strength * 3.);
+    gl_FragColor = vec4(color1, strength * 3.);
 
 }

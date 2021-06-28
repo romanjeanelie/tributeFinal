@@ -7,8 +7,8 @@ export default class Planet {
   constructor(options) {
     this.gui = options.gui;
     this.debugObject = {};
-    this.folderMoon = this.gui.addFolder("Planet");
-    this.folderMoon.open();
+    this.folderPlanet = this.gui.addFolder("Planet");
+    this.folderPlanet.open();
 
     this.scene = options.scene;
     this.planet = new THREE.Group();
@@ -26,13 +26,13 @@ export default class Planet {
     this.debugObject.planetColor1 = "#2b0521";
     this.debugObject.planetColor2 = "#ff0032";
     this.debugObject.planetColor3 = "#cc0f0f";
-    this.folderMoon.addColor(this.debugObject, "planetColor1").onChange(() => {
+    this.folderPlanet.addColor(this.debugObject, "planetColor1").onChange(() => {
       this.planetMaterial.uniforms.color1.value = new THREE.Color(this.debugObject.planetColor1);
     });
-    this.folderMoon.addColor(this.debugObject, "planetColor2").onChange(() => {
+    this.folderPlanet.addColor(this.debugObject, "planetColor2").onChange(() => {
       this.planetMaterial.uniforms.color2.value = new THREE.Color(this.debugObject.planetColor2);
     });
-    this.folderMoon.addColor(this.debugObject, "planetColor3").onChange(() => {
+    this.folderPlanet.addColor(this.debugObject, "planetColor3").onChange(() => {
       this.planetMaterial.uniforms.color3.value = new THREE.Color(this.debugObject.planetColor3);
     });
     this.geometry = new THREE.SphereGeometry(60, 70, 70);
@@ -58,6 +58,6 @@ export default class Planet {
 
     this.planet.scale.set(110, 110, 110);
 
-    this.scene.add(this.planet);
+    // this.scene.add(this.planet);
   }
 }

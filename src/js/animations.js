@@ -15,14 +15,16 @@ import Planet from "./planet";
 import Buttons from "./buttons";
 import BackSky from "./backSky";
 
+import progressBar from "./progressBar";
+
 import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
 import debounce from "./utils/debounce";
 import { checkScrollSpeed } from "./utils/checkScrollSpeed";
+import once from "./utils/once";
 
 import Help from "./domElements/help";
-import Message from "./domElements/message";
 
 export default class Animations {
   constructor(options) {
@@ -54,19 +56,32 @@ export default class Animations {
     this.currentScroll = 0;
 
     // DEBUG MODE ////////////////////////////
-    this.backstage = true;
-    this.positionTimeline = 5;
-    this.start = 5;
+    this.backstage = false;
+    this.positionTimeline = 2;
+    this.start = 0;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
     this.scrollActive = false;
+
+    this.destroyAll = once(function () {
+      this.planet.planetMaterial.uniforms.opacity.value = 0;
+      setTimeout(() => {
+        console.log("remove moon");
+        this.moon.moonMaterial.uniforms.opacity.value = 0;
+      }, 1000);
+      setTimeout(() => {
+        console.log("remove city");
+        this.road.city.opacity = 0;
+      }, 2000);
+    });
 
     this.init();
   }
 
   init() {
     this.manageCamera();
+    this.manageProgressBar();
     this.addObject();
     this.createTimelines();
     this.getScroll();
@@ -78,8 +93,15 @@ export default class Animations {
     this.helpListener();
     this.startListener();
 
-    //////// START DIRECTLY
+    //////// START DIRECTLY ////////
     // this.startProject();
+    // document.querySelector(".home").style.display = "none";
+    //////// START DIRECTLY ////////
+
+    if (this.backstage) {
+      console.log(document.querySelector(".home"));
+      document.querySelector(".home").style.display = "none";
+    }
   }
 
   startListener() {
@@ -93,10 +115,32 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    tl.to(".home .bg__top", {
-      scaleY: 0.4,
-      duration: 2,
+    tl.to(".line", {
+      scaleX: 1,
+      duration: 1,
     });
+
+    tl.to(
+      ".home__title, #start",
+      {
+        color: "#f00",
+        duration: 1,
+      },
+      "<"
+    );
+    tl.to(".line", {
+      autoAlpha: 0,
+      duration: 0.5,
+    });
+    tl.to(
+      ".home .bg__top",
+      {
+        scaleY: 0.4,
+        duration: 2,
+      },
+      "<"
+    );
+
     tl.to(
       ".home .bg__bottom",
       {
@@ -123,6 +167,7 @@ export default class Animations {
       },
       "<"
     );
+
     tl.to(
       "#start",
       {
@@ -134,6 +179,9 @@ export default class Animations {
     );
     tl.to(".home .bg", {
       autoAlpha: 0,
+      onComplete: () => {
+        document.querySelector(".home").style.pointerEvent = "none";
+      },
     });
   }
 
@@ -215,15 +263,16 @@ export default class Animations {
     this.road = new Road({ scene: this.finalScene, gui: this.gui });
     this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
     this.backSky = new BackSky({ scene: this.finalScene, gui: this.gui });
+
+    this.progressBar = new Circle({ scene: this.finalScene, gui: this.gui });
     this.buttons = new Buttons({
       scene: this.scene,
       gui: this.gui,
       mouse: this.mouse,
       camera: this.createPath.cameraPath.splineCamera,
+      road: this.road,
       finalScene: this.finalScene,
     });
-
-    this.message = new Message();
 
     this.textIntro.init();
     this.textGod.init();
@@ -239,8 +288,12 @@ export default class Animations {
     this.plane.init();
     this.planet.init();
     this.backSky.init();
+
+    this.progressBar.init();
     this.buttons.init();
   }
+
+  manageProgressBar() {}
 
   manageCamera() {
     this.createPath = new CreatePath({
@@ -318,11 +371,23 @@ export default class Animations {
         duration: 20,
       }
     );
+    // BIGGER Single point
+    this.tl2.fromTo(
+      this.singlePoint.material.uniforms.isPressed,
+      {
+        value: 2.5,
+      },
+      {
+        value: 1,
+        duration: 5,
+      },
+      "<"
+    );
     // FADE IN  BG Single point
     this.tl2.fromTo(
       this.singlePoint.materialBG.uniforms.opacity,
       {
-        value: 1,
+        value: 0,
       },
       {
         value: 1,
@@ -489,7 +554,7 @@ export default class Animations {
 
     const steps = {
       step1: {
-        duration: 4,
+        duration: 1,
         progress: 1100,
       },
       step2: {
@@ -512,7 +577,7 @@ export default class Animations {
         onComplete: () => {
           gsap.to(this.moon.moonMaterial.uniforms.wide, {
             duration: 15,
-            value: 3,
+            value: 4.5,
             ease: "linear",
           });
           gsap.to(this.moon.moonMaterial.uniforms.opacity, {
@@ -589,7 +654,7 @@ export default class Animations {
 
   animObjects(progress, time) {
     this.tl.progress(progress * 0.3);
-    this.tl4.progress(this.progress2 * 0.25);
+    this.tl4.progress(this.progress2 * 0.5);
     this.singlePoint.anim(progress, time);
     this.sky.anim(progress, time, this.scrollSpeedEased);
     this.buttons.anim(progress, time);
@@ -621,6 +686,14 @@ export default class Animations {
     this.progress = this.scrollValue * 6;
 
     this.computeDelta(this.progress);
+
+    // Buttons
+    if (this.buttons.destroy) {
+      this.destroyAll();
+    }
+
+    // Progress Bar TEST
+    document.querySelector(".progress").style.transform = `scaleX(${this.progress / 2})`;
 
     ///////////////////////////////////////// Test without scrollBar
     if (this.backstage) {

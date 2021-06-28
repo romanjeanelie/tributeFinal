@@ -46,7 +46,7 @@ export default class Points {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         time: { value: 0 },
-        color1: { value: new THREE.Color("#ff0559") },
+        color1: { value: new THREE.Color("#A800FF") },
         opacity: { value: 0 },
         squeeze: { value: 0 },
       },
@@ -59,7 +59,7 @@ export default class Points {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         time: { value: 0 },
-        color1: { value: new THREE.Color("#ff0559") },
+        color1: { value: new THREE.Color("#A800FF") },
         opacity: { value: 0 },
       },
       vertexShader: vertex,

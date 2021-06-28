@@ -25,6 +25,7 @@ export default class Road {
 
     this.gltfLoader = new GLTFLoader();
 
+    this.wheelGroup = new THREE.Group();
     this.city = new THREE.Group();
   }
 
@@ -56,16 +57,18 @@ export default class Road {
     this.clouds = new Clouds({ scene: this.city, gui: this.gui });
     this.clouds.init();
 
-    this.wheel = new Wheel({ scene: this.city, gui: this.gui });
+    this.wheel = new Wheel({ scene: this.wheelGroup, gui: this.gui });
     this.wheel.init();
 
-    this.adBoard = new AdBoard({ scene: this.city, gui: this.gui });
+    this.adBoard = new AdBoard({ scene: this.wheelGroup, gui: this.gui });
     this.adBoard.init();
 
-    // this.addFloor();
+    this.wheelGroup.position.x = -50;
+    this.wheelGroup.position.z = 0;
+    this.city.add(this.wheelGroup);
 
-    this.city.position.x = 5000;
-    this.city.position.y = -10000;
+    this.city.position.x = -100;
+    this.city.position.y = -7000;
     this.city.position.z = 2000;
     this.city.scale.set(25, 25, 25);
 
@@ -153,17 +156,6 @@ export default class Road {
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
     this.city.add(points);
-  }
-  addFloor() {
-    this.floorGeometry = new THREE.PlaneGeometry(1, 1);
-    this.floorMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
-    this.floor = new THREE.Mesh(this.floorGeometry, this.floorMaterial);
-
-    this.floor.rotation.x = Math.PI * 0.5;
-    this.floor.position.y = -2;
-    this.floor.scale.set(2900, 1000, 500);
-
-    this.city.add(this.floor);
   }
 
   anim(progress, time) {

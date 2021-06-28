@@ -7,8 +7,6 @@ import ios from "./utils/ios";
 
 import fragment from "./shaders/button/fragment.glsl";
 import vertex from "./shaders/button/vertex.glsl";
-import fragmentBase from "./shaders/button/fragmentBase.glsl";
-import vertexBase from "./shaders/button/vertex.glsl";
 
 export default class Buttons {
   constructor(options) {
@@ -22,35 +20,53 @@ export default class Buttons {
     this.mouse = options.mouse;
     this.camera = options.camera;
     this.scene = options.scene;
+    this.road = options.road;
+    this.cityLights = options.road.cityLights;
     this.finalScene = options.finalScene;
 
     this.buttonsMesh = [];
+    this.materialsButton = [];
     this.buttons = new THREE.Group();
+    this.textsMesh = [];
+    this.materialsText = [];
+
+    this.nbBtnClicked = 0;
+
+    this.destroy = false;
 
     this.video = document.getElementById("video");
 
-    this.materialsButton = [];
+    //////////////////////// DEBUG
+    this.debug = false;
+    //////////////////////// DEBUG
+
+    window.addEventListener("mousemove", (event) => {
+      this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    if (this.debug) {
+      this.returnScene();
+    }
   }
 
   init() {
-    this.createButton({ text: "RELIEVE", x: -3000, y: 0, z: 0 });
-    this.createButton({ text: "YOUR", x: -1000, y: 0, z: 0 });
-    this.createButton({ text: "BAD", x: 1000, y: 0, z: 0 });
-    this.createButton({ text: "DREAM", x: 3000, y: 0, z: 0 });
+    const offset = 600;
+    this.createButton({ text: "RELIEVE", x: -(offset + offset / 2), y: 0, z: 0 });
+    this.createButton({ text: "YOUR", x: -offset / 2, y: 0, z: 0 });
+    this.createButton({ text: "BAD", x: offset / 2, y: 0, z: 0 });
+    this.createButton({ text: "DREAMS", x: offset + offset / 2, y: 0, z: 0 });
 
-    this.buttons.position.y = -9000;
-    this.buttons.position.z = 35500;
+    this.buttons.position.y = -7400;
+    this.buttons.position.z = 5000;
 
     this.objectsToTest = this.buttonsMesh;
 
-    this.scene.add(this.buttons);
+    this.finalScene.add(this.buttons);
 
-    setTimeout(() => {
-      this.objectsToTest.forEach((object) => {
-        console.log(object.position.x);
-        this.checkRaycaster(object.position.x - 500, object.position.x + 500);
-      });
-    }, 1000);
+    this.cityLights = this.road.cityLights;
+
+    console.log(this.cityLights);
   }
 
   rayCaster() {
@@ -59,25 +75,124 @@ export default class Buttons {
     this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
   }
 
-  checkRaycaster(min, max) {
+  checkRaycaster(obj) {
+    const minPos = obj.position.x - 100;
+    const maxPos = obj.position.x + 100;
+
     if (ios()) {
       window.addEventListener("touchstart", (event) => {
         this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
         if (this.intersects.length) {
-          this.video.play();
-          if (this.intersects[0].object.position.x > min && this.intersects[0].object.position.x < max) {
-            console.log("touch");
+          if (this.intersects[0].object.position.x > minPos && this.intersects[0].object.position.x < maxPos) {
+            this.nbBtnClicked += 1;
+            const indexBtn = this.objectsToTest.indexOf(obj);
+            const btnClicked = this.buttonsMesh[indexBtn];
+            const materialBtnClicked = this.materialsButton[indexBtn];
+            const materialTextClicked = this.materialsText[indexBtn];
+
+            if (btnClicked.position.x === this.buttonsMesh[0].position.x) {
+              this.buttonOne();
+            }
+            gsap.to(btnClicked.position, {
+              z: -200,
+              duration: 0.5,
+            });
+            gsap.to(materialBtnClicked.uniforms.opacity, {
+              value: 1,
+              duration: 0.5,
+            });
+            gsap.to(materialTextClicked, {
+              opacity: 1,
+              duration: 0.5,
+            });
+            if (this.nbBtnClicked === 4) {
+              this.returnScene();
+            }
           }
         }
       });
     }
+
     window.addEventListener("click", () => {
       if (this.intersects.length) {
-        this.video.play();
-        if (this.intersects[0].object.position.x > min && this.intersects[0].object.position.x < max) {
-          console.log("touch");
+        if (this.intersects[0].object.position.x > minPos && this.intersects[0].object.position.x < maxPos) {
+          this.nbBtnClicked += 1;
+          const indexBtn = this.objectsToTest.indexOf(obj);
+          const btnClicked = this.buttonsMesh[indexBtn];
+          const materialBtnClicked = this.materialsButton[indexBtn];
+          const materialTextClicked = this.materialsText[indexBtn];
+
+          if (btnClicked.position.x === this.buttonsMesh[0].position.x) {
+            this.buttonOne();
+          }
+          gsap.to(btnClicked.position, {
+            z: -200,
+            duration: 0.5,
+          });
+          gsap.to(materialBtnClicked.uniforms.opacity, {
+            value: 1,
+            duration: 0.5,
+          });
+          gsap.to(materialTextClicked, {
+            opacity: 1,
+            duration: 0.5,
+          });
+          if (this.nbBtnClicked === 4) {
+            this.returnScene();
+          }
         }
+      }
+    });
+  }
+
+  buttonOne() {
+    this.video.play();
+  }
+
+  returnScene() {
+    const tl = gsap.timeline();
+
+    // tl.to(this.camera.position, {
+    //   z: -1500,
+    //   duration: 60,
+    //   // ease: "power1.in",
+    // });
+    tl.to(
+      this.finalScene.rotation,
+      {
+        y: Math.PI,
+        // delay: 60,
+        duration: 60,
+        // ease: "power1.in",
+      },
+      "<"
+    );
+    tl.to(
+      this.finalScene.position,
+      {
+        y: -2000,
+        duration: 20,
+        // ease: "power1.in",
+      },
+      "<"
+    );
+
+    tl.to(
+      this.camera.position,
+      {
+        z: 0,
+        delay: 9,
+        duration: 6,
+        ease: "power2.inout",
+      },
+      "<"
+    );
+
+    this.video.addEventListener("timeupdate", (event) => {
+      const progress = this.video.currentTime;
+      if (progress > 30) {
+        this.destroy = true;
       }
     });
   }
@@ -93,22 +208,26 @@ export default class Buttons {
         curveSegments: 10,
         bevelEnabled: false,
       });
+      textGeometry.center();
 
-      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.2, transparent: true });
+      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.1, color: 0xff0000, transparent: true });
+
+      this.materialsText.push(textMaterial);
 
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
       textMesh.position.x = options.x;
-      textMesh.position.y = 700 + options.y;
-      textMesh.position.z = options.z;
-      textMesh.scale.set(50, 50, 50);
+      textMesh.position.y = 200 + options.y;
+      textMesh.position.z = options.z - 160;
+      textMesh.scale.set(20, 20, 20);
 
-      textGeometry.center();
+      this.textsMesh.push(textMesh);
 
       const geometryButton = new THREE.CylinderGeometry(1, 1, 1, 32, 1);
       const materialButton = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
+          opacity: { value: 0.3 },
         },
         transparent: true,
         vertexShader: vertex,
@@ -119,36 +238,22 @@ export default class Buttons {
 
       const button = new THREE.Mesh(geometryButton, materialButton);
 
-      const materialBase = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 },
-        },
-        transparent: true,
-        vertexShader: vertexBase,
-        fragmentShader: fragmentBase,
-      });
-      this.gltfLoader.load("/models/baseBtn.glb", (gltf) => {
-        gltf.scene.traverse((child) => {
-          child.material = materialBase;
-        });
-        gltf.scene.rotation.x = Math.PI * 0.36;
-        gltf.scene.scale.set(330, 330, 330);
-        gltf.scene.position.x = options.x;
-        gltf.scene.position.y = options.y;
-        gltf.scene.position.z = options.z - 10;
-
-        this.buttons.add(gltf.scene);
-      });
-
-      button.rotation.x = Math.PI * 0.36;
+      button.rotation.x = Math.PI * 0.5;
       button.position.x = options.x;
       button.position.y = options.y;
       button.position.z = options.z;
-      button.scale.set(200, 200, 200);
+      button.scale.set(70, 70, 70);
 
       this.buttonsMesh.push(button);
 
       this.buttons.add(button, textMesh);
+
+      // All buttons are loaded
+      if (this.buttons.children.length === 8) {
+        this.objectsToTest.forEach((obj) => {
+          this.checkRaycaster(obj);
+        });
+      }
     });
   }
 

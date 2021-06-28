@@ -13,9 +13,9 @@ export default class Landscape {
   }
 
   init() {
-    this.addLandscape({ x: 300, y: -35, z: -300 });
-    this.addLandscape2({ x: -250, y: 1, z: 100 });
-    this.addLandscape3({ x: -650, y: -10, z: 500 });
+    this.addLandscape({ x: 200, y: -35, z: -170 });
+    this.addLandscape2({ x: -130, y: 1, z: 100 });
+    // this.addLandscape3({ x: -650, y: -10, z: 500 });
   }
 
   addLandscape(options) {
@@ -27,7 +27,7 @@ export default class Landscape {
       });
 
       gltf.scene.rotation.y = Math.PI * 0.5;
-      gltf.scene.scale.set(200, 130, 120);
+      gltf.scene.scale.set(100, 100, 100);
       gltf.scene.position.x = options.x;
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;
@@ -44,7 +44,7 @@ export default class Landscape {
       });
 
       gltf.scene.rotation.y = Math.PI * 0.5;
-      gltf.scene.scale.set(200, 130, 120);
+      gltf.scene.scale.set(50, 50, 50);
       gltf.scene.position.x = options.x;
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;

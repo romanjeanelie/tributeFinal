@@ -44,12 +44,12 @@ export default class AdBoard {
         }
       });
 
-      gltf.scene.scale.set(0.4, 0.4, 0.4);
+      gltf.scene.scale.set(0.1, 0.1, 0.1);
       gltf.scene.rotation.y = 1;
 
-      gltf.scene.position.x = 100;
-      gltf.scene.position.y = 15;
-      gltf.scene.position.z = 100;
+      gltf.scene.position.x = 105;
+      gltf.scene.position.y = 4;
+      gltf.scene.position.z = 50;
 
       this.scene.add(gltf.scene);
     });

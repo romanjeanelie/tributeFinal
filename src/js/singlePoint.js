@@ -33,7 +33,7 @@ export default class SinglePoint {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
         opacity: { value: 0 },
-        isPressed: { value: 1 },
+        isPressed: { value: 2.5 },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -58,7 +58,7 @@ export default class SinglePoint {
     this.materialBG = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        color1: { value: new THREE.Color(this.debugObject.colorBG) },
+        color1: { value: new THREE.Color(this.debugObject.color1) },
         opacity: { value: 1 },
         wide: { value: 0 },
         isPressed: { value: 1 },
@@ -82,7 +82,7 @@ export default class SinglePoint {
   }
 
   setColors() {
-    this.debugObject.color1 = "#ff00ff";
+    this.debugObject.color1 = "#FF0057";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))

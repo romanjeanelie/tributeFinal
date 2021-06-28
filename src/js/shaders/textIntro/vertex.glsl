@@ -5,6 +5,8 @@ varying vec2 vUv;
 void main() {
     vec3 newposition = position;
 
+    newposition.x += 0.1;
+
     // newposition.x += (newposition.y*sin(time * .05)*10.);
     // newposition.y += (newposition.x*sin(time * .5));
 

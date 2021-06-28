@@ -28,6 +28,8 @@ export default class Sketch {
     this.camera.position.z = 10;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+
+    // console.log(this.renderer.info);
     // this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 

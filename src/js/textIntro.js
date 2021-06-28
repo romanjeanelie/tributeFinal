@@ -119,7 +119,7 @@ export default class TextIntro {
     return new Promise((resolve, reject) => {
       const textGeometry = new THREE.TextGeometry(text, {
         font: font,
-        size: 1,
+        size: 0.7,
         height: 0,
         curveSegments: 10,
         bevelEnabled: false,
@@ -132,6 +132,7 @@ export default class TextIntro {
           activeLines: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
+          uColor: { value: new THREE.Color("#93ADFF") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

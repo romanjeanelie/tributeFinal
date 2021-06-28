@@ -32,7 +32,7 @@ export default class Wheel {
 
     this.wheel.rotation.y = -Math.PI * 0.3;
 
-    this.wheel.scale.set(2, 2, 2);
+    this.wheel.scale.set(1, 1, 1);
     this.scene.add(this.wheel);
   }
 
