@@ -40,7 +40,7 @@ export default class BackSky {
     this.mesh.position.y = this.positionY;
     this.mesh.position.z = this.positionZ;
 
-    this.mesh.rotation.y = Math.PI;
+    // this.mesh.rotation.y = Math.PI;
 
     this.scene.add(this.mesh);
   }

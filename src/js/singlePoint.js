@@ -1,6 +1,8 @@
 import gsap from "gsap/gsap-core";
 import * as THREE from "three";
 
+import TextStars from "./textStars/textStars";
+
 import fragment from "./shaders/singlePoint/fragment.glsl";
 import vertex from "./shaders/singlePoint/vertex.glsl";
 import fragmentBG from "./shaders/singlePoint/fragmentBG.glsl";
@@ -14,6 +16,10 @@ export default class SinglePoint {
     this.activeWave = { value: 0 };
 
     this.scene = options.scene;
+    this.positionCamera = options.positionCamera;
+    this.sizes = options.sizes;
+
+    this.textStars = new TextStars({ scene: this.scene });
 
     this.positionX = 0;
     this.positionY = 0;
@@ -24,6 +30,10 @@ export default class SinglePoint {
     this.setColors();
     this.createPoint();
     this.createBackground();
+
+    this.textStars.init();
+
+    this.updatePosition();
   }
 
   createPoint() {
@@ -34,6 +44,7 @@ export default class SinglePoint {
         color1: { value: new THREE.Color(this.debugObject.color1) },
         opacity: { value: 0 },
         isPressed: { value: 2.5 },
+        uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -94,13 +105,43 @@ export default class SinglePoint {
       .name("singleBGPointColor");
   }
 
-  move(time) {
-    const speed = 25;
-    // this.mesh.position.x = Math.sin(time * 2 * speed) * 0.5 * this.activeWave.value;
-    // this.mesh.position.y = Math.cos(time * 8 * speed) * 0.1 * this.activeWave.value;
+  updatePosition() {
+    window.addEventListener("scroll", () => {
+      gsap.to(this.mesh.position, {
+        y: this.positionCamera.y,
+        duration: 2,
+        ease: "back.out(4)",
+      });
+      if (this.textStars.allTextLoaded) {
+        this.textStars.materialsText.forEach((material, i) => {
+          const posText = this.textStars.texts[i].posY;
+          // if (Math.abs(this.mesh.position.y - posText) * 0.01 < 1) {
+          //   gsap.to(material.uniforms.wide, {
+          //     value: 0.5,
+          //     duration: 1.5,
+          //   });
+          //   gsap.to(this.mesh.scale, {
+          //     x: 800,
+          //     y: 800,
+          //     z: 800,
+          //     duration: 1.5,
+          //   });
+          // } else {
+          //   gsap.to(this.mesh.scale, {
+          //     x: 40,
+          //     y: 40,
+          //     z: 40,
+          //     duration: 1.5,
+          //   });
+          // }
+        });
+      }
+    });
   }
   anim(progress, time) {
     this.material.uniforms.time.value = time;
     this.materialBG.uniforms.time.value = time;
+
+    this.textStars.anim(progress * 12, time);
   }
 }

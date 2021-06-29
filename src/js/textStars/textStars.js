@@ -21,6 +21,7 @@ export default class TextStars {
 
     this.textGroup = new THREE.Group();
 
+    this.textsMesh = [];
     this.materialsText = [];
 
     this.index = 0;
@@ -73,69 +74,88 @@ export default class TextStars {
         color: "#EE31C3",
       },
       // {
-      //   text: "You got the melody and the words",
-      //   posX: 7000,
+      //   text: "There's a reason we're together",
+      //   posX: 11000,
       //   // posX: 250000, ////// DEBUG
-      //   posY: 2500,
-      //   posZ: 18600,
-      //   scale: 800,
+      //   posY: 6000,
+      //   posZ: 30600,
+      //   rotY: Math.PI,
+      //   scale: 1000,
       //   color: "#E90405",
       // },
     ];
     this.loader.load("/fonts/Moniqa-Display_Italic.json", (font) => {
       this.texts.forEach((textOptions) => {
-        this.createText(font, textOptions);
+        this.createText(font, textOptions).then(() => {
+          this.index++;
+
+          if (this.index === this.texts.length) {
+            this.allTextLoaded = true;
+          }
+        });
       });
     });
   }
 
   createText(font, options) {
-    const textGeometry = new THREE.TextGeometry(options.text, {
-      font: font,
-      size: 1,
-      height: 0,
-      curveSegments: 10,
-      bevelEnabled: false,
+    return new Promise((resolve, reject) => {
+      const textGeometry = new THREE.TextGeometry(options.text, {
+        font: font,
+        size: 1,
+        height: 0,
+        curveSegments: 10,
+        bevelEnabled: false,
+      });
+
+      const textMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          uStrength: { value: 0 },
+          time: { value: 0 },
+          activeLines: { value: 0 },
+          progress: { value: 0 },
+          opacity: { value: 1 },
+          uColor: { value: new THREE.Color(options.color) },
+          uColor2: { value: new THREE.Color(options.color2 ? options.color2 : options.color) },
+          squeeze: { value: 0 },
+          wide: { value: 1 },
+        },
+        vertexShader: vertex,
+        fragmentShader: fragment,
+        transparent: true,
+        depthWrite: false,
+      });
+
+      this.materialsText.push(textMaterial);
+
+      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+      textMesh.position.x = options.posX;
+      textMesh.position.y = options.posY;
+      textMesh.position.z = options.posZ;
+
+      if (options.rotY) {
+        textMesh.rotation.y = options.rotY;
+      }
+      textMesh.scale.set(options.scale, options.scale, options.scale);
+
+      this.textsMesh.push(textMesh);
+
+      textGeometry.center();
+
+      this.scene.add(textMesh);
+
+      if (textMesh) {
+        resolve();
+      }
     });
-
-    const textMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uStrength: { value: 0 },
-        time: { value: 0 },
-        activeLines: { value: 0 },
-        progress: { value: 0 },
-        opacity: { value: 1 },
-        uColor: { value: new THREE.Color(options.color) },
-        uColor2: { value: new THREE.Color(options.color2 ? options.color2 : options.color) },
-        squeeze: { value: 0 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
-      transparent: true,
-      depthWrite: false,
-    });
-
-    this.materialsText.push(textMaterial);
-
-    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-
-    textMesh.position.x = options.posX;
-    textMesh.position.y = options.posY;
-    textMesh.position.z = options.posZ;
-    textMesh.scale.set(options.scale, options.scale, options.scale);
-
-    textGeometry.center();
-
-    this.scene.add(textMesh);
   }
 
-  anim(progress, time, scrollSpeed) {
-    this.materialsText.forEach((material) => {
+  anim(progress, time) {
+    this.materialsText.forEach((material, i) => {
       material.uniforms.time.value = time;
       material.uniforms.progress.value = progress;
       // SPEED Volets
       material.uniforms.activeLines.value = progress;
-      material.uniforms.squeeze.value = Math.abs(scrollSpeed);
     });
   }
 }

@@ -1,11 +1,14 @@
-uniform vec3 uColor;
-uniform vec3 uColor2;
+
 uniform float time;
 uniform float uStrength;
 uniform float activeLines;
 uniform float progress;
 uniform float opacity;
+uniform float wide;
 
+uniform vec2 uResolution;
+uniform vec3 uColor;
+uniform vec3 uColor2;
 
 varying vec2 vUv;
 
@@ -92,18 +95,20 @@ float stroke(float x, float s, float w){
 
 void main()	{
 
+  vec2 st = (gl_FragCoord.xy/uResolution);
+
   vec3 color = vec3(1.); 
 
   float noise = cnoise(vec3(vUv *.3, time *.4)) + 0.6;
 
-  // float strobe = sin(time * 190.);
-  // float strobeLight = mix(0.7, 1., strobe);
+  float circle = length(vUv * wide);
 
-  float result = noise;
+  float result =  noise;
 
   vec3 finalColor = mix(uColor2, uColor, result);
 
-    gl_FragColor = vec4(finalColor, result);
+  gl_FragColor = vec4(vec3(finalColor), result);
+  // gl_FragColor = vec4(vUv.xx -4., 0.,1.);
 
     
 }

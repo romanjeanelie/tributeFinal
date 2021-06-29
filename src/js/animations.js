@@ -3,7 +3,6 @@ import gsap from "gsap";
 import TextIntro from "./textIntro";
 import TextGod from "./textGod";
 import TextPoint from "./textPoint";
-import TextStars from "./textStars/textStars";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Points from "./points";
@@ -57,7 +56,7 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 2;
+    this.positionTimeline = 5;
     this.start = 0;
     // DEBUG MODE ////////////////////////////
 
@@ -99,7 +98,6 @@ export default class Animations {
     //////// START DIRECTLY ////////
 
     if (this.backstage) {
-      console.log(document.querySelector(".home"));
       document.querySelector(".home").style.display = "none";
     }
   }
@@ -252,10 +250,14 @@ export default class Animations {
     this.textIntro = new TextIntro({ scene: this.finalScene, scroll: this.scrollValue });
     this.textGod = new TextGod({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
     this.textPoint = new TextPoint({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
-    this.textStars = new TextStars({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
 
     this.circle = new Circle({ scene: this.finalScene, gui: this.gui });
-    this.singlePoint = new SinglePoint({ scene: this.finalScene, gui: this.gui });
+    this.singlePoint = new SinglePoint({
+      scene: this.finalScene,
+      positionCamera: this.createPath.cameraPath.cameraAndScreen.position,
+      sizes: this.sizes,
+      gui: this.gui,
+    });
     this.points = new Points({ scene: this.finalScene, gui: this.gui });
     this.sky = new Sky({ scene: this.finalScene, gui: this.gui });
     this.plane = new Plane({ scene: this.finalScene, gui: this.gui });
@@ -270,14 +272,15 @@ export default class Animations {
       gui: this.gui,
       mouse: this.mouse,
       camera: this.createPath.cameraPath.splineCamera,
+      points: this.points,
       road: this.road,
+
       finalScene: this.finalScene,
     });
 
     this.textIntro.init();
     this.textGod.init();
     this.textPoint.init();
-    this.textStars.init();
 
     this.circle.init();
     this.singlePoint.init();
@@ -673,7 +676,6 @@ export default class Animations {
     this.textGod.anim(progress * 12, time);
     // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
-    this.textStars.anim(progress * 12, time, this.scrollSpeedEased.value);
 
     this.road.anim(progress * 12, time);
     this.points.anim(progress * 12, time, this.scrollSpeedEased.value);
@@ -705,6 +707,8 @@ export default class Animations {
       //this.gui.show();
       this.points.pointsMaterial.uniforms.opacity.value = 1;
       this.points.pointsMaterial2.uniforms.opacity.value = 1;
+      this.tl2.play();
+      this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
     }
     ///////////////////////////////////////// End Test without scrollBar
     // Animation objects

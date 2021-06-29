@@ -34,9 +34,9 @@ export default class Points {
       minY: 7700,
       maxY: 24000,
       minZ: -500,
-      maxZ: 5500,
+      maxZ: 10500,
       material: this.pointsMaterial2,
-      qty: 1000,
+      qty: 2000,
       size: 20000,
     });
   }
@@ -104,6 +104,6 @@ export default class Points {
   anim(progress, time, scrollSpeed) {
     this.pointsMaterial.uniforms.time.value = time;
     this.pointsMaterial2.uniforms.time.value = time;
-    this.pointsMaterial.uniforms.squeeze.value = Math.min(100, Math.abs(scrollSpeed));
+    // this.pointsMaterial.uniforms.squeeze.value = Math.min(100, Math.abs(scrollSpeed));
   }
 }

@@ -17,7 +17,7 @@ export default class TextBuilding {
   }
 
   init() {
-    new TextDance({
+    this.textDance = new TextDance({
       text: "Dance",
       font: "Dancing-Script",
       posX: -60,
@@ -96,7 +96,7 @@ export default class TextBuilding {
         time: { value: 0 },
         activeLines: { value: 0 },
         progress: { value: 0 },
-        opacity: { value: 1 },
+        opacity: { value: 0 },
         uColor: { value: new THREE.Color(options.color) },
       },
       vertexShader: vertex,

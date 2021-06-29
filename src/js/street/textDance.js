@@ -52,7 +52,7 @@ export default class TextDance {
         time: { value: 0 },
         activeLines: { value: 0 },
         progress: { value: 0 },
-        opacity: { value: 1 },
+        opacity: { value: 0 },
         uColor: { value: new THREE.Color(options.color) },
       },
       vertexShader: vertex,
@@ -81,7 +81,7 @@ export default class TextDance {
 
   addStructure(options) {
     // ADD triangle
-    this.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    this.material = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0, transparent: true });
 
     this.gltfLoader.load("/models/triangle.glb", (gltf) => {
       gltf.scene.traverse((child) => {

@@ -19,7 +19,9 @@ export default class Planet {
 
     this.planet.position.x = 10350;
     this.planet.position.y = 5000;
-    this.planet.position.z = 10500;
+    this.planet.position.z = 40500;
+
+    this.planet.rotation.y = Math.PI * 1.2;
   }
 
   addPlanet() {

@@ -20,6 +20,7 @@ export default class Buttons {
     this.mouse = options.mouse;
     this.camera = options.camera;
     this.scene = options.scene;
+    this.points = options.points;
     this.road = options.road;
     this.cityLights = options.road.cityLights;
     this.finalScene = options.finalScene;
@@ -48,25 +49,27 @@ export default class Buttons {
     if (this.debug) {
       this.returnScene();
     }
+
+    // this.camera.position.z = 4500;
+    // this.finalScene.position.y = -2000;
+    // this.finalScene.rotation.y = 1.8;
   }
 
   init() {
     const offset = 600;
-    this.createButton({ text: "RELIEVE", x: -(offset + offset / 2), y: 0, z: 0 });
-    this.createButton({ text: "YOUR", x: -offset / 2, y: 0, z: 0 });
-    this.createButton({ text: "BAD", x: offset / 2, y: 0, z: 0 });
-    this.createButton({ text: "DREAMS", x: offset + offset / 2, y: 0, z: 0 });
+    this.createButton({ text: "", x: -(offset + offset / 2), y: 0, z: 0 });
+    this.createButton({ text: "", x: -offset / 2, y: 0, z: 0 });
+    this.createButton({ text: "", x: offset / 2, y: 0, z: 0 });
+    this.createButton({ text: "", x: offset + offset / 2, y: 0, z: 0 });
 
     this.buttons.position.y = -7400;
-    this.buttons.position.z = 5000;
+    this.buttons.position.z = 3000;
 
     this.objectsToTest = this.buttonsMesh;
 
     this.finalScene.add(this.buttons);
 
     this.cityLights = this.road.cityLights;
-
-    console.log(this.cityLights);
   }
 
   rayCaster() {
@@ -147,27 +150,91 @@ export default class Buttons {
   }
 
   buttonOne() {
-    this.video.play();
+    const tl = gsap.timeline();
+    this.road.textBuidling.materialsText.forEach((material) => {
+      gsap.fromTo(
+        [
+          material.uniforms.opacity,
+          this.road.textBuidling.textDance.textMaterial.uniforms.opacity,
+          this.road.textBuidling.textDance.material.opacity,
+        ],
+        {
+          value: 0,
+        },
+        {
+          value: 1,
+          yoyo: true,
+          repeat: 3,
+          delay: 0.1 + Math.random() * 0.2,
+          duration: 0.05,
+        }
+      );
+      gsap.fromTo(
+        [
+          material.uniforms.opacity,
+          this.road.textBuidling.textDance.textMaterial.uniforms.opacity,
+          this.road.textBuidling.textDance.material.opacity,
+        ],
+        {
+          value: 0,
+        },
+        {
+          delay: 0.4 + Math.random() * 0.3,
+          duration: 0.05,
+          value: 1,
+        },
+        "<"
+      );
+      material.uniforms.opacity.value = 1;
+    });
+    this.road.textBuidling.textDance.textMaterial.uniforms.opacity.value = 1;
+    this.road.textBuidling.textDance.material.opacity = 1;
+    console.log(this.road.textBuidling.textDance);
+
+    // this.video.play();
   }
 
   returnScene() {
+    this.video.play();
+
     const tl = gsap.timeline();
 
-    // tl.to(this.camera.position, {
-    //   z: -1500,
-    //   duration: 60,
-    //   // ease: "power1.in",
-    // });
+    tl.to(this.camera.position, {
+      z: 3500,
+      duration: 60,
+      // ease: "power1.in",
+    });
     tl.to(
-      this.finalScene.rotation,
+      [this.road.city.rotation, this.buttons.rotation],
       {
-        y: Math.PI,
-        // delay: 60,
+        z: Math.PI,
+        delay: 10,
         duration: 60,
         // ease: "power1.in",
       },
       "<"
     );
+    tl.to(
+      this.points.pointsMaterial.uniforms.squeeze,
+      {
+        value: 100,
+        duration: 30,
+        // ease: "power1.in",
+      },
+      "<"
+    );
+
+    tl.to(
+      this.finalScene.rotation,
+      {
+        y: Math.PI,
+        delay: 60,
+        duration: 60,
+        // ease: "power1.in",
+      },
+      "<"
+    );
+
     tl.to(
       this.finalScene.position,
       {
@@ -177,22 +244,22 @@ export default class Buttons {
       },
       "<"
     );
-
-    tl.to(
-      this.camera.position,
-      {
-        z: 0,
-        delay: 9,
-        duration: 6,
-        ease: "power2.inout",
-      },
-      "<"
-    );
+    // tl.to(
+    //   this.camera.position,
+    //   {
+    //     z: 0,
+    //     delay: 9,
+    //     duration: 6,
+    //     ease: "power2.inout",
+    //   },
+    //   "<"
+    // );
 
     this.video.addEventListener("timeupdate", (event) => {
       const progress = this.video.currentTime;
+      console.log(progress);
       if (progress > 30) {
-        this.destroy = true;
+        // this.destroy = true;
       }
     });
   }
