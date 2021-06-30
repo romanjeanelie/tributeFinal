@@ -41,9 +41,9 @@ void main()	{
   float strobe = sin(time * 130.);
   float strobeLight = mix(0.93, 1., strobe);
 
- float lines = strobeLight * littleLines * 0.03;
+ float lines = strobeLight * littleLines * 0.08;
 
-    gl_FragColor = vec4(vec3(1. - rect), ( lines + rect));
+    gl_FragColor = vec4(vec3(1. - rect), ( lines + rect) * opacity);
 
     
 }

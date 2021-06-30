@@ -63,7 +63,8 @@ export default class Buttons {
     this.createButton({ text: "", x: offset + offset / 2, y: 0, z: 0 });
 
     this.buttons.position.y = -7400;
-    this.buttons.position.z = 3000;
+    // this.buttons.position.z = 3000;
+    this.buttons.position.z = 4700;
 
     this.objectsToTest = this.buttonsMesh;
 
@@ -149,50 +150,7 @@ export default class Buttons {
     });
   }
 
-  buttonOne() {
-    const tl = gsap.timeline();
-    this.road.textBuidling.materialsText.forEach((material) => {
-      gsap.fromTo(
-        [
-          material.uniforms.opacity,
-          this.road.textBuidling.textDance.textMaterial.uniforms.opacity,
-          this.road.textBuidling.textDance.material.opacity,
-        ],
-        {
-          value: 0,
-        },
-        {
-          value: 1,
-          yoyo: true,
-          repeat: 3,
-          delay: 0.1 + Math.random() * 0.2,
-          duration: 0.05,
-        }
-      );
-      gsap.fromTo(
-        [
-          material.uniforms.opacity,
-          this.road.textBuidling.textDance.textMaterial.uniforms.opacity,
-          this.road.textBuidling.textDance.material.opacity,
-        ],
-        {
-          value: 0,
-        },
-        {
-          delay: 0.4 + Math.random() * 0.3,
-          duration: 0.05,
-          value: 1,
-        },
-        "<"
-      );
-      material.uniforms.opacity.value = 1;
-    });
-    this.road.textBuidling.textDance.textMaterial.uniforms.opacity.value = 1;
-    this.road.textBuidling.textDance.material.opacity = 1;
-    console.log(this.road.textBuidling.textDance);
-
-    // this.video.play();
-  }
+  buttonOne() {}
 
   returnScene() {
     this.video.play();
@@ -204,16 +162,16 @@ export default class Buttons {
       duration: 60,
       // ease: "power1.in",
     });
-    tl.to(
-      [this.road.city.rotation, this.buttons.rotation],
-      {
-        z: Math.PI,
-        delay: 10,
-        duration: 60,
-        // ease: "power1.in",
-      },
-      "<"
-    );
+    // tl.to(
+    //   [this.road.city.rotation, this.buttons.rotation],
+    //   {
+    //     z: Math.PI,
+    //     delay: 10,
+    //     duration: 60,
+    //     // ease: "power1.in",
+    //   },
+    //   "<"
+    // );
     tl.to(
       this.points.pointsMaterial.uniforms.squeeze,
       {

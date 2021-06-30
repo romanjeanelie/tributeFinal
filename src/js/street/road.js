@@ -3,6 +3,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import vertex from "../shaders/buildings/windows/vertex";
 import fragment from "../shaders/buildings/windows/fragment";
+import vertexAntenne from "../shaders/buildings/antenne/vertexAntenne";
+import fragmentAntenne from "../shaders/buildings/antenne/fragmentAntenne";
 import vertex2 from "../shaders/buildings/panels/vertex2";
 import fragment2 from "../shaders/buildings/panels/fragment2";
 import positionsWindows from "./positionsWindows.json";
@@ -98,6 +100,15 @@ export default class Road {
       depthWrite: false,
     });
 
+    this.materialAntenne = new THREE.ShaderMaterial({
+      vertexShader: vertexAntenne,
+      fragmentShader: fragmentAntenne,
+      transparent: true,
+      uniforms: {
+        time: { value: 0 },
+      },
+    });
+
     this.gltfLoader.load("/models/city.glb", (gltf) => {
       gltf.scene.traverse((child) => {
         this.positionBuilding = null;
@@ -111,6 +122,9 @@ export default class Road {
         }
         if (child.name.includes("Panel")) {
           child.material = this.materialPanel;
+        }
+        if (child.name.includes("pointAntenne")) {
+          child.material = this.materialAntenne;
         }
       });
 
@@ -146,7 +160,7 @@ export default class Road {
       positions[i3 + 2] = positionsWindow[i].z;
 
       size[i] = 600;
-      opacity[i] = Math.random() * 0.6;
+      opacity[i] = Math.random() * 1;
     }
 
     pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -162,5 +176,6 @@ export default class Road {
     this.textBuidling.anim(progress, time);
     this.wheel.anim(progress, time);
     this.adBoard.anim(progress, time);
+    this.materialAntenne.uniforms.time.value = time;
   }
 }

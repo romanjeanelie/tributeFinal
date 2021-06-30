@@ -18,35 +18,34 @@ export default class TextBuilding {
 
   init() {
     this.textDance = new TextDance({
-      text: "Dance",
-      font: "Dancing-Script",
+      text: "DANCE",
+      font: "Codystar",
       posX: -60,
       posY: 22,
       posZ: 12,
       rotateZ: 0.12,
       scale: 4,
-      color: "#FFB200",
+      color: "#FF0000",
       scene: this.scene,
     });
     this.texts = [
       {
         text: "WITH ME",
-        font: "Gala2",
+        font: "Codystar",
         posX: -29,
-        posY: 10,
+        posY: 30,
         posZ: 12,
         scale: 6,
-        color: "#FFB200",
+        color: "#FF0000",
       },
       {
         text: "ON THE FLOOR",
-        font: "Gala2",
-
+        font: "Codystar",
         posX: -14,
         posY: 20,
         posZ: -4,
         scale: 6,
-        color: "#FFB200",
+        color: "#FF0000",
       },
       {
         text: "YOUR HEART",
@@ -96,7 +95,7 @@ export default class TextBuilding {
         time: { value: 0 },
         activeLines: { value: 0 },
         progress: { value: 0 },
-        opacity: { value: 0 },
+        opacity: { value: 1 },
         uColor: { value: new THREE.Color(options.color) },
       },
       vertexShader: vertex,

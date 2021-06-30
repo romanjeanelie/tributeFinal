@@ -5,7 +5,6 @@ import TextGod from "./textGod";
 import TextPoint from "./textPoint";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
-import Points from "./points";
 import Sky from "./sky";
 import Plane from "./plane";
 import Moon from "./moon/moon";
@@ -56,8 +55,8 @@ export default class Animations {
 
     // DEBUG MODE ////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 5;
-    this.start = 0;
+    this.positionTimeline = 2;
+    this.start = 5;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
@@ -93,8 +92,8 @@ export default class Animations {
     this.startListener();
 
     //////// START DIRECTLY ////////
-    // this.startProject();
-    // document.querySelector(".home").style.display = "none";
+    this.startProject();
+    document.querySelector(".home").style.display = "none";
     //////// START DIRECTLY ////////
 
     if (this.backstage) {
@@ -118,14 +117,6 @@ export default class Animations {
       duration: 1,
     });
 
-    tl.to(
-      ".home__title, #start",
-      {
-        color: "#f00",
-        duration: 1,
-      },
-      "<"
-    );
     tl.to(".line", {
       autoAlpha: 0,
       duration: 0.5,
@@ -258,7 +249,6 @@ export default class Animations {
       sizes: this.sizes,
       gui: this.gui,
     });
-    this.points = new Points({ scene: this.finalScene, gui: this.gui });
     this.sky = new Sky({ scene: this.finalScene, gui: this.gui });
     this.plane = new Plane({ scene: this.finalScene, gui: this.gui });
     this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
@@ -272,7 +262,7 @@ export default class Animations {
       gui: this.gui,
       mouse: this.mouse,
       camera: this.createPath.cameraPath.splineCamera,
-      points: this.points,
+      points: this.singlePoint.points,
       road: this.road,
 
       finalScene: this.finalScene,
@@ -284,7 +274,6 @@ export default class Animations {
 
     this.circle.init();
     this.singlePoint.init();
-    this.points.init();
     this.sky.init();
     this.moon.init();
     this.road.init();
@@ -539,7 +528,7 @@ export default class Animations {
     );
 
     tl.to(
-      this.points.pointsMaterial.uniforms.opacity,
+      this.singlePoint.points.pointsMaterial.uniforms.opacity,
       {
         value: 1,
         duration: 10,
@@ -547,7 +536,7 @@ export default class Animations {
       "<"
     );
     tl.to(
-      this.points.pointsMaterial2.uniforms.opacity,
+      this.singlePoint.points.pointsMaterial2.uniforms.opacity,
       {
         value: 1,
         duration: 10,
@@ -678,7 +667,7 @@ export default class Animations {
     this.textPoint.anim(progress * 12, time);
 
     this.road.anim(progress * 12, time);
-    this.points.anim(progress * 12, time, this.scrollSpeedEased.value);
+    this.singlePoint.points.anim(progress * 12, time, this.scrollSpeedEased.value);
   }
 
   render() {
@@ -705,8 +694,8 @@ export default class Animations {
       document.body.classList.remove("scroll");
       document.querySelector(".home").style.opacity = 0;
       //this.gui.show();
-      this.points.pointsMaterial.uniforms.opacity.value = 1;
-      this.points.pointsMaterial2.uniforms.opacity.value = 1;
+      this.singlePoint.points.pointsMaterial.uniforms.opacity.value = 1;
+      this.singlePoint.points.pointsMaterial2.uniforms.opacity.value = 1;
       this.tl2.play();
       this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
     }

@@ -1,5 +1,16 @@
 uniform float time;
 uniform vec3 color1;
+uniform vec3 color2;
+uniform vec3 color3;
+uniform vec3 color4;
+uniform vec3 color5;
+
+uniform float isColor1;
+uniform float isColor2;
+uniform float isColor3;
+uniform float isColor4;
+uniform float isColor5;
+
 uniform float opacity; 
 uniform float isPressed; 
 
@@ -29,8 +40,13 @@ void main()	{
 
     float strength = (0.25 / distanceToCenter - 0.5) * strobeLight * opacity;
 
+  
+
+    vec3 result = color1 * isColor1 + color2 * isColor2 + color3 * isColor3 + color4 * isColor4 + color5 * isColor5;
+   
+
     //float finalColor = mix(1., 0.1, strength * 3.);
 
-    gl_FragColor = vec4(color1, strength * 3.);
+    gl_FragColor = vec4(result, strength * 3.);
 
 }

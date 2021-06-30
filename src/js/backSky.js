@@ -34,7 +34,7 @@ export default class BackSky {
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.mesh.scale.set(10000, 6000, 100);
+    this.mesh.scale.set(15000, 6000, 100);
 
     this.mesh.position.x = this.positionX;
     this.mesh.position.y = this.positionY;

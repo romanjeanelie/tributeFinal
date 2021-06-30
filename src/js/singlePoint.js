@@ -2,11 +2,14 @@ import gsap from "gsap/gsap-core";
 import * as THREE from "three";
 
 import TextStars from "./textStars/textStars";
+import Points from "./points";
 
 import fragment from "./shaders/singlePoint/fragment.glsl";
 import vertex from "./shaders/singlePoint/vertex.glsl";
 import fragmentBG from "./shaders/singlePoint/fragmentBG.glsl";
 import vertexBG from "./shaders/singlePoint/vertexBG.glsl";
+
+import clamp from "./utils/clamp";
 
 export default class SinglePoint {
   constructor(options) {
@@ -19,6 +22,7 @@ export default class SinglePoint {
     this.positionCamera = options.positionCamera;
     this.sizes = options.sizes;
 
+    this.points = new Points({ scene: this.scene, gui: this.gui });
     this.textStars = new TextStars({ scene: this.scene });
 
     this.positionX = 0;
@@ -27,11 +31,17 @@ export default class SinglePoint {
   }
 
   init() {
+    this.textStars.init();
+    this.points.color1 = new THREE.Color("#FF0000");
+    this.points.color2 = new THREE.Color(this.textStars.texts[0].color);
+    this.points.color3 = new THREE.Color(this.textStars.texts[1].color);
+    this.points.color4 = new THREE.Color(this.textStars.texts[2].color);
+    this.points.color5 = new THREE.Color(this.textStars.texts[3].color);
+    this.points.init();
+
     this.setColors();
     this.createPoint();
     this.createBackground();
-
-    this.textStars.init();
 
     this.updatePosition();
   }
@@ -41,7 +51,16 @@ export default class SinglePoint {
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        color1: { value: new THREE.Color(this.debugObject.color1) },
+        color1: { value: new THREE.Color("#FF0000") },
+        color2: { value: new THREE.Color(this.textStars.texts[0].color) },
+        color3: { value: new THREE.Color(this.textStars.texts[1].color) },
+        color4: { value: new THREE.Color(this.textStars.texts[2].color) },
+        color5: { value: new THREE.Color(this.textStars.texts[3].color) },
+        isColor1: { value: 1 },
+        isColor2: { value: 0 },
+        isColor3: { value: 0 },
+        isColor4: { value: 0 },
+        isColor5: { value: 0 },
         opacity: { value: 0 },
         isPressed: { value: 2.5 },
         uResolution: { value: new THREE.Vector2(this.sizes.width, this.sizes.height) },
@@ -70,6 +89,7 @@ export default class SinglePoint {
       uniforms: {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
+
         opacity: { value: 1 },
         wide: { value: 0 },
         isPressed: { value: 1 },
@@ -106,7 +126,12 @@ export default class SinglePoint {
   }
 
   updatePosition() {
+    const deltas = [];
+    const posTexts = [];
+
     window.addEventListener("scroll", () => {
+      const posPoint = this.mesh.position.y;
+
       gsap.to(this.mesh.position, {
         y: this.positionCamera.y,
         duration: 2,
@@ -114,27 +139,31 @@ export default class SinglePoint {
       });
       if (this.textStars.allTextLoaded) {
         this.textStars.materialsText.forEach((material, i) => {
-          const posText = this.textStars.texts[i].posY;
-          // if (Math.abs(this.mesh.position.y - posText) * 0.01 < 1) {
-          //   gsap.to(material.uniforms.wide, {
-          //     value: 0.5,
-          //     duration: 1.5,
-          //   });
-          //   gsap.to(this.mesh.scale, {
-          //     x: 800,
-          //     y: 800,
-          //     z: 800,
-          //     duration: 1.5,
-          //   });
-          // } else {
-          //   gsap.to(this.mesh.scale, {
-          //     x: 40,
-          //     y: 40,
-          //     z: 40,
-          //     duration: 1.5,
-          //   });
-          // }
+          posTexts[i] = this.textStars.texts[i].posY;
+          deltas[i] = clamp((posPoint - posTexts[i]) / 300, 0, 1);
         });
+      }
+      this.material.uniforms.isColor1.value = deltas[0];
+      this.material.uniforms.isColor2.value = 1 - deltas[0];
+      this.points.pointsMaterial.uniforms.isColor1.value = deltas[0];
+      this.points.pointsMaterial.uniforms.isColor2.value = 1 - deltas[0];
+      if (posPoint < posTexts[0]) {
+        this.material.uniforms.isColor2.value = deltas[1];
+        this.material.uniforms.isColor3.value = 1 - deltas[1];
+        this.points.pointsMaterial.uniforms.isColor2.value = deltas[1];
+        this.points.pointsMaterial.uniforms.isColor3.value = 1 - deltas[1];
+      }
+      if (posPoint < posTexts[1]) {
+        this.material.uniforms.isColor3.value = deltas[2];
+        this.material.uniforms.isColor4.value = 1 - deltas[2];
+        this.points.pointsMaterial.uniforms.isColor3.value = deltas[2];
+        this.points.pointsMaterial.uniforms.isColor4.value = 1 - deltas[2];
+      }
+      if (posPoint < posTexts[2]) {
+        this.material.uniforms.isColor4.value = deltas[3];
+        this.material.uniforms.isColor5.value = 1 - deltas[3];
+        this.points.pointsMaterial.uniforms.isColor4.value = deltas[3];
+        this.points.pointsMaterial.uniforms.isColor5.value = 1 - deltas[3];
       }
     });
   }

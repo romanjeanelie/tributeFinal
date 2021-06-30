@@ -1,4 +1,9 @@
 varying vec2 vUv;
+uniform float uPixelRatio;
+attribute float opacity; 
+
+attribute float size; 
+varying float vOpacity;
 
 void main(){
     vec4 modelPosition = modelMatrix * vec4(position, 1.); 
@@ -7,9 +12,11 @@ void main(){
 
     gl_Position = projectionPosition;  
 
-        gl_PointSize = 5000.;
+        gl_PointSize = size * uPixelRatio;
         // Keep size attenuation
         gl_PointSize *= (1.0 / - viewPosition.z);
 
     vUv = uv; 
+    vOpacity = opacity;
+
 }

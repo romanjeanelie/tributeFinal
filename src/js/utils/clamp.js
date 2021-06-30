@@ -1,4 +1,3 @@
-export default function clamp(x, y, a) {
-  const factor = y - x;
-  return x + a * factor;
+export default function clamp(number, min, max) {
+  return Math.max(min, Math.min(number, max));
 }

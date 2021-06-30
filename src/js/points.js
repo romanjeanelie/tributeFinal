@@ -12,11 +12,17 @@ export default class Points {
     this.opacity = 0;
 
     this.pointsGroup = new THREE.Group();
+
+    this.color1 = null;
+    this.color2 = null;
+    this.color3 = null;
+    this.color4 = null;
+    this.color5 = null;
   }
 
   init() {
     this.createPointsMaterials();
-
+    console.log(this.color1);
     this.addPoints({
       minX: 0,
       maxX: 3300,
@@ -25,7 +31,7 @@ export default class Points {
       minZ: -500,
       maxZ: 550,
       material: this.pointsMaterial,
-      qty: 100,
+      qty: 500,
       size: 9000,
     });
     this.addPoints({
@@ -46,7 +52,16 @@ export default class Points {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         time: { value: 0 },
-        color1: { value: new THREE.Color("#A800FF") },
+        color1: { value: this.color1 },
+        color2: { value: this.color2 },
+        color3: { value: this.color3 },
+        color4: { value: this.color4 },
+        color5: { value: this.color5 },
+        isColor1: { value: 1 },
+        isColor2: { value: 0 },
+        isColor3: { value: 0 },
+        isColor4: { value: 0 },
+        isColor5: { value: 0 },
         opacity: { value: 0 },
         squeeze: { value: 0 },
       },

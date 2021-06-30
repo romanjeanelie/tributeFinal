@@ -86,7 +86,7 @@ export default class TextPoint {
           time: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
-          color1: { value: new THREE.Color("#FF0057") },
+          color1: { value: new THREE.Color("#FF0000") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
