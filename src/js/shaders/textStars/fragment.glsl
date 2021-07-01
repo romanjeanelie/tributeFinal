@@ -107,7 +107,7 @@ void main()	{
 
   vec3 finalColor = mix(uColor2, uColor, result);
 
-  gl_FragColor = vec4(vec3(finalColor), result);
+  gl_FragColor = vec4(vec3(finalColor), result * opacity);
   // gl_FragColor = vec4(vUv.xx -4., 0.,1.);
 
     

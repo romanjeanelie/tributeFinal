@@ -12,6 +12,7 @@ import Road from "./street/road";
 import Planet from "./planet";
 import Buttons from "./buttons";
 import BackSky from "./backSky";
+import Flower from "./flower";
 
 import progressBar from "./progressBar";
 
@@ -255,6 +256,7 @@ export default class Animations {
     this.road = new Road({ scene: this.finalScene, gui: this.gui });
     this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
     this.backSky = new BackSky({ scene: this.finalScene, gui: this.gui });
+    this.flower = new Flower({ scene: this.finalScene, gui: this.gui });
 
     this.progressBar = new Circle({ scene: this.finalScene, gui: this.gui });
     this.buttons = new Buttons({
@@ -262,9 +264,10 @@ export default class Animations {
       gui: this.gui,
       mouse: this.mouse,
       camera: this.createPath.cameraPath.splineCamera,
+      singlePoint: this.singlePoint,
       points: this.singlePoint.points,
       road: this.road,
-
+      flower: this.flower,
       finalScene: this.finalScene,
     });
 
@@ -280,6 +283,7 @@ export default class Animations {
     this.plane.init();
     this.planet.init();
     this.backSky.init();
+    this.flower.init();
 
     this.progressBar.init();
     this.buttons.init();
@@ -341,6 +345,8 @@ export default class Animations {
   }
 
   anim() {
+    this.tl2.play();
+
     this.stepTwo();
     if (this.backstage) {
       this.stepFour();
@@ -649,6 +655,7 @@ export default class Animations {
     this.tl4.progress(this.progress2 * 0.5);
     this.singlePoint.anim(progress, time);
     this.sky.anim(progress, time, this.scrollSpeedEased);
+    this.flower.anim(progress, time);
     this.buttons.anim(progress, time);
 
     if (this.progress > this.steps[0]) {

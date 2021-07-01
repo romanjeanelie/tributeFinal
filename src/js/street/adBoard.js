@@ -51,7 +51,7 @@ export default class AdBoard {
       gltf.scene.position.y = 10;
       gltf.scene.position.z = 90;
 
-      this.scene.add(gltf.scene);
+      // this.scene.add(gltf.scene);
     });
   }
 

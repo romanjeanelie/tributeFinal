@@ -21,7 +21,10 @@ export default class Buttons {
     this.camera = options.camera;
     this.scene = options.scene;
     this.points = options.points;
+    this.singlePoint = options.singlePoint;
+    this.textStars = this.singlePoint.textStars;
     this.road = options.road;
+    this.flower = options.flower;
     this.cityLights = options.road.cityLights;
     this.finalScene = options.finalScene;
 
@@ -45,32 +48,28 @@ export default class Buttons {
       this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
-
-    if (this.debug) {
-      this.returnScene();
-    }
-
-    // this.camera.position.z = 4500;
-    // this.finalScene.position.y = -2000;
-    // this.finalScene.rotation.y = 1.8;
   }
 
   init() {
-    const offset = 600;
-    this.createButton({ text: "", x: -(offset + offset / 2), y: 0, z: 0 });
-    this.createButton({ text: "", x: -offset / 2, y: 0, z: 0 });
-    this.createButton({ text: "", x: offset / 2, y: 0, z: 0 });
-    this.createButton({ text: "", x: offset + offset / 2, y: 0, z: 0 });
+    this.createButton({ text: "", x: 0, y: 0, z: 0 });
 
-    this.buttons.position.y = -7400;
-    // this.buttons.position.z = 3000;
-    this.buttons.position.z = 4700;
+    this.buttons.position.y = -7300;
+    this.buttons.position.z = 5300;
 
     this.objectsToTest = this.buttonsMesh;
 
     this.finalScene.add(this.buttons);
 
     this.cityLights = this.road.cityLights;
+    if (this.debug) {
+      this.camera.position.z = 3500;
+      this.finalScene.position.y = -2000;
+      this.finalScene.rotation.y = Math.PI;
+      this.points.pointsMaterial2.uniforms.squeeze.value = 30;
+      setTimeout(() => {
+        this.flower.particlesMaterial.uniforms.uScale.value = 1;
+      }, 1000);
+    }
   }
 
   rayCaster() {
@@ -80,58 +79,18 @@ export default class Buttons {
   }
 
   checkRaycaster(obj) {
-    const minPos = obj.position.x - 100;
-    const maxPos = obj.position.x + 100;
-
     if (ios()) {
       window.addEventListener("touchstart", (event) => {
         this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
         if (this.intersects.length) {
-          if (this.intersects[0].object.position.x > minPos && this.intersects[0].object.position.x < maxPos) {
-            this.nbBtnClicked += 1;
-            const indexBtn = this.objectsToTest.indexOf(obj);
-            const btnClicked = this.buttonsMesh[indexBtn];
-            const materialBtnClicked = this.materialsButton[indexBtn];
-            const materialTextClicked = this.materialsText[indexBtn];
-
-            if (btnClicked.position.x === this.buttonsMesh[0].position.x) {
-              this.buttonOne();
-            }
-            gsap.to(btnClicked.position, {
-              z: -200,
-              duration: 0.5,
-            });
-            gsap.to(materialBtnClicked.uniforms.opacity, {
-              value: 1,
-              duration: 0.5,
-            });
-            gsap.to(materialTextClicked, {
-              opacity: 1,
-              duration: 0.5,
-            });
-            if (this.nbBtnClicked === 4) {
-              this.returnScene();
-            }
-          }
-        }
-      });
-    }
-
-    window.addEventListener("click", () => {
-      if (this.intersects.length) {
-        if (this.intersects[0].object.position.x > minPos && this.intersects[0].object.position.x < maxPos) {
           this.nbBtnClicked += 1;
-          const indexBtn = this.objectsToTest.indexOf(obj);
-          const btnClicked = this.buttonsMesh[indexBtn];
-          const materialBtnClicked = this.materialsButton[indexBtn];
-          const materialTextClicked = this.materialsText[indexBtn];
+          const btnClicked = this.buttonsMesh[0];
+          const materialBtnClicked = this.materialsButton[0];
+          const materialTextClicked = this.materialsText[0];
 
-          if (btnClicked.position.x === this.buttonsMesh[0].position.x) {
-            this.buttonOne();
-          }
           gsap.to(btnClicked.position, {
-            z: -200,
+            z: -100,
             duration: 0.5,
           });
           gsap.to(materialBtnClicked.uniforms.opacity, {
@@ -142,42 +101,89 @@ export default class Buttons {
             opacity: 1,
             duration: 0.5,
           });
-          if (this.nbBtnClicked === 4) {
-            this.returnScene();
-          }
+          this.returnScene();
         }
+      });
+    }
+
+    window.addEventListener("click", () => {
+      if (this.intersects.length) {
+        this.nbBtnClicked += 1;
+        const btnClicked = this.buttonsMesh[0];
+        const materialBtnClicked = this.materialsButton[0];
+        const materialTextClicked = this.materialsText[0];
+
+        gsap.to(btnClicked.position, {
+          z: -100,
+          duration: 0.5,
+        });
+        gsap.to(materialBtnClicked.uniforms.opacity, {
+          value: 1,
+          duration: 0.5,
+        });
+        gsap.to(materialTextClicked, {
+          opacity: 1,
+          duration: 0.5,
+        });
+
+        this.returnScene();
       }
     });
   }
 
-  buttonOne() {}
-
   returnScene() {
-    this.video.play();
-
+    console.log(this.road.cityLights.pointsMaterial1.uniform);
+    setTimeout(() => {
+      this.video.play();
+    }, 3000);
     const tl = gsap.timeline();
 
-    tl.to(this.camera.position, {
-      z: 3500,
-      duration: 60,
-      // ease: "power1.in",
+    tl.to(this.textStars.materialsText[3].uniforms.opacity, {
+      value: 1,
+      duration: 2,
     });
-    // tl.to(
-    //   [this.road.city.rotation, this.buttons.rotation],
-    //   {
-    //     z: Math.PI,
-    //     delay: 10,
-    //     duration: 60,
-    //     // ease: "power1.in",
-    //   },
-    //   "<"
-    // );
     tl.to(
-      this.points.pointsMaterial.uniforms.squeeze,
+      this.textStars.textsMesh[3].position,
       {
-        value: 100,
-        duration: 30,
+        z: 5000,
+        duration: 60,
+      },
+      "<"
+    );
+
+    tl.to(
+      this.camera.position,
+      {
+        z: 1500,
+        duration: 40,
         // ease: "power1.in",
+      },
+      "<"
+    );
+
+    tl.to(
+      this.points.pointsMaterial2.uniforms.squeeze,
+      {
+        value: 30,
+        duration: 10,
+      },
+      "<"
+    );
+    tl.to(
+      this.road.cityLights.pointsMaterial1.uniforms.move,
+      {
+        value: 1,
+        delay: 10,
+        duration: 60,
+      },
+      "<"
+    );
+    tl.to(
+      this.road.cityLights.pointsMaterialBig.uniforms.move,
+      {
+        value: 1,
+        delay: 10,
+        duration: 60,
       },
       "<"
     );
@@ -186,9 +192,17 @@ export default class Buttons {
       this.finalScene.rotation,
       {
         y: Math.PI,
-        delay: 60,
+        delay: 40,
         duration: 60,
-        // ease: "power1.in",
+      },
+      "<"
+    );
+    tl.to(
+      this.flower.particlesMaterial.uniforms.uScale,
+      {
+        value: 1,
+        delay: 20,
+        duration: 20,
       },
       "<"
     );
@@ -274,7 +288,7 @@ export default class Buttons {
       this.buttons.add(button, textMesh);
 
       // All buttons are loaded
-      if (this.buttons.children.length === 8) {
+      if (this.buttons.children.length > 0) {
         this.objectsToTest.forEach((obj) => {
           this.checkRaycaster(obj);
         });

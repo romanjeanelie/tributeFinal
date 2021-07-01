@@ -89,7 +89,8 @@ export default class Road {
     this.materialBuilding = new THREE.MeshBasicMaterial({
       color: 0x0000000,
       side: THREE.DoubleSide,
-      transparent: false,
+      transparent: true,
+      opacity: 0,
       //depthWrite: false,
     });
 
@@ -128,7 +129,7 @@ export default class Road {
         }
       });
 
-      this.city.add(gltf.scene);
+      // this.city.add(gltf.scene);
 
       this.createLightWindow(this.positionsWindow);
     });
@@ -160,7 +161,7 @@ export default class Road {
       positions[i3 + 2] = positionsWindow[i].z;
 
       size[i] = 600;
-      opacity[i] = Math.random() * 1;
+      opacity[i] = Math.random() * 0.5;
     }
 
     pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -177,5 +178,6 @@ export default class Road {
     this.wheel.anim(progress, time);
     this.adBoard.anim(progress, time);
     this.materialAntenne.uniforms.time.value = time;
+    this.cityLights.anim(progress, time);
   }
 }

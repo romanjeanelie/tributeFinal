@@ -46,11 +46,11 @@ export default class cameraPath {
       this.camera.position.y = -6500;
       this.camera.position.z = 7000;
       // this.camera.position.x = 0;
-      // this.camera.position.y = -900;
-      // this.camera.position.z = 10;
+      // this.camera.position.y = 1;
+      // this.camera.position.z = 15;
 
       this.posCameraLarge = new THREE.Vector3(0, -6000, -2369.896873902935);
-      // this.posCameraLarge = new THREE.Vector3(0, -500, -1369.896873902935);
+      // this.posCameraLarge = new THREE.Vector3(0, 0, 0);
 
       this.params.animationView = false;
       document.body.classList.remove("scroll");

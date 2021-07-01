@@ -22,7 +22,6 @@ export default class Points {
 
   init() {
     this.createPointsMaterials();
-    console.log(this.color1);
     this.addPoints({
       minX: 0,
       maxX: 3300,
@@ -74,8 +73,9 @@ export default class Points {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         time: { value: 0 },
-        color1: { value: new THREE.Color("#A800FF") },
+        color1: { value: new THREE.Color("#F6CFC7") },
         opacity: { value: 0 },
+        squeeze: { value: 0 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,

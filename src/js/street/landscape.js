@@ -13,9 +13,9 @@ export default class Landscape {
   }
 
   init() {
-    this.addLandscape2({ x: 160, y: 0, z: -170 });
+    this.addLandscape2({ x: 160, y: 0, z: 30 });
     // this.addLandscape2({ x: -130, y: 1, z: 100 });
-    this.addLandscape3({ x: -100, y: 0, z: -170 });
+    this.addLandscape3({ x: -100, y: 0, z: -50 });
   }
 
   addLandscape(options) {

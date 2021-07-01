@@ -126,6 +126,7 @@ export default class SinglePoint {
   }
 
   updatePosition() {
+    this.mesh.position.y = this.positionCamera.y - 30;
     const deltas = [];
     const posTexts = [];
 
@@ -133,7 +134,7 @@ export default class SinglePoint {
       const posPoint = this.mesh.position.y;
 
       gsap.to(this.mesh.position, {
-        y: this.positionCamera.y,
+        y: this.positionCamera.y - 30,
         duration: 2,
         ease: "back.out(4)",
       });

@@ -14,21 +14,10 @@ export default class TextDance {
     this.gltfLoader = new GLTFLoader();
 
     this.init(options);
-    this.addStructure(options);
+    // this.addStructure(options);
   }
 
   init(options) {
-    this.texts = [
-      {
-        text: "Dance",
-        font: "Dancing-Script",
-        posX: -60,
-        posY: 22,
-        posZ: 12,
-        scale: 6,
-        color: "#FFB200",
-      },
-    ];
     this.loader.load(`/fonts/${options.font}.json`, (font) => {
       this.createText(font, options);
     });
