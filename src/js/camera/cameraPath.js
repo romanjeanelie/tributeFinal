@@ -44,7 +44,7 @@ export default class cameraPath {
     if (this.isActive) {
       this.camera.position.x = 0;
       this.camera.position.y = -6500;
-      this.camera.position.z = 7000;
+      this.camera.position.z = 11000;
       // this.camera.position.x = 0;
       // this.camera.position.y = 1;
       // this.camera.position.z = 15;

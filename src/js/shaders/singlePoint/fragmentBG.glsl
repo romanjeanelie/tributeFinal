@@ -33,16 +33,18 @@ void main()	{
     rect = fill(rect, 1.);
 
     float growth = 1. - sin(time * 3.) * 0.1;
-    float distanceToCenter = 1. - distance(vUv, vec2(0.5)) * growth * isPressed;
+    float distanceToCenter = 1. - distance(vUv, vec2(0.5, 0.45)) * growth * isPressed;
 
    float strobe = sin(time * 2000.);
     float strobeLight = mix(0.98, 1., strobe);
 
 
-    float result = (distanceToCenter - 0.55) * strobeLight * 0.8;
+    float result = (distanceToCenter - 0.35) * strobeLight * 0.8;
+    // float result = (distanceToCenter) * strobeLight * 0.8;
 
 
     color = mix(vec3(0.), color1, result *  opacity);
+    // color = mix(vec3(0.), color1,   result);
 
 
 

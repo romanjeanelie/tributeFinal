@@ -17,16 +17,16 @@ export default class Flower {
 
   init() {
     this.addFlower();
-    this.flower.scale.set(40, 40, 40);
+    this.flower.scale.set(4, 4, 4);
     this.flower.rotation.x = 1;
-    this.flower.position.y = 900;
-    this.flower.position.z = 9500;
+    this.flower.position.y = -1000;
+    this.flower.position.z = 12500;
     this.scene.add(this.flower);
   }
 
   addFlower() {
-    this.gltfLoader.load("/models/teddy.glb", (gltf) => {
-      this.mesh = gltf.scene.children[0].children[0];
+    this.gltfLoader.load("/models/flower.glb", (gltf) => {
+      this.mesh = gltf.scene.children[0];
 
       this.material = new THREE.MeshBasicMaterial({
         color: "white",
@@ -45,7 +45,7 @@ export default class Flower {
           uColor1: { value: new THREE.Color(this.color1) },
           uColor2: { value: new THREE.Color(this.color2) },
           uTime: { value: 0 },
-          uScale: { value: 0 },
+          uScale: { value: 1 },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -85,6 +85,6 @@ export default class Flower {
 
   anim(progress, time) {
     if (this.particlesMaterial === undefined) return;
-    this.particlesMaterial.uniforms.uTime.value = time;
+    // this.particlesMaterial.uniforms.uTime.value = time;
   }
 }

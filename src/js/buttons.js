@@ -40,9 +40,9 @@ export default class Buttons {
 
     this.video = document.getElementById("video");
 
-    //////////////////////// DEBUG
+    //////////////////////////////////////////////////// DEBUG
     this.debug = false;
-    //////////////////////// DEBUG
+    //////////////////////////////////////////////////// DEBUG
 
     window.addEventListener("mousemove", (event) => {
       this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -51,10 +51,10 @@ export default class Buttons {
   }
 
   init() {
-    this.createButton({ text: "", x: 0, y: 0, z: 0 });
+    this.createButton({ text: "I CAN SHOW YOU THE NIGHT", x: 0, y: 0, z: 0 });
 
-    this.buttons.position.y = -7300;
-    this.buttons.position.z = 5300;
+    this.buttons.position.y = -475;
+    this.buttons.position.z = 15750;
 
     this.objectsToTest = this.buttonsMesh;
 
@@ -62,9 +62,10 @@ export default class Buttons {
 
     this.cityLights = this.road.cityLights;
     if (this.debug) {
-      this.camera.position.z = 3500;
+      this.camera.position.y = 10500;
+      this.camera.rotation.x = -0.8;
       this.finalScene.position.y = -2000;
-      this.finalScene.rotation.y = Math.PI;
+      // this.finalScene.rotation.y = Math.PI;
       this.points.pointsMaterial2.uniforms.squeeze.value = 30;
       setTimeout(() => {
         this.flower.particlesMaterial.uniforms.uScale.value = 1;
@@ -114,7 +115,7 @@ export default class Buttons {
         const materialTextClicked = this.materialsText[0];
 
         gsap.to(btnClicked.position, {
-          z: -100,
+          z: -10,
           duration: 0.5,
         });
         gsap.to(materialBtnClicked.uniforms.opacity, {
@@ -132,31 +133,26 @@ export default class Buttons {
   }
 
   returnScene() {
-    console.log(this.road.cityLights.pointsMaterial1.uniform);
-    setTimeout(() => {
-      this.video.play();
-    }, 3000);
+    this.video.play();
     const tl = gsap.timeline();
 
-    tl.to(this.textStars.materialsText[3].uniforms.opacity, {
-      value: 1,
-      duration: 2,
-    });
     tl.to(
-      this.textStars.textsMesh[3].position,
+      this.camera.position,
       {
-        z: 5000,
-        duration: 60,
+        z: -25500,
+        duration: 140,
+        ease: "power1.in",
       },
       "<"
     );
 
     tl.to(
-      this.camera.position,
+      this.camera.rotation,
       {
-        z: 1500,
-        duration: 40,
-        // ease: "power1.in",
+        z: -Math.PI,
+        delay: 5,
+        duration: 100,
+        ease: "power1.in",
       },
       "<"
     );
@@ -169,40 +165,13 @@ export default class Buttons {
       },
       "<"
     );
-    tl.to(
-      this.road.cityLights.pointsMaterial1.uniforms.move,
-      {
-        value: 1,
-        delay: 10,
-        duration: 60,
-      },
-      "<"
-    );
-    tl.to(
-      this.road.cityLights.pointsMaterialBig.uniforms.move,
-      {
-        value: 1,
-        delay: 10,
-        duration: 60,
-      },
-      "<"
-    );
 
     tl.to(
-      this.finalScene.rotation,
+      this.camera.rotation,
       {
         y: Math.PI,
-        delay: 40,
+        delay: 97,
         duration: 60,
-      },
-      "<"
-    );
-    tl.to(
-      this.flower.particlesMaterial.uniforms.uScale,
-      {
-        value: 1,
-        delay: 20,
-        duration: 20,
       },
       "<"
     );
@@ -210,28 +179,27 @@ export default class Buttons {
     tl.to(
       this.finalScene.position,
       {
-        y: -2000,
+        z: 2000,
         duration: 20,
         // ease: "power1.in",
       },
       "<"
     );
-    // tl.to(
-    //   this.camera.position,
-    //   {
-    //     z: 0,
-    //     delay: 9,
-    //     duration: 6,
-    //     ease: "power2.inout",
-    //   },
-    //   "<"
-    // );
 
     this.video.addEventListener("timeupdate", (event) => {
       const progress = this.video.currentTime;
       console.log(progress);
-      if (progress > 30) {
-        // this.destroy = true;
+      if (progress > 173) {
+        while (this.finalScene.children.length > 0) {
+          this.finalScene.remove(this.finalScene.children[0]);
+          setTimeout(() => {
+            document.querySelector(".final").style.display = "flex";
+            gsap.to(".final p", {
+              opacity: 1,
+              duration: 2,
+            });
+          }, 2500);
+        }
       }
     });
   }
@@ -256,9 +224,9 @@ export default class Buttons {
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
       textMesh.position.x = options.x;
-      textMesh.position.y = 200 + options.y;
-      textMesh.position.z = options.z - 160;
-      textMesh.scale.set(20, 20, 20);
+      textMesh.position.y = 15 + options.y;
+      textMesh.position.z = options.z;
+      textMesh.scale.set(2, 2, 2);
 
       this.textsMesh.push(textMesh);
 
@@ -266,7 +234,7 @@ export default class Buttons {
       const materialButton = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
-          opacity: { value: 0.3 },
+          opacity: { value: 1 },
         },
         transparent: true,
         vertexShader: vertex,
@@ -281,7 +249,7 @@ export default class Buttons {
       button.position.x = options.x;
       button.position.y = options.y;
       button.position.z = options.z;
-      button.scale.set(70, 70, 70);
+      button.scale.set(5, 5, 5);
 
       this.buttonsMesh.push(button);
 

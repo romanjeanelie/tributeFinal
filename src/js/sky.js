@@ -11,7 +11,7 @@ export default class Sky {
     this.debugObject = {};
 
     this.positionX = 0;
-    this.positionY = -3700;
+    this.positionY = 500;
     this.positionZ = -1500;
 
     this.material = null;
@@ -48,7 +48,7 @@ export default class Sky {
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.mesh.scale.set(15000, 6000, 100);
+    this.mesh.scale.set(35000, 15000, 100);
 
     this.mesh.position.x = this.positionX;
     this.mesh.position.y = this.positionY;

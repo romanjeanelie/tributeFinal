@@ -28,6 +28,7 @@ export default class Road {
     this.gltfLoader = new GLTFLoader();
 
     this.wheelGroup = new THREE.Group();
+    this.buildingsGroup = new THREE.Group();
     this.city = new THREE.Group();
   }
 
@@ -47,7 +48,7 @@ export default class Road {
     this.cityLights = new CityLights({ scene: this.city, gui: this.gui });
     this.cityLights.init();
 
-    this.textBuidling = new TextBuilding({ scene: this.city, gui: this.gui });
+    this.textBuidling = new TextBuilding({ scene: this.buildingsGroup, gui: this.gui });
     this.textBuidling.init();
 
     // this.teddy = new Teddy({ scene: this.city, gui: this.gui });
@@ -65,9 +66,13 @@ export default class Road {
     this.adBoard = new AdBoard({ scene: this.wheelGroup, gui: this.gui });
     this.adBoard.init();
 
-    this.wheelGroup.position.x = -50;
-    this.wheelGroup.position.z = 0;
+    this.wheelGroup.position.x = -70;
+    this.wheelGroup.position.z = 160;
     this.city.add(this.wheelGroup);
+
+    this.buildingsGroup.position.x = 30;
+    this.buildingsGroup.position.z = 100;
+    this.city.add(this.buildingsGroup);
 
     this.city.position.x = -100;
     this.city.position.y = -7000;
@@ -89,8 +94,7 @@ export default class Road {
     this.materialBuilding = new THREE.MeshBasicMaterial({
       color: 0x0000000,
       side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0,
+      transparent: false,
       //depthWrite: false,
     });
 
@@ -129,7 +133,7 @@ export default class Road {
         }
       });
 
-      // this.city.add(gltf.scene);
+      this.buildingsGroup.add(gltf.scene);
 
       this.createLightWindow(this.positionsWindow);
     });
@@ -170,7 +174,7 @@ export default class Road {
 
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
-    this.city.add(points);
+    this.buildingsGroup.add(points);
   }
 
   anim(progress, time) {

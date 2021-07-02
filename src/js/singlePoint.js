@@ -109,7 +109,7 @@ export default class SinglePoint {
 
     this.background.scale.set(500, 500, 1);
 
-    this.scene.add(this.background);
+    // this.scene.add(this.background);
   }
 
   setColors() {

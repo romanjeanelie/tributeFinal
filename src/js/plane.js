@@ -13,7 +13,7 @@ export default class Plane {
   }
 
   addPlane() {
-    this.material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    this.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
     this.gltfLoader.load("/models/plane.glb", (gltf) => {
       gltf.scene.traverse((child) => {
@@ -21,8 +21,8 @@ export default class Plane {
       });
 
       gltf.scene.rotation.y = 1.6;
-      gltf.scene.scale.set(10, 10, 10);
-      gltf.scene.position.set(-1600, -5100, -600);
+      gltf.scene.scale.set(20, 20, 20);
+      gltf.scene.position.set(-1500, -4100, 10600);
       this.scene.add(gltf.scene);
     });
   }

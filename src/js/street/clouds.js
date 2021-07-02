@@ -25,7 +25,7 @@ export default class Clouds {
       gltf.scene.position.y = 35;
       gltf.scene.position.z = -300;
 
-      this.scene.add(gltf.scene);
+      // this.scene.add(gltf.scene);
     });
   }
 }

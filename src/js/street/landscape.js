@@ -14,7 +14,7 @@ export default class Landscape {
 
   init() {
     this.addLandscape2({ x: 160, y: 0, z: 30 });
-    // this.addLandscape2({ x: -130, y: 1, z: 100 });
+    this.addLandscape2({ x: -110, y: 1, z: 200 });
     this.addLandscape3({ x: -100, y: 0, z: -50 });
   }
 
@@ -68,7 +68,7 @@ export default class Landscape {
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;
 
-      // this.textLandscape.addText2(options);
+      this.textLandscape.addText2(options);
 
       this.scene.add(gltf.scene);
     });

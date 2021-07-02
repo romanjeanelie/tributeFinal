@@ -55,9 +55,9 @@ export default class Animations {
     this.currentScroll = 0;
 
     // DEBUG MODE ////////////////////////////
-    this.backstage = false;
-    this.positionTimeline = 2;
-    this.start = 5;
+    this.backstage = true;
+    this.positionTimeline = 5;
+    this.start = 3;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
@@ -210,8 +210,9 @@ export default class Animations {
 
     // STEP THREE
     const tl = gsap.timeline();
+
     if (ios()) {
-      let index = -1;
+      let index = this.start - 1;
 
       window.addEventListener("touchstart", (event) => {
         this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
@@ -222,7 +223,7 @@ export default class Animations {
         }
       });
     } else {
-      let index = 0;
+      let index = this.start;
 
       window.addEventListener("mousemove", (event) => {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -560,7 +561,7 @@ export default class Animations {
         progress: 5500,
       },
       step3: {
-        duration: 8,
+        duration: 16,
         progress: 19500,
       },
     };
@@ -620,7 +621,7 @@ export default class Animations {
         progress: steps.step3.progress,
         delay: steps.step2.duration,
         duration: steps.step3.duration,
-        ease: "linear",
+        ease: "power1.out",
         onStart: () => {
           gsap.to(this.planet.planetMaterial.uniforms.changeColor, {
             value: 1,

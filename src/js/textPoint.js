@@ -36,8 +36,8 @@ export default class TextPoint {
   addText() {
     const texts = [
       "THERE'S A REASON WE ARE TOGETHER",
-      "take me back",
-      "catch me in the moment when you said you loved me",
+      "TAKE ME BACK",
+      "CATCH ME IN THE MOMENT WHEN YOU SAID YOU LOVED ME",
     ];
     this.loader.load("/fonts/Oswald_Regular.json", (font) => {
       if (this.index > texts.length - 1) {
@@ -46,7 +46,7 @@ export default class TextPoint {
 
         this.textGroup.scale.set(1, 1, 1);
         this.scene.add(this.textGroup);
-        this.materialsText[0].uniforms.progress.value = 1;
+        this.materialsText[0].uniforms.progress.value = -2.3;
         this.materialsText[0].uniforms.opacity.value = 1;
         return;
       }
@@ -82,8 +82,8 @@ export default class TextPoint {
           uStrength: { value: 0 },
           time: { value: 0 },
           activeLines: { value: 0 },
-          progress: { value: 0 },
-          opacity: { value: 0 },
+          progress: { value: -2.8 },
+          opacity: { value: 1 },
           uColor: { value: new THREE.Color("#93ADFF") },
         },
         vertexShader: vertex,
@@ -108,25 +108,27 @@ export default class TextPoint {
   animText(index) {
     console.log(index);
     console.log(this.materialsText[0]);
+    const textOut = this.materialsText[index - 1];
+    const textIn = this.materialsText[index];
     this.animComplete = false;
-    1;
-    if (this.materialsText[index - 1]) {
-      gsap.to(this.materialsText[index - 1].uniforms.progress, {
-        value: 2.8,
+
+    if (textOut) {
+      gsap.to(textOut.uniforms.progress, {
+        value: 7,
         duration: 2,
       });
-      gsap.to(this.materialsText[index - 1].uniforms.opacity, {
-        value: 0,
-        duration: 2,
-      });
+      // gsap.to(textOut.uniforms.opacity, {
+      //   value: 0,
+      //   duration: 2,
+      // });
     }
 
-    if (this.materialsText[index]) {
-      gsap.to(this.materialsText[index].uniforms.opacity, {
-        value: 1,
-        duration: 2,
-      });
-      gsap.to(this.materialsText[index].uniforms.progress, {
+    if (textIn) {
+      // gsap.to(textIn.uniforms.opacity, {
+      //   value: 1,
+      //   duration: 2,
+      // });
+      gsap.to(textIn.uniforms.progress, {
         value: 1,
         duration: 2,
         onComplete: () => (this.animComplete = true),
@@ -137,7 +139,7 @@ export default class TextPoint {
   anim(progress, time) {
     this.materialsText.forEach((material) => {
       material.uniforms.time.value = time;
-      material.uniforms.progress.value = time;
+      // material.uniforms.progress.value = time;
       material.uniforms.activeLines.value = time * 10;
     });
   }

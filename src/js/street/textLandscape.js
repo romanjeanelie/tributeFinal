@@ -54,13 +54,13 @@ export default class TextLandscape {
     const texts = ["I KNOW YOU'RE DREAMING"];
     this.loader.load("/fonts/Moniqa-ExtBold_Italic.json", (font) => {
       if (this.index2 === texts.length) {
-        this.textGroup2.position.x = optionsPositions.x + 150;
-        this.textGroup2.position.y = optionsPositions.y + 200;
+        this.textGroup2.position.x = optionsPositions.x + 30;
+        this.textGroup2.position.y = optionsPositions.y + 33;
         this.textGroup2.position.z = optionsPositions.z + 0;
 
-        this.textGroup2.scale.set(0.7, 0.7, 0.7);
+        this.textGroup2.scale.set(0.2, 0.2, 0.2);
         // Position
-        this.textGroup2.children[0].position.y = 20;
+        this.textGroup2.children[0].position.y = 0;
         this.scene.add(this.textGroup2);
         this.isLoaded = true;
         return;
