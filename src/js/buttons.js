@@ -91,7 +91,7 @@ export default class Buttons {
           const materialTextClicked = this.materialsText[0];
 
           gsap.to(btnClicked.position, {
-            z: -100,
+            z: -10,
             duration: 0.5,
           });
           gsap.to(materialBtnClicked.uniforms.opacity, {
@@ -102,6 +102,7 @@ export default class Buttons {
             opacity: 1,
             duration: 0.5,
           });
+
           this.returnScene();
         }
       });
@@ -170,7 +171,7 @@ export default class Buttons {
       this.camera.rotation,
       {
         y: Math.PI,
-        delay: 97,
+        delay: 104,
         duration: 60,
       },
       "<"
@@ -217,7 +218,7 @@ export default class Buttons {
       });
       textGeometry.center();
 
-      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.1, color: 0xff0000, transparent: true });
+      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.3, color: 0xff0000, transparent: true });
 
       this.materialsText.push(textMaterial);
 

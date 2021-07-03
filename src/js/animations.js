@@ -55,9 +55,9 @@ export default class Animations {
     this.currentScroll = 0;
 
     // DEBUG MODE ////////////////////////////
-    this.backstage = true;
+    this.backstage = false;
     this.positionTimeline = 5;
-    this.start = 3;
+    this.start = 0;
     // DEBUG MODE ////////////////////////////
 
     this.help = new Help();
@@ -553,7 +553,7 @@ export default class Animations {
 
     const steps = {
       step1: {
-        duration: 1,
+        duration: 3,
         progress: 1100,
       },
       step2: {
@@ -621,7 +621,7 @@ export default class Animations {
         progress: steps.step3.progress,
         delay: steps.step2.duration,
         duration: steps.step3.duration,
-        ease: "power1.out",
+        ease: "power3.out",
         onStart: () => {
           gsap.to(this.planet.planetMaterial.uniforms.changeColor, {
             value: 1,

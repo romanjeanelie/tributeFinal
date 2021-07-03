@@ -13,7 +13,7 @@ export default class Plane {
   }
 
   addPlane() {
-    this.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    this.material = new THREE.MeshBasicMaterial({ color: 0x333333 });
 
     this.gltfLoader.load("/models/plane.glb", (gltf) => {
       gltf.scene.traverse((child) => {
