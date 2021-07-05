@@ -93,8 +93,8 @@ export default class Animations {
     this.startListener();
 
     //////// START DIRECTLY ////////
-    this.startProject();
-    document.querySelector(".home").style.display = "none";
+    // this.startProject();
+    // document.querySelector(".home").style.display = "none";
     //////// START DIRECTLY ////////
 
     if (this.backstage) {
@@ -113,23 +113,10 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    tl.to(".line", {
-      scaleX: 1,
-      duration: 1,
+    tl.to(".home .bg__top", {
+      scaleY: 0.4,
+      duration: 2,
     });
-
-    tl.to(".line", {
-      autoAlpha: 0,
-      duration: 0.5,
-    });
-    tl.to(
-      ".home .bg__top",
-      {
-        scaleY: 0.4,
-        duration: 2,
-      },
-      "<"
-    );
 
     tl.to(
       ".home .bg__bottom",
@@ -267,6 +254,7 @@ export default class Animations {
       camera: this.createPath.cameraPath.splineCamera,
       singlePoint: this.singlePoint,
       points: this.singlePoint.points,
+      moon: this.moon,
       road: this.road,
       flower: this.flower,
       finalScene: this.finalScene,
@@ -557,11 +545,11 @@ export default class Animations {
         progress: 1100,
       },
       step2: {
-        duration: 8,
+        duration: 10,
         progress: 5500,
       },
       step3: {
-        duration: 16,
+        duration: 20,
         progress: 19500,
       },
     };
@@ -573,18 +561,6 @@ export default class Animations {
         progress: steps.step1.progress,
         duration: steps.step1.duration,
         ease: "linear",
-        onComplete: () => {
-          gsap.to(this.moon.moonMaterial.uniforms.wide, {
-            duration: 15,
-            value: 4.5,
-            ease: "linear",
-          });
-          gsap.to(this.moon.moonMaterial.uniforms.opacity, {
-            duration: 5,
-            value: 1,
-            ease: "linear",
-          });
-        },
       },
       "<"
     );
@@ -621,7 +597,7 @@ export default class Animations {
         progress: steps.step3.progress,
         delay: steps.step2.duration,
         duration: steps.step3.duration,
-        ease: "power3.out",
+        ease: "linear",
         onStart: () => {
           gsap.to(this.planet.planetMaterial.uniforms.changeColor, {
             value: 1,
@@ -653,7 +629,7 @@ export default class Animations {
 
   animObjects(progress, time) {
     this.tl.progress(progress * 0.3);
-    this.tl4.progress(this.progress2 * 0.5);
+    this.tl4.progress(this.progress2 * 0.8);
     this.singlePoint.anim(progress, time);
     this.sky.anim(progress, time, this.scrollSpeedEased);
     this.flower.anim(progress, time);

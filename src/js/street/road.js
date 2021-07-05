@@ -135,7 +135,7 @@ export default class Road {
 
       this.buildingsGroup.add(gltf.scene);
 
-      this.createLightWindow(this.positionsWindow);
+      this.createLightWindow(positionsWindows);
     });
   }
 
@@ -165,7 +165,7 @@ export default class Road {
       positions[i3 + 2] = positionsWindow[i].z;
 
       size[i] = 600;
-      opacity[i] = Math.random() * 0.5;
+      opacity[i] = Math.random() * 1;
     }
 
     pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));

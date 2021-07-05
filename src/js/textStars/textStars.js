@@ -58,8 +58,8 @@ export default class TextStars {
         posZ: -300,
         // scale: 25,
         scale: 30,
-        color: "#88BB76",
-        color2: "#8C1806",
+        color: "#3516F8",
+        color2: "#FF00DE",
         opacity: 1,
       },
       {
@@ -68,8 +68,8 @@ export default class TextStars {
         posY: -3800,
         posZ: -600,
         scale: 80,
-        color: "#FF89C0",
-        color2: "#FF0077",
+        color: "#FF00DE",
+        color2: "#2300FF",
         opacity: 1,
       },
       {

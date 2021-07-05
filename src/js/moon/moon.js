@@ -23,9 +23,9 @@ export default class Moon {
     this.addMoon();
     //  this.atmosphere.init();
 
-    this.moon.position.x = -3030;
-    this.moon.position.y = -3500;
-    this.moon.position.z = 200;
+    this.moon.position.x = -8030;
+    this.moon.position.y = 3500;
+    this.moon.position.z = 1600;
 
     this.moon.rotation.z = -0.5;
   }
@@ -63,7 +63,7 @@ export default class Moon {
 
     this.moon.add(this.sphere);
 
-    this.moon.scale.set(10, 10, 10);
+    this.moon.scale.set(20, 20, 20);
 
     this.scene.add(this.moon);
   }

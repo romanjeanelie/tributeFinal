@@ -23,6 +23,7 @@ export default class Buttons {
     this.points = options.points;
     this.singlePoint = options.singlePoint;
     this.textStars = this.singlePoint.textStars;
+    this.moon = options.moon;
     this.road = options.road;
     this.flower = options.flower;
     this.cityLights = options.road.cityLights;
@@ -39,6 +40,7 @@ export default class Buttons {
     this.destroy = false;
 
     this.video = document.getElementById("video");
+    this.audio = document.getElementById("audio");
 
     //////////////////////////////////////////////////// DEBUG
     this.debug = false;
@@ -53,8 +55,8 @@ export default class Buttons {
   init() {
     this.createButton({ text: "I CAN SHOW YOU THE NIGHT", x: 0, y: 0, z: 0 });
 
-    this.buttons.position.y = -475;
-    this.buttons.position.z = 15750;
+    this.buttons.position.y = -575;
+    this.buttons.position.z = 15500;
 
     this.objectsToTest = this.buttonsMesh;
 
@@ -135,25 +137,34 @@ export default class Buttons {
 
   returnScene() {
     this.video.play();
+    this.audio.play();
     const tl = gsap.timeline();
 
     tl.to(
       this.camera.position,
       {
-        z: -25500,
-        duration: 140,
-        ease: "power1.in",
+        z: -30500,
+        duration: 300,
+        ease: "power1.inOut",
       },
       "<"
     );
 
     tl.to(
-      this.camera.rotation,
+      this.moon.moonMaterial.uniforms.wide,
       {
-        z: -Math.PI,
-        delay: 5,
-        duration: 100,
-        ease: "power1.in",
+        duration: 15,
+        value: 4.5,
+        ease: "linear",
+      },
+      "<"
+    );
+    tl.to(
+      this.moon.moonMaterial.uniforms.opacity,
+      {
+        duration: 5,
+        value: 1,
+        ease: "linear",
       },
       "<"
     );
@@ -166,13 +177,24 @@ export default class Buttons {
       },
       "<"
     );
+    tl.to(
+      this.camera.rotation,
+      {
+        z: -Math.PI,
+        delay: 45,
+        duration: 100,
+        ease: "power1.in",
+      },
+      "<"
+    );
 
     tl.to(
       this.camera.rotation,
       {
         y: Math.PI,
-        delay: 104,
-        duration: 60,
+        delay: 60,
+        duration: 100,
+        ease: "power2.inOut",
       },
       "<"
     );
@@ -190,14 +212,15 @@ export default class Buttons {
     this.video.addEventListener("timeupdate", (event) => {
       const progress = this.video.currentTime;
       console.log(progress);
-      if (progress > 173) {
+      if (progress > 205) {
         while (this.finalScene.children.length > 0) {
           this.finalScene.remove(this.finalScene.children[0]);
           setTimeout(() => {
             document.querySelector(".final").style.display = "flex";
             gsap.to(".final p", {
               opacity: 1,
-              duration: 2,
+              delay: 2,
+              duration: 4,
             });
           }, 2500);
         }
@@ -225,9 +248,9 @@ export default class Buttons {
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
       textMesh.position.x = options.x;
-      textMesh.position.y = 15 + options.y;
+      textMesh.position.y = 35 + options.y;
       textMesh.position.z = options.z;
-      textMesh.scale.set(2, 2, 2);
+      textMesh.scale.set(4, 4, 4);
 
       this.textsMesh.push(textMesh);
 
@@ -250,7 +273,7 @@ export default class Buttons {
       button.position.x = options.x;
       button.position.y = options.y;
       button.position.z = options.z;
-      button.scale.set(5, 5, 5);
+      button.scale.set(12, 12, 12);
 
       this.buttonsMesh.push(button);
 

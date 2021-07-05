@@ -37,7 +37,7 @@ export default class TextPoint {
     const texts = [
       "THERE'S A REASON WE ARE TOGETHER",
       "TAKE ME BACK",
-      "CATCH ME IN THE MOMENT WHEN YOU SAID YOU LOVED ME",
+      "CATCH ME IN THE MOMENT WHEN YOU SAID YOU LOVE ME",
     ];
     this.loader.load("/fonts/Oswald_Regular.json", (font) => {
       if (this.index > texts.length - 1) {
@@ -117,17 +117,9 @@ export default class TextPoint {
         value: 7,
         duration: 2,
       });
-      // gsap.to(textOut.uniforms.opacity, {
-      //   value: 0,
-      //   duration: 2,
-      // });
     }
 
     if (textIn) {
-      // gsap.to(textIn.uniforms.opacity, {
-      //   value: 1,
-      //   duration: 2,
-      // });
       gsap.to(textIn.uniforms.progress, {
         value: 1,
         duration: 2,
