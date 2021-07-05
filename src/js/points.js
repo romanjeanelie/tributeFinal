@@ -82,6 +82,7 @@ export default class Points {
       transparent: true,
       //depthWrite: false,
     });
+    console.log(this.pointsMaterial.uniforms.uPixelRatio.value);
   }
 
   addPoints(options) {

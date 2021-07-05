@@ -169,14 +169,17 @@ export default class Buttons {
       "<"
     );
 
-    tl.to(
-      this.points.pointsMaterial2.uniforms.squeeze,
-      {
-        value: 30,
-        duration: 10,
-      },
-      "<"
-    );
+    if (!ios()) {
+      tl.to(
+        this.points.pointsMaterial2.uniforms.squeeze,
+        {
+          value: 30,
+          duration: 10,
+        },
+        "<"
+      );
+    }
+
     tl.to(
       this.camera.rotation,
       {

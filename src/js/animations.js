@@ -14,8 +14,6 @@ import Buttons from "./buttons";
 import BackSky from "./backSky";
 import Flower from "./flower";
 
-import progressBar from "./progressBar";
-
 import CreatePath from "./camera/createPath";
 
 import ios from "./utils/ios";
@@ -180,21 +178,6 @@ export default class Animations {
   }
 
   eventsAnim() {
-    // STEP ONE
-    let indexOne = this.start;
-
-    window.addEventListener("scroll", () => {
-      this.help.inactive();
-
-      if (this.textIntro.animComplete && indexOne < this.textIntro.materialsText.length + 1) {
-        this.stepOne(indexOne);
-        indexOne++;
-        if (indexOne === this.textIntro.materialsText.length + 1) {
-          this.tl2.play();
-        }
-      }
-    });
-
     // STEP THREE
     const tl = gsap.timeline();
 
