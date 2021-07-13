@@ -9,15 +9,23 @@ import fragment from "./shaders/flower/fragment.glsl";
 
 export default class Flower {
   constructor(options) {
+    this.gui = options.gui;
+    this.debugObject = {};
+    this.folderFlower = this.gui.addFolder("Flower");
+    this.folderFlower.open();
+
+    this.scene = options.scene;
+
     this.gltfLoader = new GLTFLoader();
 
     this.flower = new THREE.Group();
-    this.scene = options.scene;
+
+    this.opacity = 1;
   }
 
   init() {
     this.addFlower();
-    this.flower.scale.set(4, 4, 4);
+    this.flower.scale.set(9, 9, 9);
     this.flower.rotation.x = 1;
     this.flower.position.y = -1000;
     this.flower.position.z = 12500;
@@ -40,12 +48,23 @@ export default class Flower {
       /*------------------------------
       Particles Material
       ------------------------------*/
+      this.debugObject.color1 = "#ff283b";
+      this.debugObject.color2 = "#f39d0c";
+      this.folderFlower.addColor(this.debugObject, "color1").onChange(() => {
+        this.particlesMaterial.uniforms.color1.value = new THREE.Color(this.debugObject.color1);
+      });
+      this.folderFlower.addColor(this.debugObject, "color2").onChange(() => {
+        this.particlesMaterial.uniforms.color2.value = new THREE.Color(this.debugObject.color2);
+      });
       this.particlesMaterial = new THREE.ShaderMaterial({
         uniforms: {
-          uColor1: { value: new THREE.Color(this.color1) },
-          uColor2: { value: new THREE.Color(this.color2) },
           uTime: { value: 0 },
           uScale: { value: 1 },
+          uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+          color1: { value: new THREE.Color("#E77F68") },
+          color2: { value: new THREE.Color("#ffffff") },
+          uOpacity: { value: this.opacity },
+          disperse: { value: 20 },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -60,19 +79,24 @@ export default class Flower {
       ------------------------------*/
       const sampler = new MeshSurfaceSampler(this.mesh).build();
       const numParticles = 4000;
+
       this.particlesGeometry = new THREE.BufferGeometry();
       const particlesPosition = new Float32Array(numParticles * 3);
-      const particlesRandomness = new Float32Array(numParticles * 3);
+      const particlesOpacity = new Float32Array(numParticles);
+      const particlesSize = new Float32Array(numParticles);
 
       for (let i = 0; i < numParticles; i++) {
         const newPosition = new THREE.Vector3();
         sampler.sample(newPosition);
         particlesPosition.set([newPosition.x, newPosition.y, newPosition.z], i * 3);
-        particlesRandomness.set([Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1], i * 3);
+        particlesOpacity[i] = Math.random();
+
+        particlesSize[i] = 5000 + Math.random() * 30000;
       }
 
       this.particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlesPosition, 3));
-      this.particlesGeometry.setAttribute("aRandom", new THREE.BufferAttribute(particlesRandomness, 3));
+      this.particlesGeometry.setAttribute("aOpacity", new THREE.BufferAttribute(particlesOpacity, 1));
+      this.particlesGeometry.setAttribute("size", new THREE.BufferAttribute(particlesSize, 1));
 
       /*------------------------------
       Particles

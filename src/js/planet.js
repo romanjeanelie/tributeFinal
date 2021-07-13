@@ -49,7 +49,7 @@ export default class Planet {
         changeColor: { value: 0 },
       },
       transparent: true,
-      depthWrite: false,
+      // depthWrite: false,
 
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -58,8 +58,8 @@ export default class Planet {
 
     this.planet.add(this.sphere);
 
-    this.planet.scale.set(110, 110, 110);
+    this.planet.scale.set(300, 300, 300);
 
-    // this.scene.add(this.planet);
+    this.scene.add(this.planet);
   }
 }

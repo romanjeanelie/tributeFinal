@@ -106,8 +106,6 @@ export default class TextPoint {
   }
 
   animText(index) {
-    console.log(index);
-    console.log(this.materialsText[0]);
     const textOut = this.materialsText[index - 1];
     const textIn = this.materialsText[index];
     this.animComplete = false;

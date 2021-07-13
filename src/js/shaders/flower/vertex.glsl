@@ -1,30 +1,34 @@
-attribute vec3 aRandom;
+attribute float aOpacity;
+attribute float size; 
+
 
 varying vec2 vUv;
 varying vec3 vPosition; 
+varying float vOpacity;
 
 uniform float uTime; 
 uniform float uScale; 
+uniform float uPixelRatio;
+uniform float disperse;
 
 void main(){
     vUv = uv;
     vPosition = position;
 
-    float time = uTime * .02;
+    vec3 newposition = position;
 
-    vec3 pos = position;
-    pos.x += sin(time * aRandom.x ) * 0.01;
-    pos.y += cos(time * aRandom.y ) * 0.01;
-    pos.z += cos(time * aRandom.z ) * 0.01;
-
-    pos.x *= uScale + (sin(pos.y * 4. + time) * (1. - uScale)); 
-    pos.y *= uScale + (cos(pos.z * 4. + time) * (1. - uScale)); 
-    pos.z *= uScale + (sin(pos.x * 4. + time) * (1. - uScale)); 
-
-    // pos.z *= aRandom.x * uScale;
+    newposition.xyz *= disperse;
+   
+    vec4 modelPosition = modelMatrix * vec4(newposition, 1.); 
+    vec4 viewPosition = viewMatrix * modelPosition; 
+    vec4 projectionPosition = projectionMatrix * viewPosition; 
     
+    gl_Position = projectionPosition;
 
-    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = 2200.0 / -mvPosition.z;
+    gl_PointSize = size * uPixelRatio;
+        // Keep size attenuation
+    gl_PointSize *= (1.0 / - viewPosition.z);
+
+    // Varying
+    vOpacity = aOpacity; 
 }

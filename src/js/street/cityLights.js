@@ -3,11 +3,17 @@ import * as THREE from "three";
 import fragment from "../shaders/streetLight/fragment.glsl";
 import vertex from "../shaders/streetLight/vertex.glsl";
 
+import TextLight from "../textLight.js";
+
 export default class CityLights {
   constructor(options) {
     this.scene = options.scene;
 
     this.pointsGroup = new THREE.Group();
+
+    this.textLight = new TextLight({
+      scene: this.scene,
+    });
   }
 
   init() {
@@ -22,7 +28,7 @@ export default class CityLights {
         maxX: 200,
         minY: 0,
         maxY: 0,
-        minZ: -100 + offsetZ * i,
+        minZ: 0 + offsetZ * i,
         maxZ: 0,
         size: 9000,
         material: this.pointsMaterial1,
@@ -33,7 +39,7 @@ export default class CityLights {
         maxX: 200,
         minY: 1,
         maxY: 0,
-        minZ: -100 + offsetZ * i,
+        minZ: 0 + offsetZ * i,
         maxZ: 0,
         size: 12000,
         material: this.pointsMaterialBig,
@@ -51,6 +57,8 @@ export default class CityLights {
         qty: 50,
       });
     }
+
+    this.textLight.init();
   }
 
   createPointsMaterials() {
@@ -123,5 +131,6 @@ export default class CityLights {
   anim(progress, time) {
     this.pointsMaterialBig.uniforms.time.value = time;
     this.pointsMaterial1.uniforms.time.value = time;
+    this.textLight.anim(progress, time);
   }
 }

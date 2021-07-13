@@ -51,14 +51,14 @@ export default class TextLandscape {
   }
 
   addText2(optionsPositions) {
-    const texts = ["I KNOW YOU'RE DREAMING"];
-    this.loader.load("/fonts/Moniqa-ExtBold_Italic.json", (font) => {
+    const texts = ["DANCE WITH ME"];
+    this.loader.load("/fonts/Gala2.json", (font) => {
       if (this.index2 === texts.length) {
-        this.textGroup2.position.x = optionsPositions.x + 30;
-        this.textGroup2.position.y = optionsPositions.y + 33;
+        this.textGroup2.position.x = optionsPositions.x + 60;
+        this.textGroup2.position.y = optionsPositions.y + 45;
         this.textGroup2.position.z = optionsPositions.z + 0;
 
-        this.textGroup2.scale.set(0.2, 0.2, 0.2);
+        this.textGroup2.scale.set(0.4, 0.4, 0.4);
         // Position
         this.textGroup2.children[0].position.y = 0;
         this.scene.add(this.textGroup2);

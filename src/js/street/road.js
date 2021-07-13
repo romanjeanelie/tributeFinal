@@ -66,12 +66,12 @@ export default class Road {
     this.adBoard = new AdBoard({ scene: this.wheelGroup, gui: this.gui });
     this.adBoard.init();
 
-    this.wheelGroup.position.x = -70;
-    this.wheelGroup.position.z = 160;
+    this.wheelGroup.position.x = -65;
+    this.wheelGroup.position.z = 210;
     this.city.add(this.wheelGroup);
 
-    this.buildingsGroup.position.x = 30;
-    this.buildingsGroup.position.z = 100;
+    this.buildingsGroup.position.x = 50;
+    this.buildingsGroup.position.z = 150;
     this.city.add(this.buildingsGroup);
 
     this.city.position.x = -100;
@@ -145,10 +145,13 @@ export default class Road {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         opacity: { value: 1 },
+        color1: { value: new THREE.Color("#ffd000") },
+        color2: { value: new THREE.Color("#ffffff") },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
+
       //depthWrite: false,
     });
 
@@ -164,7 +167,7 @@ export default class Road {
       positions[i3 + 1] = positionsWindow[i].y;
       positions[i3 + 2] = positionsWindow[i].z;
 
-      size[i] = 600;
+      size[i] = 800;
       opacity[i] = Math.random() * 1;
     }
 

@@ -80,9 +80,8 @@ export default class Points {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
-      //depthWrite: false,
+      depthWrite: false,
     });
-    console.log(this.pointsMaterial.uniforms.uPixelRatio.value);
   }
 
   addPoints(options) {

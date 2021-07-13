@@ -53,8 +53,8 @@ export default class Animations {
     this.currentScroll = 0;
 
     // DEBUG MODE ////////////////////////////
-    this.backstage = false;
-    this.positionTimeline = 5;
+    this.backstage = true;
+    this.positionTimeline = 4;
     this.start = 0;
     // DEBUG MODE ////////////////////////////
 
@@ -71,6 +71,13 @@ export default class Animations {
         console.log("remove city");
         this.road.city.opacity = 0;
       }, 2000);
+    });
+
+    this.upCityLights = once(() => {
+      gsap.to(this.road.cityLights.pointsMaterialBig.uniforms.move, {
+        duration: 4,
+        value: 1,
+      });
     });
 
     this.init();
@@ -685,5 +692,10 @@ export default class Animations {
     // RayCasting
     this.rayCaster();
     this.buttons.rayCaster();
+
+    // Check position timeline
+    // if (this.progress2 > 0.8) {
+    //   this.upCityLights();
+    // }
   }
 }

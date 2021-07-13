@@ -73,7 +73,7 @@ export default class TextStars {
         opacity: 1,
       },
       {
-        text: "don't get hurt",
+        text: "come back to me",
         posX: -700,
         posY: -4100,
         posZ: 10600,

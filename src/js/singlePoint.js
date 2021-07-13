@@ -26,7 +26,7 @@ export default class SinglePoint {
     this.textStars = new TextStars({ scene: this.scene });
 
     this.positionX = 0;
-    this.positionY = 0;
+    this.positionY = { value: -30 };
     this.positionZ = -130;
   }
 
@@ -75,7 +75,7 @@ export default class SinglePoint {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
     this.mesh.position.x = this.positionX;
-    this.mesh.position.y = this.positionY;
+    this.mesh.position.y = this.positionY.value;
     this.mesh.position.z = this.positionZ;
 
     this.mesh.scale.set(40, 40, 40);
@@ -104,7 +104,7 @@ export default class SinglePoint {
     this.background = new THREE.Mesh(this.geometryBG, this.materialBG);
 
     this.background.position.x = this.positionX;
-    this.background.position.y = this.positionY;
+    this.background.position.y = this.positionY.value;
     this.background.position.z = this.positionZ - 10;
 
     this.background.scale.set(500, 500, 1);
@@ -132,9 +132,8 @@ export default class SinglePoint {
 
     window.addEventListener("scroll", () => {
       const posPoint = this.mesh.position.y;
-
-      gsap.to(this.mesh.position, {
-        y: this.positionCamera.y - 30,
+      gsap.to(this.positionY, {
+        value: this.positionCamera.y - 30,
         duration: 2,
         ease: "back.out(4)",
       });
@@ -173,5 +172,6 @@ export default class SinglePoint {
     this.materialBG.uniforms.time.value = time;
 
     this.textStars.anim(progress * 12, time);
+    this.mesh.position.y = this.positionY.value;
   }
 }
