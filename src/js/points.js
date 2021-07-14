@@ -33,17 +33,17 @@ export default class Points {
       qty: 500,
       size: 9000,
     });
-    this.addPoints({
-      minX: 0,
-      maxX: 56000,
-      minY: 7700,
-      maxY: 24000,
-      minZ: -500,
-      maxZ: 10500,
-      material: this.pointsMaterial2,
-      qty: 2000,
-      size: 20000,
-    });
+    // this.addPoints({
+    //   minX: 0,
+    //   maxX: 56000,
+    //   minY: 7700,
+    //   maxY: 24000,
+    //   minZ: -500,
+    //   maxZ: 10500,
+    //   material: this.pointsMaterial2,
+    //   qty: 2000,
+    //   size: 20000,
+    // });
   }
 
   createPointsMaterials() {
@@ -80,7 +80,9 @@ export default class Points {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
+      depthTest: false,
       depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
   }
 

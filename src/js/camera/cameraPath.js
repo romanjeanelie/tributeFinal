@@ -34,6 +34,7 @@ export default class cameraPath {
 
     // ACTIVE CAMERA /////////////////
     this.isActive = false;
+    window.camera = this.camera;
     // ACTIVE CAMERA /////////////////
 
     this.positionCameraLarge();
@@ -42,14 +43,15 @@ export default class cameraPath {
 
   positionCameraLarge() {
     if (this.isActive) {
-      this.camera.position.x = 0;
-      this.camera.position.y = -6500;
-      this.camera.position.z = 11000;
+      this.camera.position.x = -34138.84551726526;
+      this.camera.position.y = 16473.717176965925;
+      this.camera.position.z = 34175.730963728856;
+
       // this.camera.position.x = 0;
       // this.camera.position.y = 1;
       // this.camera.position.z = 15;
 
-      this.posCameraLarge = new THREE.Vector3(0, -6000, -2369.896873902935);
+      this.posCameraLarge = new THREE.Vector3(0, 0, 0);
       // this.posCameraLarge = new THREE.Vector3(0, 0, 0);
 
       this.params.animationView = false;

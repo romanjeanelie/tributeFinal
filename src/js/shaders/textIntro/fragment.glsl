@@ -97,16 +97,16 @@ void main()	{
 
   float noiseMixed = mix(1., 0.5, noiseB);
 
-  // float strokeSDF = stroke(vUv.y + (1.-progress), 0.5, .9) * noiseMixed * opacity;
-  float strokeSDF = stroke(vUv.y +  progress, 4., 3. ) * noiseMixed * opacity; 
+  // float strokeSDF = stroke(vUv.y +  progress, 4., 3. ) * noiseMixed * opacity; 
+  float strokeSDF = stroke(vUv.y +  7., 4., 3. ) * opacity; 
 
 
     color += strokeSDF;
 
     vec3 finalColor = mix(vec3(0.), uColor, color);
     //float color = noise(vUv);
-    gl_FragColor = vec4(finalColor, color);
-    // gl_FragColor = vec4(vUv, 1., color);
+    // gl_FragColor = vec4(finalColor, color);
+    gl_FragColor = vec4(vec3(1.), opacity);
 
     
 }

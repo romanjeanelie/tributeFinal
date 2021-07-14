@@ -17,16 +17,17 @@ export default class Planet {
   init() {
     this.addPlanet();
 
-    this.planet.position.x = 10350;
-    this.planet.position.y = 5000;
-    this.planet.position.z = 40500;
+    this.planet.position.x = 25350;
+    this.planet.position.y = 3000;
+    this.planet.position.z = 70500;
 
-    this.planet.rotation.y = Math.PI * 1.2;
+    this.planet.rotation.y = Math.PI * 1.1;
+    this.planet.rotation.z = Math.PI * 1;
   }
 
   addPlanet() {
-    this.debugObject.planetColor1 = "#2b0521";
-    this.debugObject.planetColor2 = "#ff0032";
+    this.debugObject.planetColor1 = "#3a000a";
+    this.debugObject.planetColor2 = "#ffd5d5";
     this.debugObject.planetColor3 = "#cc0f0f";
     this.folderPlanet.addColor(this.debugObject, "planetColor1").onChange(() => {
       this.planetMaterial.uniforms.color1.value = new THREE.Color(this.debugObject.planetColor1);
@@ -43,13 +44,13 @@ export default class Planet {
         color1: { value: new THREE.Color(this.debugObject.planetColor1) },
         color2: { value: new THREE.Color(this.debugObject.planetColor2) },
         color3: { value: new THREE.Color(this.debugObject.planetColor3) },
-        wide: { value: 8.5 },
+        wide: { value: 6.5 },
         opacity: { value: 1 },
 
-        changeColor: { value: 0 },
+        changeColor: { value: 1 },
       },
       transparent: true,
-      // depthWrite: false,
+      depthWrite: false,
 
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -58,7 +59,7 @@ export default class Planet {
 
     this.planet.add(this.sphere);
 
-    this.planet.scale.set(300, 300, 300);
+    this.planet.scale.set(400, 400, 400);
 
     this.scene.add(this.planet);
   }

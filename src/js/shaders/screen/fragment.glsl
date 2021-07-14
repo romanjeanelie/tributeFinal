@@ -43,7 +43,8 @@ void main()	{
 
  float lines = strobeLight * littleLines * 0.08;
 
-    gl_FragColor = vec4(vec3(1. - rect), ( lines + rect) * opacity);
+    // gl_FragColor = vec4(vec3(1. - rect), ( lines + rect) * opacity);
+    gl_FragColor = vec4(vec3(0.), 0.);
 
     
 }

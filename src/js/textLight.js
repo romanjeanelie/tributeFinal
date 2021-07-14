@@ -96,7 +96,6 @@ export default class TextLight {
       this.particles.position.z = -1.5;
     }
 
-    console.log(this.particles);
     this.text.add(this.particles);
   }
 

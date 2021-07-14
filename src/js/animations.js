@@ -53,7 +53,7 @@ export default class Animations {
     this.currentScroll = 0;
 
     // DEBUG MODE ////////////////////////////
-    this.backstage = true;
+    this.backstage = false;
     this.positionTimeline = 4;
     this.start = 0;
     // DEBUG MODE ////////////////////////////
@@ -85,7 +85,6 @@ export default class Animations {
 
   init() {
     this.manageCamera();
-    this.manageProgressBar();
     this.addObject();
     this.createTimelines();
     this.getScroll();
@@ -118,32 +117,9 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    tl.to(".home .bg__top", {
-      scaleY: 0.4,
-      duration: 2,
-    });
-
-    tl.to(
-      ".home .bg__bottom",
-      {
-        scaleY: 0.4,
-        duration: 2,
-      },
-      "<"
-    );
     tl.to(
       ".home .title__top",
       {
-        y: "-40vh",
-        autoAlpha: 0,
-        duration: 2,
-      },
-      "<"
-    );
-    tl.to(
-      ".home .title__bottom",
-      {
-        y: "40vh",
         autoAlpha: 0,
         duration: 2,
       },
@@ -159,6 +135,20 @@ export default class Animations {
       },
       "<"
     );
+
+    tl.fromTo(
+      this.singlePoint.material.uniforms.opacity,
+      {
+        value: 0,
+      },
+      {
+        value: 1,
+        duration: 20,
+      },
+      "<"
+    );
+
+    console.log(this.singlePoint);
     tl.to(".home .bg", {
       autoAlpha: 0,
       onComplete: () => {
@@ -247,7 +237,11 @@ export default class Animations {
       moon: this.moon,
       road: this.road,
       flower: this.flower,
+      sky: this.sky,
+      backSky: this.backSky,
       finalScene: this.finalScene,
+      screen: this.createPath.cameraPath.screenMaterial,
+      textGod: this.textGod,
     });
 
     this.textIntro.init();
@@ -267,8 +261,6 @@ export default class Animations {
     this.progressBar.init();
     this.buttons.init();
   }
-
-  manageProgressBar() {}
 
   manageCamera() {
     this.createPath = new CreatePath({
@@ -308,8 +300,15 @@ export default class Animations {
 
   getScroll() {
     window.addEventListener("scroll", (e) => {
+      this.displayTimecode((this.progress * 10).toFixed(2));
+
       this.scrollValue = window.scrollY / document.body.scrollHeight;
     });
+  }
+
+  displayTimecode(progress) {
+    const timecodeEl = document.querySelector(".timecode");
+    timecodeEl.innerHTML = progress * 100;
   }
 
   getScrollSpeed() {
@@ -338,16 +337,7 @@ export default class Animations {
 
   stepTwo() {
     // FADE IN  Single point
-    this.tl2.fromTo(
-      this.singlePoint.material.uniforms.opacity,
-      {
-        value: 0,
-      },
-      {
-        value: 1,
-        duration: 20,
-      }
-    );
+
     // BIGGER Single point
     this.tl2.fromTo(
       this.singlePoint.material.uniforms.isPressed,
@@ -469,38 +459,6 @@ export default class Animations {
       "<"
     );
 
-    // FADE IN Text God
-    tl.to(
-      this.textGod.opacity,
-      {
-        value: 1,
-        duration: 20,
-      },
-      "<"
-    );
-
-    // SQUEEZE Text God
-    tl.to(
-      this.textGod.squeeze,
-      {
-        value: 0,
-        delay: 0.3,
-        duration: 3,
-      },
-      "<"
-    );
-
-    // DEZOOM Text God
-    tl.to(
-      this.textGod.textGroup.position,
-      {
-        z: -115,
-        duration: 12,
-      },
-
-      "<"
-    );
-
     // FADE IN Lines sky
     tl.to(
       this.sky.material.uniforms.opacity,
@@ -589,21 +547,27 @@ export default class Animations {
         duration: steps.step3.duration,
         ease: "linear",
         onStart: () => {
-          gsap.to(this.planet.planetMaterial.uniforms.changeColor, {
-            value: 1,
-            duration: 8,
-            ease: "linear",
-          });
-          // FADE IN MoreLines sky
-          gsap.to(this.sky.material.uniforms.opacity, {
-            value: 0.06,
-            delay: 6,
-            duration: 12,
-          });
+          // // FADE IN MoreLines sky
+          // gsap.to(this.sky.material.uniforms.opacity, {
+          //   value: 0.06,
+          //   delay: 6,
+          //   duration: 12,
+          // });
         },
         // onComplete: () => this.finalStep(),
       },
 
+      "<"
+    );
+
+    // // FADE IN MoreLines sky
+    this.tl4.to(
+      this.sky.material.uniforms.opacity,
+      {
+        value: 0.06,
+        delay: 6,
+        duration: 12,
+      },
       "<"
     );
   }

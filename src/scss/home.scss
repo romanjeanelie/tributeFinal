@@ -19,7 +19,6 @@
   position: fixed;
   left: 0;
   z-index: 0;
-  background: #000;
 }
 .home .bg__top {
   top: 0;
@@ -42,20 +41,28 @@
   transform: scaleX(0);
 }
 .progress {
-  background: #f00;
+  background: #fff;
   width: 100%;
-  height: 5px;
+  height: 10px;
   z-index: 1;
   position: fixed;
   left: 0;
-  bottom: 8vh;
+  top: 0;
   transform-origin: left;
   transform: scaleX(0.1);
-  opacity: 0.2;
+  opacity: 1;
 }
-
+.timecode__container {
+  position: fixed;
+  z-index: 1;
+  color: #fff;
+  right: 16px;
+  p {
+    padding: 16px;
+    margin-top: 10px;
+  }
+}
 .home__title {
-  margin-left: -600px;
   z-index: 1;
   text-transform: uppercase;
   .title__bottom {
@@ -64,13 +71,14 @@
 }
 
 .home__start {
+  z-index: 1;
   font-family: Soleil;
   text-transform: uppercase;
   position: absolute;
-  left: 65%;
-  bottom: 400px;
+  bottom: 100px;
   transition: opacity 0.2s ease;
   opacity: 1;
+  color: #fff;
 
   &:hover {
     opacity: 0.5;

@@ -42,7 +42,7 @@ export default class Sky {
       side: THREE.DoubleSide,
       vertexShader: vertex,
       fragmentShader: fragment,
-      //transparent: true,
+      transparent: true,
       depthWrite: false,
     });
 

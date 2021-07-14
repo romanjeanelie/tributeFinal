@@ -35,19 +35,19 @@ export default class TextPoint {
 
   addText() {
     const texts = [
-      "THERE'S A REASON WE ARE TOGETHER",
-      "TAKE ME BACK",
-      "CATCH ME IN THE MOMENT WHEN YOU SAID YOU LOVE ME",
+      "There's a reason we are together",
+      "Take me back",
+      "Catch me in the moment when you said you love me",
     ];
-    this.loader.load("/fonts/Oswald_Regular.json", (font) => {
+    this.loader.load("/fonts/Soleil_Regular.json", (font) => {
       if (this.index > texts.length - 1) {
-        this.textGroup.position.y = 0;
+        this.textGroup.position.y = -45;
         this.textGroup.position.z = -80;
 
-        this.textGroup.scale.set(1, 1, 1);
+        this.textGroup.scale.set(0.5, 0.5, 0.5);
         this.scene.add(this.textGroup);
         this.materialsText[0].uniforms.progress.value = -2.3;
-        this.materialsText[0].uniforms.opacity.value = 1;
+        // this.materialsText[0].uniforms.opacity.value = 1;
         return;
       }
       const text = texts[this.index];
@@ -82,9 +82,10 @@ export default class TextPoint {
           uStrength: { value: 0 },
           time: { value: 0 },
           activeLines: { value: 0 },
-          progress: { value: -2.8 },
-          opacity: { value: 1 },
-          uColor: { value: new THREE.Color("#93ADFF") },
+          progress: { value: 7 },
+          opacity: { value: 0 },
+          // uColor: { value: new THREE.Color("#93ADFF") },
+          uColor: { value: new THREE.Color("#FFF") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -111,14 +112,23 @@ export default class TextPoint {
     this.animComplete = false;
 
     if (textOut) {
-      gsap.to(textOut.uniforms.progress, {
-        value: 7,
+      // gsap.to(textOut.uniforms.progress, {
+      //   value: 7,
+      //   duration: 2,
+      // });
+      gsap.to(textOut.uniforms.opacity, {
+        value: 0,
         duration: 2,
       });
     }
 
     if (textIn) {
-      gsap.to(textIn.uniforms.progress, {
+      // gsap.to(textIn.uniforms.progress, {
+      //   value: 1,
+      //   duration: 2,
+      //   onComplete: () => (this.animComplete = true),
+      // });
+      gsap.to(textIn.uniforms.opacity, {
         value: 1,
         duration: 2,
         onComplete: () => (this.animComplete = true),

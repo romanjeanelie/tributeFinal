@@ -25,9 +25,9 @@ export default class Flower {
 
   init() {
     this.addFlower();
-    this.flower.scale.set(9, 9, 9);
+    this.flower.scale.set(12, 12, 12);
     this.flower.rotation.x = 1;
-    this.flower.position.y = -1000;
+    this.flower.position.y = -4000;
     this.flower.position.z = 12500;
     this.scene.add(this.flower);
   }
@@ -48,8 +48,8 @@ export default class Flower {
       /*------------------------------
       Particles Material
       ------------------------------*/
-      this.debugObject.color1 = "#ff283b";
-      this.debugObject.color2 = "#f39d0c";
+      this.debugObject.color1 = "#6582e2";
+      this.debugObject.color2 = "#854a1e";
       this.folderFlower.addColor(this.debugObject, "color1").onChange(() => {
         this.particlesMaterial.uniforms.color1.value = new THREE.Color(this.debugObject.color1);
       });
@@ -61,10 +61,12 @@ export default class Flower {
           uTime: { value: 0 },
           uScale: { value: 1 },
           uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-          color1: { value: new THREE.Color("#E77F68") },
-          color2: { value: new THREE.Color("#ffffff") },
+          color1: { value: new THREE.Color(this.debugObject.color1) },
+          color2: { value: new THREE.Color(this.debugObject.color2) },
           uOpacity: { value: this.opacity },
-          disperse: { value: 20 },
+          disperse: { value: 1 },
+          offset: { value: 200 },
+          scaleSize: { value: 0.4 },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -78,7 +80,7 @@ export default class Flower {
       Particles Geometry
       ------------------------------*/
       const sampler = new MeshSurfaceSampler(this.mesh).build();
-      const numParticles = 4000;
+      const numParticles = 2000;
 
       this.particlesGeometry = new THREE.BufferGeometry();
       const particlesPosition = new Float32Array(numParticles * 3);
@@ -89,9 +91,9 @@ export default class Flower {
         const newPosition = new THREE.Vector3();
         sampler.sample(newPosition);
         particlesPosition.set([newPosition.x, newPosition.y, newPosition.z], i * 3);
-        particlesOpacity[i] = Math.random();
+        particlesOpacity[i] = 0.3 + Math.random();
 
-        particlesSize[i] = 5000 + Math.random() * 30000;
+        particlesSize[i] = 5000 + Math.random() * 50000;
       }
 
       this.particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlesPosition, 3));

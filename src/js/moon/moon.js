@@ -63,7 +63,7 @@ export default class Moon {
 
     this.moon.add(this.sphere);
 
-    this.moon.scale.set(20, 20, 20);
+    this.moon.scale.set(30, 30, 30);
 
     this.scene.add(this.moon);
   }

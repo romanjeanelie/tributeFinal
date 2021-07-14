@@ -26,13 +26,13 @@ export default class SinglePoint {
     this.textStars = new TextStars({ scene: this.scene });
 
     this.positionX = 0;
-    this.positionY = { value: -30 };
+    this.positionY = { value: 0 };
     this.positionZ = -130;
   }
 
   init() {
     this.textStars.init();
-    this.points.color1 = new THREE.Color("#FF0000");
+    this.points.color1 = new THREE.Color("#FFF");
     this.points.color2 = new THREE.Color(this.textStars.texts[0].color);
     this.points.color3 = new THREE.Color(this.textStars.texts[1].color);
     this.points.color4 = new THREE.Color(this.textStars.texts[2].color);
@@ -51,7 +51,7 @@ export default class SinglePoint {
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        color1: { value: new THREE.Color("#FF0000") },
+        color1: { value: new THREE.Color(this.points.color1) },
         color2: { value: new THREE.Color(this.textStars.texts[0].color) },
         color3: { value: new THREE.Color(this.textStars.texts[1].color) },
         color4: { value: new THREE.Color(this.textStars.texts[2].color) },

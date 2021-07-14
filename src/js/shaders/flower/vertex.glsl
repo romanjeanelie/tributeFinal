@@ -10,6 +10,8 @@ uniform float uTime;
 uniform float uScale; 
 uniform float uPixelRatio;
 uniform float disperse;
+uniform float offset;
+uniform float scaleSize;
 
 void main(){
     vUv = uv;
@@ -17,7 +19,13 @@ void main(){
 
     vec3 newposition = position;
 
-    newposition.xyz *= disperse;
+    // newposition.xyz *= disperse;
+    newposition.x *=  1. + (sin(position.y * 1000.)  * 8.) * disperse;
+    newposition.y *= 1. +  (cos(position.y * 100.)  * 6.) * disperse;
+    newposition.z *= 1. + sin(position.y * .5)  * disperse;
+    newposition.x += offset;
+    // newposition.x += disperse * 100.;
+
    
     vec4 modelPosition = modelMatrix * vec4(newposition, 1.); 
     vec4 viewPosition = viewMatrix * modelPosition; 
@@ -25,7 +33,7 @@ void main(){
     
     gl_Position = projectionPosition;
 
-    gl_PointSize = size * uPixelRatio;
+    gl_PointSize = size * (1. + 2. * (1. - disperse)) * scaleSize * uPixelRatio;
         // Keep size attenuation
     gl_PointSize *= (1.0 / - viewPosition.z);
 

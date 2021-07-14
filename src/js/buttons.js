@@ -26,6 +26,10 @@ export default class Buttons {
     this.moon = options.moon;
     this.road = options.road;
     this.flower = options.flower;
+    this.sky = options.sky;
+    this.backSky = options.backSky;
+    this.screen = options.screen;
+    this.textGod = options.textGod;
 
     this.finalScene = options.finalScene;
 
@@ -45,7 +49,7 @@ export default class Buttons {
 
     //////////////////////////////////////////////////// DEBUG
     this.debug = false;
-    this.start = 150;
+    this.start = 163;
     //////////////////////////////////////////////////// DEBUG
 
     window.addEventListener("mousemove", (event) => {
@@ -65,6 +69,9 @@ export default class Buttons {
     this.finalScene.add(this.buttons);
 
     if (this.debug) {
+      setTimeout(() => {
+        this.textStars.textsMesh[0].position.y += 500;
+      }, 500);
       this.returnScene();
     }
 
@@ -132,6 +139,7 @@ export default class Buttons {
   }
 
   returnScene() {
+    // this.audio.muted = true;
     this.tl.play();
     this.video.play();
     this.audio.play();
@@ -139,10 +147,17 @@ export default class Buttons {
     let start = 0;
 
     if (this.debug) {
+      this.backSky.material.opacity = 0;
+      this.textGod.opacity.value = 1;
+      // this.sky.material.uniforms.opacity.value = 0;
+
       start = this.start;
       this.tl.paused = true;
       this.video.pause();
       this.audio.pause();
+      setTimeout(() => {
+        this.flower.particlesMaterial.uniforms.disperse.value = 0;
+      }, 500);
     }
 
     const steps = {};
@@ -162,13 +177,22 @@ export default class Buttons {
       },
       "<"
     );
+    this.tl.to(
+      this.flower.particlesMaterial.uniforms.scaleSize,
+      {
+        value: 1.5,
+        duration: 7,
+        ease: "power1.inOut",
+      },
+      "<"
+    );
 
     this.tl.to(
       this.moon.moonMaterial.uniforms.wide,
       {
-        duration: 15,
-        value: 4.5,
-        ease: "linear",
+        duration: 23,
+        value: 3.5,
+        ease: "power2.out",
       },
       "<"
     );
@@ -183,14 +207,22 @@ export default class Buttons {
     );
 
     if (!ios()) {
-      this.tl.to(
-        this.points.pointsMaterial2.uniforms.squeeze,
-        {
-          value: 30,
-          duration: 10,
-        },
-        "<"
-      );
+      // // this.tl.to(
+      // //   this.points.pointsMaterial2.uniforms.squeeze,
+      // //   {
+      // //     value: 30,
+      // //     duration: 10,
+      // //   },
+      // //   "<"
+      // // );
+      // this.tl.to(
+      //   this.points.pointsMaterial2.uniforms.opacity,
+      //   {
+      //     value: 0,
+      //     duration: 10,
+      //   },
+      //   "<"
+      // );
     }
 
     this.tl.to(
@@ -201,7 +233,7 @@ export default class Buttons {
         delay: steps.one,
 
         duration: 80,
-        ease: "power1.in",
+        ease: "power1.inOut",
       },
       "<"
     );
@@ -211,6 +243,8 @@ export default class Buttons {
         x: -Math.PI * 0.5,
         delay: steps.two - steps.one,
         duration: 50,
+        ease: "power1.out",
+
         onStart: () => {
           gsap.to(this.cityLights.textLight, {
             delay: 2,
@@ -228,9 +262,41 @@ export default class Buttons {
         y: -Math.PI,
         delay: steps.three - steps.two,
         duration: 110,
+        onStart: () => {
+          gsap.to(this.flower.particlesMaterial.uniforms.disperse, {
+            value: 0,
+            duration: 120,
+            ease: "power1.in",
+          });
+        },
       },
       "<"
     );
+    this.tl.to(
+      this.backSky.material,
+      {
+        opacity: 0,
+        duration: 1,
+      },
+      "<"
+    );
+    this.tl.to(
+      this.textGod.opacity,
+      {
+        value: 1,
+        duration: 1,
+      },
+      "<"
+    );
+    this.tl.to(
+      this.sky.material.uniforms.opacity,
+      {
+        value: 0,
+        duration: 1,
+      },
+      "<"
+    );
+
     this.tl.to(
       this.camera.rotation,
       {
@@ -241,14 +307,8 @@ export default class Buttons {
       "<"
     );
 
-    this.tl.to(
-      this.flower.particlesMaterial.uniforms.disperse,
-      {
-        value: 1,
-        duration: 80,
-      },
-      "<"
-    );
+    if (!this.debug) {
+    }
 
     // this.tl.to(
     //   this.finalScene.position,
@@ -260,8 +320,8 @@ export default class Buttons {
     //   "<"
     // );
 
-    this.video.addEventListener("timeupdate", (event) => {
-      const progress = this.video.currentTime;
+    this.audio.addEventListener("timeupdate", (event) => {
+      const progress = this.audio.currentTime;
       if (progress > 204.5) {
         while (this.finalScene.children.length > 0) {
           this.finalScene.remove(this.finalScene.children[0]);

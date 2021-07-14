@@ -8,6 +8,8 @@ export default class TextGod {
   constructor(options) {
     this.gui = options.gui;
     this.debugObject = {};
+    this.folderGod = this.gui.addFolder("TextGod");
+    this.folderGod.open();
 
     this.scene = options.scene;
 
@@ -36,14 +38,25 @@ export default class TextGod {
   }
 
   addText() {
-    const texts = ["OH LIFE IS A GRAIN OF SALT", "IN THE EYES OF GOD"];
+    this.debugObject.color = "#ecc120";
+
+    this.folderGod.addColor(this.debugObject, "color").onChange(() => {
+      this.materialsText.forEach((material) => {
+        material.uniforms.uColor.value = new THREE.Color(this.debugObject.color);
+      });
+    });
+    const texts = ["LIFE IS A GRAIN OF SALT IN THE EYES OF GOD", ""];
     this.loader.load("/fonts/Moniqa-ExtBold_Italic.json", (font) => {
       if (this.index > texts.length - 1) {
-        this.textGroup.position.z = -80;
         // Position
+        this.textGroup.rotation.x = Math.PI;
+        this.textGroup.position.y = -2000;
+        this.textGroup.position.z = -2000;
         this.textGroup.children[0].position.y = 20;
         this.textGroup.children[1].position.y = -20;
-        // this.scene.add(this.textGroup);
+        this.textGroup.scale.set(25, 25, 25);
+
+        this.scene.add(this.textGroup);
         this.isLoaded = true;
         return;
       }
@@ -69,10 +82,10 @@ export default class TextGod {
         uniforms: {
           time: { value: 0 },
           activeLines: { value: 0 },
-          progress: { value: 0 },
-          opacity: { value: 0 },
-          squeeze: { value: 1 },
-          uColor: { value: new THREE.Color("#FF00BB") },
+          progress: { value: -13 },
+          opacity: { value: this.opacity },
+          squeeze: { value: this.squeeze },
+          uColor: { value: new THREE.Color(this.debugObject.color) },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -95,7 +108,7 @@ export default class TextGod {
   anim(progress, time) {
     this.materialsText.forEach((material) => {
       material.uniforms.time.value = time;
-      material.uniforms.progress.value = progress;
+      // material.uniforms.progress.value = progress;
 
       material.uniforms.opacity.value = this.opacity.value;
       material.uniforms.squeeze.value = this.squeeze.value;
