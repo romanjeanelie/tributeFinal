@@ -117,24 +117,42 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    tl.to(
-      ".home .title__top",
-      {
-        autoAlpha: 0,
-        duration: 2,
-      },
-      "<"
-    );
+    tl.to(".home__title h1", {
+      autoAlpha: 0,
+      duration: 2,
+      ease: "expo.out",
+    });
 
     tl.to(
-      "#start",
+      "#start p",
       {
         autoAlpha: 0,
-        duration: 2,
-        onComplete: () => this.eventsAnim(),
+        duration: 1,
       },
       "<"
     );
+    tl.to(
+      ".home__subtitle h2",
+      {
+        y: 0,
+        delay: 1,
+        duration: 2.5,
+        ease: "expo.out",
+      },
+      "<"
+    );
+    tl.to(".home__subtitle h2", {
+      autoAlpha: 0,
+      duration: 8,
+      ease: "expo.out",
+      onStart: () => {
+        document.querySelector(".home").style.pointerEvent = "none";
+        document.querySelector(".home__title").style.pointerEvent = "none";
+        document.querySelector(".home__subtitle").style.pointerEvent = "none";
+        document.querySelector(".home__subtitle h2").style.pointerEvent = "none";
+        this.eventsAnim();
+      },
+    });
 
     tl.fromTo(
       this.singlePoint.material.uniforms.opacity,
@@ -147,14 +165,6 @@ export default class Animations {
       },
       "<"
     );
-
-    console.log(this.singlePoint);
-    tl.to(".home .bg", {
-      autoAlpha: 0,
-      onComplete: () => {
-        document.querySelector(".home").style.pointerEvent = "none";
-      },
-    });
   }
 
   rayCaster() {

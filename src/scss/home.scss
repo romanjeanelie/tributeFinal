@@ -13,23 +13,6 @@
   font-family: Soleil;
 }
 
-.home .bg {
-  height: 50vh;
-  width: 100vw;
-  position: fixed;
-  left: 0;
-  z-index: 0;
-}
-.home .bg__top {
-  top: 0;
-  transform-origin: top;
-}
-
-.home .bg__bottom {
-  bottom: 0;
-  transform-origin: bottom;
-}
-
 .line {
   background: #eee;
   width: 100%;
@@ -57,17 +40,24 @@
   z-index: 1;
   color: #fff;
   right: 16px;
+
   p {
+    opacity: 0;
     padding: 16px;
     margin-top: 10px;
   }
 }
-.home__title {
-  z-index: 1;
+.home__subtitle {
   text-transform: uppercase;
-  .title__bottom {
-    margin-top: 6px;
+  overflow: hidden;
+  h2 {
+    transform: translateY(-100%);
   }
+}
+
+.home__title {
+  font-size: 56px;
+  overflow: hidden;
 }
 
 .home__start {
@@ -75,10 +65,14 @@
   font-family: Soleil;
   text-transform: uppercase;
   position: absolute;
-  bottom: 100px;
+  top: 52.5%;
   transition: opacity 0.2s ease;
   opacity: 1;
   color: #fff;
+  overflow: hidden;
+  p {
+    transform: translateY(0);
+  }
 
   &:hover {
     opacity: 0.5;
