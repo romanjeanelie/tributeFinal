@@ -82,7 +82,7 @@ float cnoise(vec3 P){
 void main() {
     vec3 newposition = position;
 
-    newposition.y += cnoise(vec3(newposition.x, 1., time)) * 0.1;
+    // newposition.y += cnoise(vec3(newposition.x, 1., time)) * 0.1;
 
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4( newposition, 1.0 );

@@ -11,8 +11,9 @@ import positionsWindows from "./positionsWindows.json";
 
 import CityLights from "./cityLights";
 import TextBuilding from "./textBuilding";
-import Teddy from "./teddy";
 import Wheel from "./wheel";
+import Bridge from "./bridge";
+import Tulip from "./tulip";
 import Landscape from "./landscape";
 import Clouds from "./clouds";
 import AdBoard from "./adBoard";
@@ -48,8 +49,8 @@ export default class Road {
     this.cityLights = new CityLights({ scene: this.city, gui: this.gui });
     this.cityLights.init();
 
-    this.textBuidling = new TextBuilding({ scene: this.buildingsGroup, gui: this.gui });
-    this.textBuidling.init();
+    this.textBuilding = new TextBuilding({ scene: this.buildingsGroup, gui: this.gui });
+    this.textBuilding.init();
 
     // this.teddy = new Teddy({ scene: this.city, gui: this.gui });
     // this.teddy.init();
@@ -63,11 +64,20 @@ export default class Road {
     this.wheel = new Wheel({ scene: this.wheelGroup, gui: this.gui });
     this.wheel.init();
 
+    this.tulip = new Tulip({ scene: this.city, gui: this.gui });
+    this.tulip.init();
+
+    this.bridge = new Bridge({ scene: this.city, gui: this.gui });
+    this.bridge.init();
+
     this.adBoard = new AdBoard({ scene: this.wheelGroup, gui: this.gui });
     this.adBoard.init();
 
-    this.wheelGroup.position.x = -65;
+    this.wheelGroup.scale.set(1, 1, 1);
+    this.wheelGroup.position.x = -40;
     this.wheelGroup.position.z = 210;
+    // this.wheelGroup.position.x = -65;
+    // this.wheelGroup.position.z = 210;
     this.city.add(this.wheelGroup);
 
     this.buildingsGroup.position.x = 50;
@@ -145,7 +155,7 @@ export default class Road {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         opacity: { value: 1 },
-        color1: { value: new THREE.Color("#ffd000") },
+        color1: { value: new THREE.Color("#E77F68") },
         color2: { value: new THREE.Color("#ffffff") },
       },
       vertexShader: vertex,
@@ -167,7 +177,7 @@ export default class Road {
       positions[i3 + 1] = positionsWindow[i].y;
       positions[i3 + 2] = positionsWindow[i].z;
 
-      size[i] = 800;
+      size[i] = 1500;
       opacity[i] = Math.random() * 1;
     }
 
@@ -181,7 +191,7 @@ export default class Road {
   }
 
   anim(progress, time) {
-    this.textBuidling.anim(progress, time);
+    this.textBuilding.anim(progress, time);
     this.wheel.anim(progress, time);
     this.adBoard.anim(progress, time);
     this.materialAntenne.uniforms.time.value = time;

@@ -17,21 +17,25 @@ export default class Buttons {
     this.gltfLoader = new GLTFLoader();
     this.raycaster = new THREE.Raycaster();
 
+    this.sizes = options.sizes;
     this.mouse = options.mouse;
     this.camera = options.camera;
     this.scene = options.scene;
     this.points = options.points;
     this.singlePoint = options.singlePoint;
-    this.textStars = this.singlePoint.textStars;
     this.moon = options.moon;
     this.road = options.road;
+    this.textStars = this.singlePoint.textStars;
     this.flower = options.flower;
     this.sky = options.sky;
     this.backSky = options.backSky;
     this.screen = options.screen;
     this.textGod = options.textGod;
+    this.textFinal = options.textFinal;
 
     this.finalScene = options.finalScene;
+
+    this.btnPlay = document.querySelector(".play");
 
     this.buttonsMesh = [];
     this.materialsButton = [];
@@ -44,12 +48,11 @@ export default class Buttons {
     this.destroy = false;
 
     this.tl = gsap.timeline({ paused: true });
-    this.video = document.getElementById("video");
     this.audio = document.getElementById("audio");
 
     //////////////////////////////////////////////////// DEBUG
     this.debug = false;
-    this.start = 163;
+    this.start = 200;
     //////////////////////////////////////////////////// DEBUG
 
     window.addEventListener("mousemove", (event) => {
@@ -59,7 +62,7 @@ export default class Buttons {
   }
 
   init() {
-    this.createButton({ text: "I CAN SHOW YOU THE NIGHT", x: 0, y: 0, z: 0 });
+    this.createButton({ text: "PLAY", x: 0, y: 0, z: 0 });
 
     this.buttons.position.y = -575;
     this.buttons.position.z = 15500;
@@ -69,9 +72,6 @@ export default class Buttons {
     this.finalScene.add(this.buttons);
 
     if (this.debug) {
-      setTimeout(() => {
-        this.textStars.textsMesh[0].position.y += 500;
-      }, 500);
       this.returnScene();
     }
 
@@ -85,67 +85,42 @@ export default class Buttons {
   }
 
   checkRaycaster(obj) {
-    if (ios()) {
-      window.addEventListener("touchstart", (event) => {
-        this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-        this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-        if (this.intersects.length) {
-          this.nbBtnClicked += 1;
-          const btnClicked = this.buttonsMesh[0];
-          const materialBtnClicked = this.materialsButton[0];
-          const materialTextClicked = this.materialsText[0];
+    this.btnPlay.addEventListener("click", () => {
+      this.nbBtnClicked += 1;
+      const btnClicked = this.buttonsMesh[0];
+      const textClicked = this.textsMesh[0];
+      const materialBtnClicked = this.materialsButton[0];
+      const materialTextClicked = this.materialsText[0];
 
-          gsap.to(btnClicked.position, {
-            z: -10,
-            duration: 0.5,
-          });
-          gsap.to(materialBtnClicked.uniforms.opacity, {
-            value: 1,
-            duration: 0.5,
-          });
-          gsap.to(materialTextClicked, {
-            opacity: 1,
-            duration: 0.5,
-          });
-
-          this.returnScene();
-        }
+      gsap.to(btnClicked.position, {
+        z: -10,
+        duration: 0.5,
       });
-    }
+      gsap.to(textClicked.position, {
+        z: 0,
+        duration: 0.5,
+      });
 
-    window.addEventListener("click", () => {
-      if (this.intersects.length) {
-        this.nbBtnClicked += 1;
-        const btnClicked = this.buttonsMesh[0];
-        const materialBtnClicked = this.materialsButton[0];
-        const materialTextClicked = this.materialsText[0];
+      // materialTextClicked.color = 0xff0000;
 
-        gsap.to(btnClicked.position, {
-          z: -10,
-          duration: 0.5,
-        });
-        gsap.to(materialBtnClicked.uniforms.opacity, {
-          value: 1,
-          duration: 0.5,
-        });
-        gsap.to(materialTextClicked, {
-          opacity: 1,
-          duration: 0.5,
-        });
+      gsap.to(materialBtnClicked.uniforms.changeColor, {
+        value: 0.8,
+        duration: 0.5,
+      });
+      gsap.to(materialTextClicked, {
+        opacity: 0.2,
+        duration: 0.5,
+      });
 
-        this.returnScene();
-      }
+      this.returnScene();
     });
   }
 
   returnScene() {
     // this.audio.muted = true;
     this.tl.play();
-    this.video.play();
     this.audio.play();
-
     let start = 0;
-
     if (this.debug) {
       this.backSky.material.opacity = 0;
       this.textGod.opacity.value = 1;
@@ -153,21 +128,35 @@ export default class Buttons {
 
       start = this.start;
       this.tl.paused = true;
-      this.video.pause();
       this.audio.pause();
       setTimeout(() => {
+        this.textStars.textsMesh[0].position.y += 500;
+        this.road.pointsMaterial.uniforms.opacity.value = 0;
+        this.textStars.opacity = 0;
+        this.road.textBuilding.opacity = 0;
         this.flower.particlesMaterial.uniforms.disperse.value = 0;
+        this.flower.particlesMaterial.uniforms.changeColor.value = 0;
       }, 500);
     }
 
     const steps = {};
-    steps.one = 20;
-    steps.two = 57;
-    steps.three = 86;
-    steps.four = 112;
+    steps.one = 15;
+    steps.two = 20;
+    steps.three = 35;
+    steps.four = 57;
+    steps.five = 86;
+    steps.six = 112;
 
     this.audio.currentTime = start;
-    this.video.currentTime = start;
+    this.tl.to(
+      this.sky,
+      {
+        opacity: 0,
+        duration: 20,
+      },
+      "<"
+    );
+
     this.tl.to(
       this.camera.position,
       {
@@ -177,15 +166,18 @@ export default class Buttons {
       },
       "<"
     );
-    this.tl.to(
-      this.flower.particlesMaterial.uniforms.scaleSize,
-      {
-        value: 1.5,
-        duration: 7,
-        ease: "power1.inOut",
-      },
-      "<"
-    );
+
+    if (!this.debug) {
+      this.tl.to(
+        this.flower.particlesMaterial.uniforms.scaleSize,
+        {
+          value: 1.5,
+          duration: 7,
+          ease: "power1.inOut",
+        },
+        "<"
+      );
+    }
 
     this.tl.to(
       this.moon.moonMaterial.uniforms.wide,
@@ -206,34 +198,61 @@ export default class Buttons {
       "<"
     );
 
-    if (!ios()) {
-      // // this.tl.to(
-      // //   this.points.pointsMaterial2.uniforms.squeeze,
-      // //   {
-      // //     value: 30,
-      // //     duration: 10,
-      // //   },
-      // //   "<"
-      // // );
-      // this.tl.to(
-      //   this.points.pointsMaterial2.uniforms.opacity,
-      //   {
-      //     value: 0,
-      //     duration: 10,
-      //   },
-      //   "<"
-      // );
-    }
+    this.tl.to(
+      this.textFinal.materialsText[0].uniforms.opacity,
+      {
+        value: 0.5,
+        delay: steps.one,
+        duration: 16,
+        ease: "power1.in",
+      },
+      "<"
+    );
+
+    this.tl.to(
+      this.textStars,
+      {
+        disperse: 1,
+        duration: 130,
+      },
+      "<"
+    );
+    this.tl.to(
+      this.road.textBuilding,
+      {
+        disperse: 1,
+        duration: 130,
+      },
+      "<"
+    );
 
     this.tl.to(
       this.camera.rotation,
       {
         z: -Math.PI,
         // z: 0,
-        delay: steps.one,
+        delay: steps.two - steps.one,
 
         duration: 80,
         ease: "power1.inOut",
+      },
+      "<"
+    );
+
+    this.tl.to(
+      this.textFinal.materialsText[0].uniforms.opacity,
+      {
+        value: 0,
+        delay: steps.three - steps.two,
+        duration: 30,
+      },
+      "<"
+    );
+    this.tl.to(
+      this.textFinal.materialsText[1].uniforms.opacity,
+      {
+        value: 1,
+        duration: 30,
       },
       "<"
     );
@@ -241,57 +260,78 @@ export default class Buttons {
       this.camera.rotation,
       {
         x: -Math.PI * 0.5,
-        delay: steps.two - steps.one,
+        delay: steps.four - steps.three,
         duration: 50,
         ease: "power1.out",
-
-        onStart: () => {
-          gsap.to(this.cityLights.textLight, {
-            delay: 2,
-            duration: 20,
-            opacity: 1,
-          });
-        },
       },
       "<"
     );
-
+    if (!this.debug) {
+      this.tl.to(
+        this.cityLights.textLight,
+        {
+          duration: 18,
+          opacity: 1,
+          ease: "power1.in",
+        },
+        "<"
+      );
+    }
     this.tl.to(
       this.camera.rotation,
       {
         y: -Math.PI,
-        delay: steps.three - steps.two,
+        delay: steps.five - steps.four,
         duration: 110,
         onStart: () => {
           gsap.to(this.flower.particlesMaterial.uniforms.disperse, {
             value: 0,
-            duration: 120,
-            ease: "power1.in",
+            duration: 107,
+            ease: "power1.inOut",
+          });
+          gsap.to(this.flower.particlesMaterial.uniforms.changeColor, {
+            value: 0,
+            duration: 30,
+            ease: "power2.in",
           });
         },
       },
       "<"
     );
     this.tl.to(
-      this.backSky.material,
+      this.textFinal.materialsText[1].uniforms.opacity,
       {
-        opacity: 0,
+        value: 0,
         duration: 1,
       },
       "<"
     );
+    if (!this.debug) {
+      this.tl.to(
+        this.cityLights.textLight,
+        {
+          duration: 10,
+          opacity: 0,
+        },
+        "<"
+      );
+    }
+    if (!this.debug) {
+      this.tl.to(
+        this.road.pointsMaterial.uniforms.opacity,
+
+        {
+          duration: 10,
+          value: 0,
+        },
+        "<"
+      );
+    }
+
     this.tl.to(
       this.textGod.opacity,
       {
         value: 1,
-        duration: 1,
-      },
-      "<"
-    );
-    this.tl.to(
-      this.sky.material.uniforms.opacity,
-      {
-        value: 0,
         duration: 1,
       },
       "<"
@@ -301,24 +341,11 @@ export default class Buttons {
       this.camera.rotation,
       {
         x: 0,
-        delay: steps.four - steps.three,
+        delay: steps.six - steps.five,
         duration: 60,
       },
       "<"
     );
-
-    if (!this.debug) {
-    }
-
-    // this.tl.to(
-    //   this.finalScene.position,
-    //   {
-    //     z: 2000,
-    //     duration: 20,
-    //     // ease: "power1.in",
-    //   },
-    //   "<"
-    // );
 
     this.audio.addEventListener("timeupdate", (event) => {
       const progress = this.audio.currentTime;
@@ -336,14 +363,7 @@ export default class Buttons {
         }
       }
     });
-
-    this.audio.addEventListener("timeupdate", (e) => {
-      const progress = this.video.currentTime;
-      console.log(progress);
-    });
   }
-
-  addButton() {}
 
   createButton(options) {
     this.loader.load("/fonts/Soleil_Regular.json", (font) => {
@@ -356,24 +376,26 @@ export default class Buttons {
       });
       textGeometry.center();
 
-      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.3, color: 0xff0000, transparent: true });
+      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 1, color: 0xff00ff, transparent: true });
 
       this.materialsText.push(textMaterial);
 
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
       textMesh.position.x = options.x;
-      textMesh.position.y = 35 + options.y;
-      textMesh.position.z = options.z;
+      textMesh.position.y = 2 + options.y;
+      textMesh.position.z = options.z + 10;
       textMesh.scale.set(4, 4, 4);
 
       this.textsMesh.push(textMesh);
 
-      const geometryButton = new THREE.CylinderGeometry(1, 1, 1, 32, 1);
+      const geometryButton = new THREE.BoxBufferGeometry(8, 1, 2);
       const materialButton = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
           opacity: { value: 1 },
+          uColor: { value: new THREE.Color("#BC2019") },
+          changeColor: { value: 0 },
         },
         transparent: true,
         vertexShader: vertex,
@@ -408,5 +430,12 @@ export default class Buttons {
       material.uniforms.time.value = time;
       this.tl.seek(this.audio.currentTime);
     });
+    if (this.buttonsMesh.length > 0) {
+      const screenPosition = this.buttonsMesh[0].position.clone();
+      screenPosition.project(this.camera);
+      const translateX = screenPosition.x * this.sizes.width * 1600;
+      const translateY = screenPosition.y * this.sizes.height * 9;
+      this.btnPlay.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
+    }
   }
 }

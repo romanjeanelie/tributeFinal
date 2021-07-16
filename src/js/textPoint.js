@@ -44,7 +44,7 @@ export default class TextPoint {
         this.textGroup.position.y = -45;
         this.textGroup.position.z = -80;
 
-        this.textGroup.scale.set(0.5, 0.5, 0.5);
+        this.textGroup.scale.set(0.6, 0.6, 0.6);
         this.scene.add(this.textGroup);
         this.materialsText[0].uniforms.progress.value = -2.3;
         // this.materialsText[0].uniforms.opacity.value = 1;
@@ -84,8 +84,7 @@ export default class TextPoint {
           activeLines: { value: 0 },
           progress: { value: 7 },
           opacity: { value: 0 },
-          // uColor: { value: new THREE.Color("#93ADFF") },
-          uColor: { value: new THREE.Color("#FFF") },
+          uColor: { value: new THREE.Color("#ccc") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

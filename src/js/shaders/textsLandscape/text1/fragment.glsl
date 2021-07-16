@@ -29,7 +29,7 @@ vec3 shapeText = vec3(vNormal.xy, 0.8);
 vec3 result = mix(uColor, vec3(0.),  shapeText);
 
   // gl_FragColor = vec4(color, newNormal);
-  gl_FragColor = vec4(result, strobeLight);
+  gl_FragColor = vec4(uColor, strobeLight);
 
     
 }

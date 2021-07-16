@@ -51,16 +51,16 @@ export default class TextLandscape {
   }
 
   addText2(optionsPositions) {
-    const texts = ["DANCE WITH ME"];
-    this.loader.load("/fonts/Gala2.json", (font) => {
+    const texts = ["THE GATES", "OF LOVE"];
+    this.loader.load("/fonts/Soleil_Regular.json", (font) => {
       if (this.index2 === texts.length) {
-        this.textGroup2.position.x = optionsPositions.x + 60;
-        this.textGroup2.position.y = optionsPositions.y + 45;
+        this.textGroup2.position.x = optionsPositions.x + 110;
+        this.textGroup2.position.y = optionsPositions.y + 40;
         this.textGroup2.position.z = optionsPositions.z + 0;
 
-        this.textGroup2.scale.set(0.4, 0.4, 0.4);
+        this.textGroup2.scale.set(0.15, 0.15, 0.15);
         // Position
-        this.textGroup2.children[0].position.y = 0;
+        this.textGroup2.children[0].position.y = 30;
         this.scene.add(this.textGroup2);
         this.isLoaded = true;
         return;
@@ -88,7 +88,7 @@ export default class TextLandscape {
           time: { value: 0 },
           progress: { value: 0 },
           opacity: { value: 0 },
-          uColor: { value: new THREE.Color("#ffffff") },
+          uColor: { value: new THREE.Color("#FF00DE") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

@@ -32,7 +32,7 @@ export default class SinglePoint {
 
   init() {
     this.textStars.init();
-    this.points.color1 = new THREE.Color("#FFF");
+    this.points.color1 = new THREE.Color("#ddd");
     this.points.color2 = new THREE.Color(this.textStars.texts[0].color);
     this.points.color3 = new THREE.Color(this.textStars.texts[1].color);
     this.points.color4 = new THREE.Color(this.textStars.texts[2].color);
@@ -126,14 +126,14 @@ export default class SinglePoint {
   }
 
   updatePosition() {
-    this.mesh.position.y = this.positionCamera.y - 30;
+    this.mesh.position.y = this.positionCamera.y;
     const deltas = [];
     const posTexts = [];
 
     window.addEventListener("scroll", () => {
       const posPoint = this.mesh.position.y;
       gsap.to(this.positionY, {
-        value: this.positionCamera.y - 30,
+        value: this.positionCamera.y,
         duration: 2,
         ease: "back.out(4)",
       });

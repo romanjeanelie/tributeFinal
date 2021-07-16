@@ -13,84 +13,97 @@ export default class TextBuilding {
 
     this.loader = new THREE.FontLoader();
     this.textureLoader = new THREE.TextureLoader();
+
     this.materialsText = [];
+    this.textsMesh = [];
+
+    this.opacity = 1;
+    this.disperse = 0;
   }
 
   init() {
-    // this.textDance = new TextDance({
-    //   text: "ON",
-    //   font: "Gala2",
-    //   posX: -57,
-    //   posY: 42,
-    //   posZ: -4,
-    //   rotateZ: 0,
-    //   scale: 6,
-    //   color: "#FF0",
-    //   scene: this.scene,
-    // });
+    this.textDance = new TextDance({
+      text: "DANCE",
+      font: "Gala2",
+      posX: -61,
+      posY: 22,
+      posZ: 0,
+      rotateZ: 0,
+      scale: 6,
+      color: "#FF0962",
+      scene: this.scene,
+    });
     this.texts = [
-      // {
-      //   text: "THE",
-      //   font: "Gala2",
-      //   posX: -45,
-      //   posY: 42,
-      //   posZ: -2,
-      //   scale: 6,
-      //   color: "#FFFF00",
-      // },
-      // {
-      //   text: "STREETS",
-      //   font: "Gala2",
-      //   posX: -44,
-      //   posY: 10,
-      //   posZ: 10,
-      //   scale: 6,
-      //   color: "#FFFF00",
-      // },
       {
-        text: "ON THE STREETS",
+        text: "WITH ME",
         font: "Gala2",
-
-        posX: -30,
-        posY: 4,
-        posZ: 40,
-        rotateZ: -0.1,
-        scale: 5,
-        color: "#FFE53F",
+        posX: -40,
+        posY: 15,
+        posZ: 15,
+        scale: 6,
+        color: "#FF0962",
       },
-      // {
-      //   text: "IS A GOLDMINE",
-      //   font: "Gala2",
+      {
+        text: "ON THE FLOOR",
+        font: "Gala2",
+        posX: -14,
+        posY: 20,
+        posZ: 10,
+        scale: 6,
+        color: "#FF0962",
+      },
+      {
+        text: "I WANT",
+        font: "Codystar",
 
-      //   posX: -10,
-      //   posY: 10,
-      //   posZ: 100,
-      //   rotateZ: -0.2,
-      //   scale: 6,
-      //   color: "#FFE53F",
-      // },
-      // {
-      //   text: "COME BACK TO ME",
-      //   font: "Gala2",
+        posX: -10,
+        posY: 10,
+        posZ: 70,
+        rotateZ: -0.2,
+        scale: 4,
+        color: "#FF903F",
+      },
+      {
+        text: "TO FEEL YOU",
+        font: "Codystar",
 
-      //   posX: -50,
-      //   posY: 20,
-      //   posZ: 180,
-      //   rotateZ: 0.2,
-      //   scale: 3,
-      //   color: "#FFE53F",
-      // },
-      // {
-      //   text: "I CAN SHOW YOU THE NIGHT",
-      //   font: "Gala2",
+        posX: -10,
+        posY: 5,
+        posZ: 70,
+        rotateZ: -0.2,
+        scale: 4,
+        color: "#FF903F",
+      },
+      {
+        text: "come back to me",
+        font: "Dancing-Script",
 
-      //   posX: -26,
-      //   posY: 9,
-      //   posZ: 220,
-      //   rotateZ: 0,
-      //   scale: 3,
-      //   color: "#FF0000",
-      // },
+        posX: -90,
+        posY: 14,
+        posZ: 110,
+        rotateZ: 0.2,
+        scale: 7,
+        color: "#FF00FF",
+      },
+      {
+        text: "your heart is a goldmine",
+        font: "Codystar",
+
+        posX: -40,
+        posY: 60,
+        posZ: 180,
+        scale: 7,
+        color: "#FF9000",
+      },
+      {
+        text: "larger than me",
+        font: "Codystar",
+        posX: -40,
+        posY: 50,
+        posZ: 180,
+        scale: 7,
+        color: "#FF9000",
+      },
     ];
     this.texts.forEach((textOptions) => {
       this.loader.load(`/fonts/${textOptions.font}.json`, (font) => {
@@ -100,7 +113,7 @@ export default class TextBuilding {
   }
 
   createText(font, options) {
-    this.textGeometry = new THREE.TextGeometry(options.text, {
+    const textGeometry = new THREE.TextGeometry(options.text, {
       font: font,
       size: 0.5,
       height: 0.05,
@@ -127,20 +140,22 @@ export default class TextBuilding {
 
     this.materialsText.push(textMaterial);
 
-    this.textMesh = new THREE.Mesh(this.textGeometry, textMaterial);
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-    this.textGeometry.center();
+    textGeometry.center();
 
-    this.textMesh.position.x = options.posX;
-    this.textMesh.position.y = options.posY;
-    this.textMesh.position.z = options.posZ;
+    textMesh.position.x = options.posX;
+    textMesh.position.y = options.posY;
+    textMesh.position.z = options.posZ;
 
     if (options.rotateZ) {
-      this.textMesh.rotation.y = options.rotateZ;
+      textMesh.rotation.y = options.rotateZ;
     }
-    this.textMesh.scale.set(options.scale, options.scale, options.scale);
+    textMesh.scale.set(options.scale, options.scale, options.scale);
 
-    this.scene.add(this.textMesh);
+    this.textsMesh.push(textMesh);
+
+    this.scene.add(textMesh);
     // this.addStructure();
   }
 
@@ -165,6 +180,13 @@ export default class TextBuilding {
       material.uniforms.progress.value = progress;
 
       material.uniforms.activeLines.value = progress;
+      material.uniforms.opacity.value = this.opacity;
+    });
+
+    this.textsMesh.forEach((mesh, i) => {
+      mesh.position.y += time * 0.002 * this.disperse;
+      mesh.rotation.y += time * 0.00001 * this.disperse;
+      mesh.rotation.z += time * 0.00001 * this.disperse;
     });
   }
 }

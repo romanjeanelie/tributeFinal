@@ -3,6 +3,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import { gsap } from "gsap";
 
+import getOrientation from "./utils/getOrientation";
+
 import Animations from "./animations";
 
 export default class Sketch {
@@ -28,6 +30,7 @@ export default class Sketch {
     this.camera.position.z = 10;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
 
     // console.log(this.renderer.info);
     // this.renderer.setSize(this.width, this.height);
@@ -88,6 +91,11 @@ export default class Sketch {
     this.camera.updateProjectionMatrix();
 
     this.animations.createPath.cameraPath.resize(this.width, this.height);
+    if (getOrientation() === "Portrait") {
+      document.querySelector(".rotate").style.display = "flex";
+    } else {
+      document.querySelector(".rotate").style.display = "none";
+    }
   }
 
   setClearColor() {

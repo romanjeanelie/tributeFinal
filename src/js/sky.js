@@ -11,16 +11,16 @@ export default class Sky {
     this.debugObject = {};
 
     this.positionX = 0;
-    this.positionY = 500;
-    this.positionZ = -1500;
+    this.positionY = 300;
+    this.positionZ = -7000;
+
+    this.opacity = 0;
 
     this.material = null;
   }
 
   init() {
     this.createSky();
-
-    // this.animThick();
   }
 
   createSky() {
@@ -36,7 +36,7 @@ export default class Sky {
         color3: { value: new THREE.Color(this.debugObject.color3) },
         color4: { value: new THREE.Color(this.debugObject.color4) },
         changeColor: { value: 0 },
-        opacity: { value: 0 },
+        opacity: { value: this.opacity },
         thickFactor: { value: 0.5 },
       },
       side: THREE.DoubleSide,
@@ -60,36 +60,22 @@ export default class Sky {
   }
 
   setColors() {
-    this.debugObject.color1 = "#011428";
+    this.debugObject.color1 = "#161a26";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("skyColor1");
-    this.debugObject.color2 = "#251705";
+    this.debugObject.color2 = "#3c1e0b";
     this.gui
       .addColor(this.debugObject, "color2")
       .onChange(() => (this.material.uniforms.color2.value = new THREE.Color(this.debugObject.color2)))
       .name("skyColor2");
   }
 
-  animThick() {
-    window.addEventListener("scroll", () => {
-      if (this.material.uniforms.thickFactor.value < 3) {
-        gsap.to(this.material.uniforms.thickFactor, {
-          value: 4,
-          duration: 1,
-        });
-      }
-      gsap.to(this.material.uniforms.thickFactor, {
-        value: 1,
-        duration: 3,
-      });
-    });
-  }
-
   anim(time, progress, scrollSpeedEased) {
     this.material.uniforms.time.value = time;
     this.material.uniforms.progress.value = progress;
     this.material.uniforms.thickFactor.value = scrollSpeedEased.value;
+    this.material.uniforms.opacity.value = this.opacity;
   }
 }

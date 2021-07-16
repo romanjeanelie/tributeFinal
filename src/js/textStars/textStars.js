@@ -25,82 +25,75 @@ export default class TextStars {
     this.materialsText = [];
 
     this.index = 0;
+
+    this.opacity = 1;
+    this.disperse = 0;
   }
 
   init() {
     this.texts = [
       {
-        text: "your lips are so sweet",
+        text: "YOUR LIPS ARE SO SWEET",
         posX: -6,
         posY: -818,
         posZ: -300,
         // scale: 10,
-        scale: 20,
+        scale: 30,
         color: "#F9A5D9",
         color2: "#F97BBA",
-        opacity: 1,
+        // color: "#fff",
+        // color2: "#fff",
       },
       {
-        text: "they keep running on my feet",
+        text: "THEY KEEP RUNNING ON MY FEET",
+        // text: "they keep running on my feet",
         posX: -6,
         posY: -1500,
         posZ: -300,
         // scale: 15,
-        scale: 20,
+        scale: 40,
         color: "#F97BBA",
-        color2: "#9F8BCA",
-        opacity: 1,
+        color2: "#F9A5D9",
       },
       {
-        text: "it helped the days complete",
+        text: "IT HELPED THE DAYS COMPLETE",
+        // text: "it helped the days complete",
         posX: -6,
-        posY: -2300,
+        posY: -2600,
         posZ: -300,
         // scale: 25,
-        scale: 30,
-        color: "#3516F8",
+        scale: 70,
+        color: "#F9A5D9",
         color2: "#FF00DE",
-        opacity: 1,
       },
       {
-        text: "I'm lock in your dreams",
+        text: "I'M LOCK IN YOUR DREAMS",
+        // text: "I'm lock in your dreams",
         posX: -6,
-        posY: -3800,
+        posY: -4500,
         posZ: -600,
-        scale: 80,
+        scale: 160,
         color: "#FF00DE",
-        color2: "#2300FF",
-        opacity: 1,
+        color2: "#F41B0C",
       },
       {
-        text: "come back to me",
-        posX: -700,
-        posY: -4100,
+        text: "I CAN SHOW YOU THE NIGHT",
+        posX: -2000,
+        posY: -2050,
         posZ: 10600,
-        scale: 100,
-        color: "#FFF145",
-        color2: "#EA1505",
-        opacity: 1,
+        scale: 180,
+        color: "#FF0048",
+        color2: "#FF00DE",
       },
-
-      // {
-      //   text: "There's a reason we're together",
-      //   posX: 11000,
-      //   // posX: 250000, ////// DEBUG
-      //   posY: 6000,
-      //   posZ: 30600,
-      //   rotY: Math.PI,
-      //   scale: 1000,
-      //   color: "#E90405",
-      // },
     ];
-    this.loader.load("/fonts/Moniqa-Display_Italic.json", (font) => {
+    this.loader.load("/fonts/Moniqa-ExtBold.json", (font) => {
       this.texts.forEach((textOptions) => {
         this.createText(font, textOptions).then(() => {
           this.index++;
 
           if (this.index === this.texts.length) {
             this.allTextLoaded = true;
+            // this.disperse();
           }
         });
       });
@@ -123,7 +116,7 @@ export default class TextStars {
           time: { value: 0 },
           activeLines: { value: 0 },
           progress: { value: 0 },
-          opacity: { value: options.opacity },
+          opacity: { value: this.opacity },
           uColor: { value: new THREE.Color(options.color) },
           uColor2: { value: new THREE.Color(options.color2 ? options.color2 : options.color) },
           squeeze: { value: 0 },
@@ -166,6 +159,14 @@ export default class TextStars {
       material.uniforms.progress.value = progress;
       // SPEED Volets
       material.uniforms.activeLines.value = progress;
+      material.uniforms.activeLines.value = progress;
+      material.uniforms.opacity.value = this.opacity;
+    });
+
+    this.textsMesh.forEach((mesh, i) => {
+      mesh.position.y += time * 0.02 * this.disperse;
+      mesh.rotation.y += time * 0.00001 * this.disperse;
+      mesh.rotation.z += time * 0.00001 * this.disperse;
     });
   }
 }

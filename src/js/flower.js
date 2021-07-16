@@ -65,6 +65,7 @@ export default class Flower {
           color2: { value: new THREE.Color(this.debugObject.color2) },
           uOpacity: { value: this.opacity },
           disperse: { value: 1 },
+          changeColor: { value: 1 },
           offset: { value: 200 },
           scaleSize: { value: 0.4 },
         },
@@ -106,6 +107,7 @@ export default class Flower {
       this.particles = new THREE.Points(this.particlesGeometry, this.particlesMaterial);
 
       this.flower.add(this.particles);
+      const infoEl = document.querySelector(".info");
     });
   }
 

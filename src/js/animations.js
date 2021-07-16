@@ -3,6 +3,7 @@ import gsap from "gsap";
 import TextIntro from "./textIntro";
 import TextGod from "./textGod";
 import TextPoint from "./textPoint";
+import TextFinal from "./textFinal";
 import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Sky from "./sky";
@@ -11,7 +12,6 @@ import Moon from "./moon/moon";
 import Road from "./street/road";
 import Planet from "./planet";
 import Buttons from "./buttons";
-import BackSky from "./backSky";
 import Flower from "./flower";
 
 import CreatePath from "./camera/createPath";
@@ -52,11 +52,11 @@ export default class Animations {
     this.delta = 0;
     this.currentScroll = 0;
 
-    // DEBUG MODE ////////////////////////////
+    // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 4;
+    this.positionTimeline = 2;
     this.start = 0;
-    // DEBUG MODE ////////////////////////////
+    // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
 
     this.help = new Help();
     this.scrollActive = false;
@@ -96,10 +96,10 @@ export default class Animations {
     this.helpListener();
     this.startListener();
 
-    //////// START DIRECTLY ////////
+    // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
     // this.startProject();
     // document.querySelector(".home").style.display = "none";
-    //////// START DIRECTLY ////////
+    // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
 
     if (this.backstage) {
       document.querySelector(".home").style.display = "none";
@@ -128,31 +128,17 @@ export default class Animations {
       {
         autoAlpha: 0,
         duration: 1,
+        onComplete: () => {
+          document.querySelector(".home").style.pointerEvent = "none";
+          document.querySelector(".home__title").style.pointerEvent = "none";
+          document.querySelector(".home").style.display = "none";
+          document.querySelector(".home__title").style.display = "none";
+
+          this.eventsAnim();
+        },
       },
       "<"
     );
-    tl.to(
-      ".home__subtitle h2",
-      {
-        y: 0,
-        delay: 1,
-        duration: 2.5,
-        ease: "expo.out",
-      },
-      "<"
-    );
-    tl.to(".home__subtitle h2", {
-      autoAlpha: 0,
-      duration: 8,
-      ease: "expo.out",
-      onStart: () => {
-        document.querySelector(".home").style.pointerEvent = "none";
-        document.querySelector(".home__title").style.pointerEvent = "none";
-        document.querySelector(".home__subtitle").style.pointerEvent = "none";
-        document.querySelector(".home__subtitle h2").style.pointerEvent = "none";
-        this.eventsAnim();
-      },
-    });
 
     tl.fromTo(
       this.singlePoint.material.uniforms.opacity,
@@ -161,9 +147,9 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 20,
-      },
-      "<"
+        duration: 6,
+        ease: "power2.in",
+      }
     );
   }
 
@@ -186,32 +172,26 @@ export default class Animations {
 
   eventsAnim() {
     // STEP THREE
-    const tl = gsap.timeline();
+    let index = this.start;
+    const btn = document.querySelector(".point");
+    btn.addEventListener("click", () => {
+      console.log("click");
+      this.stepThree(index);
+      index++;
+      if (index === 4) {
+        btn.style.display = "none";
+      }
+    });
 
     if (ios()) {
-      let index = this.start - 1;
-
       window.addEventListener("touchstart", (event) => {
         this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-        if (this.intersects.length) {
-          this.stepThree(index);
-          index++;
-        }
       });
     } else {
-      let index = this.start;
-
       window.addEventListener("mousemove", (event) => {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      });
-
-      window.addEventListener("click", () => {
-        if (this.intersects.length) {
-          this.stepThree(index);
-          index++;
-        }
       });
     }
   }
@@ -220,6 +200,7 @@ export default class Animations {
     this.textIntro = new TextIntro({ scene: this.finalScene, scroll: this.scrollValue });
     this.textGod = new TextGod({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
     this.textPoint = new TextPoint({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
+    this.textFinal = new TextFinal({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
 
     this.circle = new Circle({ scene: this.finalScene, gui: this.gui });
     this.singlePoint = new SinglePoint({
@@ -233,11 +214,11 @@ export default class Animations {
     this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
     this.road = new Road({ scene: this.finalScene, gui: this.gui });
     this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
-    this.backSky = new BackSky({ scene: this.finalScene, gui: this.gui });
     this.flower = new Flower({ scene: this.finalScene, gui: this.gui });
 
     this.progressBar = new Circle({ scene: this.finalScene, gui: this.gui });
     this.buttons = new Buttons({
+      sizes: this.sizes,
       scene: this.scene,
       gui: this.gui,
       mouse: this.mouse,
@@ -248,15 +229,16 @@ export default class Animations {
       road: this.road,
       flower: this.flower,
       sky: this.sky,
-      backSky: this.backSky,
       finalScene: this.finalScene,
       screen: this.createPath.cameraPath.screenMaterial,
       textGod: this.textGod,
+      textFinal: this.textFinal,
     });
 
     this.textIntro.init();
     this.textGod.init();
     this.textPoint.init();
+    this.textFinal.init();
 
     this.circle.init();
     this.singlePoint.init();
@@ -265,7 +247,6 @@ export default class Animations {
     this.road.init();
     this.plane.init();
     this.planet.init();
-    this.backSky.init();
     this.flower.init();
 
     this.progressBar.init();
@@ -310,15 +291,8 @@ export default class Animations {
 
   getScroll() {
     window.addEventListener("scroll", (e) => {
-      this.displayTimecode((this.progress * 10).toFixed(2));
-
       this.scrollValue = window.scrollY / document.body.scrollHeight;
     });
-  }
-
-  displayTimecode(progress) {
-    const timecodeEl = document.querySelector(".timecode");
-    timecodeEl.innerHTML = progress * 100;
   }
 
   getScrollSpeed() {
@@ -469,11 +443,11 @@ export default class Animations {
       "<"
     );
 
-    // FADE IN Lines sky
+    // FADE IN Sky
     tl.to(
-      this.sky.material.uniforms.opacity,
+      this.sky,
       {
-        value: 0.01,
+        opacity: 1,
         duration: 12,
       },
 
@@ -537,17 +511,6 @@ export default class Animations {
       "<"
     );
 
-    // SKY Getting lighter
-    this.tl4.to(
-      this.sky.material.uniforms.changeColor,
-      {
-        duration: 5,
-        value: 1,
-        ease: "linear",
-      },
-      "<"
-    );
-
     // PROGRESSION CAM 3 Until Planet
     this.tl4.to(
       this.createPath.cameraPath,
@@ -556,28 +519,8 @@ export default class Animations {
         delay: steps.step2.duration,
         duration: steps.step3.duration,
         ease: "linear",
-        onStart: () => {
-          // // FADE IN MoreLines sky
-          // gsap.to(this.sky.material.uniforms.opacity, {
-          //   value: 0.06,
-          //   delay: 6,
-          //   duration: 12,
-          // });
-        },
-        // onComplete: () => this.finalStep(),
       },
 
-      "<"
-    );
-
-    // // FADE IN MoreLines sky
-    this.tl4.to(
-      this.sky.material.uniforms.opacity,
-      {
-        value: 0.06,
-        delay: 6,
-        duration: 12,
-      },
       "<"
     );
   }
@@ -611,8 +554,8 @@ export default class Animations {
   animText(progress, time) {
     this.textIntro.anim(progress * 12, time);
     this.textGod.anim(progress * 12, time);
-    // this.textGod.animText(progress * 0.5);
     this.textPoint.anim(progress * 12, time);
+    this.textFinal.anim(progress * 12, time);
 
     this.road.anim(progress * 12, time);
     this.singlePoint.points.anim(progress * 12, time, this.scrollSpeedEased.value);
@@ -632,7 +575,7 @@ export default class Animations {
     }
 
     // Progress Bar TEST
-    document.querySelector(".progress").style.transform = `scaleX(${this.progress / 2})`;
+    // document.querySelector(".progress").style.transform = `scaleX(${this.progress / 2})`;
 
     ///////////////////////////////////////// Test without scrollBar
     if (this.backstage) {
@@ -644,6 +587,7 @@ export default class Animations {
       //this.gui.show();
       this.singlePoint.points.pointsMaterial.uniforms.opacity.value = 1;
       this.singlePoint.points.pointsMaterial2.uniforms.opacity.value = 1;
+      this.sky.material.uniforms.opacity.value = 1;
       this.tl2.play();
       this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
     }

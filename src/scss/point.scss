@@ -1,0 +1,28 @@
+.btn__wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    cursor: auto;
+    background: transparent;
+  }
+  .point {
+    // background: blue;
+    width: 100px;
+    height: 100px;
+  }
+  .play {
+    // background: red;
+    width: 17vh;
+    height: 13vh;
+    position: absolute;
+    left: 50%;
+    // transform: translateX(-50%);
+    // display: none;
+  }
+}

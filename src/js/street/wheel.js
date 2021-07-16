@@ -102,7 +102,7 @@ export default class Wheel {
       positions[i3 + 1] = positionsWindow[i].y - 14.6;
       positions[i3 + 2] = positionsWindow[i].z;
 
-      size[i] = 6000;
+      size[i] = 9000;
       opacity[i] = Math.random() * 0.6;
     }
 

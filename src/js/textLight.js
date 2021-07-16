@@ -22,11 +22,11 @@ export default class TextLight {
     this.addText();
 
     // this.text.children[1].position.y = 50;
-    this.text.scale.set(110, 110, 110);
-    this.text.rotation.y = -Math.PI * 0.5;
-    this.text.position.x = -120;
+    this.text.scale.set(75, 75, 75);
+    this.text.rotation.y = Math.PI;
+    this.text.position.x = 150;
     this.text.position.y = 0;
-    this.text.position.z = -50;
+    this.text.position.z = 230;
     this.scene.add(this.text);
   }
 
@@ -45,10 +45,14 @@ export default class TextLight {
   }
 
   createParticles(mesh) {
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+    });
+    mesh.material = material;
     this.geometry = mesh.geometry;
 
     const sampler = new MeshSurfaceSampler(mesh).build();
-    const numParticles = 1000;
+    const numParticles = 2000;
 
     this.particlesGeometry = new THREE.BufferGeometry();
     const particlesPosition = new Float32Array(numParticles * 3);
@@ -92,11 +96,12 @@ export default class TextLight {
 
     this.particles = new THREE.Points(this.particlesGeometry, this.particlesMaterial);
 
-    if (mesh.name === "Spin") {
+    if (mesh.name === "Stop") {
       this.particles.position.z = -1.5;
     }
 
     this.text.add(this.particles);
+    // this.text.add(mesh);
   }
 
   anim(progress, time) {
