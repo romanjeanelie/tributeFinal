@@ -56,6 +56,7 @@ export default class SinglePoint {
         color3: { value: new THREE.Color(this.textStars.texts[1].color) },
         color4: { value: new THREE.Color(this.textStars.texts[2].color) },
         color5: { value: new THREE.Color(this.textStars.texts[3].color) },
+        colorOrb: { value: new THREE.Color("#F41B0C") },
         isColor1: { value: 1 },
         isColor2: { value: 0 },
         isColor3: { value: 0 },
@@ -89,7 +90,6 @@ export default class SinglePoint {
       uniforms: {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
-
         opacity: { value: 1 },
         wide: { value: 0 },
         isPressed: { value: 1 },

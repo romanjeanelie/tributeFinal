@@ -52,9 +52,6 @@ export default class Road {
     this.textBuilding = new TextBuilding({ scene: this.buildingsGroup, gui: this.gui });
     this.textBuilding.init();
 
-    // this.teddy = new Teddy({ scene: this.city, gui: this.gui });
-    // this.teddy.init();
-
     this.landscape = new Landscape({ scene: this.city, gui: this.gui });
     this.landscape.init();
 
@@ -154,15 +151,14 @@ export default class Road {
     this.pointsMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        opacity: { value: 1 },
+        uOpacity: { value: 1 },
         color1: { value: new THREE.Color("#E77F68") },
         color2: { value: new THREE.Color("#ffffff") },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
-
-      //depthWrite: false,
+      depthWrite: false,
     });
 
     const pointsGeometry = new THREE.BufferGeometry();
@@ -188,6 +184,8 @@ export default class Road {
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
     this.buildingsGroup.add(points);
+    console.log(points.geometry.attributes.position.count);
+    document.querySelector(".info").innerHTML = points.geometry.attributes.opacity.count;
   }
 
   anim(progress, time) {

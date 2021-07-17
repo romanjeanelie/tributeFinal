@@ -38,7 +38,8 @@ export default class TextGod {
   }
 
   addText() {
-    this.debugObject.color = "#ecc120";
+    this.debugObject.color = "#BBB675";
+    this.debugObject.color2 = "#473A18";
 
     this.folderGod.addColor(this.debugObject, "color").onChange(() => {
       this.materialsText.forEach((material) => {
@@ -86,6 +87,7 @@ export default class TextGod {
           opacity: { value: this.opacity },
           squeeze: { value: this.squeeze },
           uColor: { value: new THREE.Color(this.debugObject.color) },
+          uColor2: { value: new THREE.Color(this.debugObject.color2) },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

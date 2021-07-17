@@ -184,9 +184,11 @@ export default class TextBuilding {
     });
 
     this.textsMesh.forEach((mesh, i) => {
-      mesh.position.y += time * 0.002 * this.disperse;
+      mesh.position.y += time * 0.0012 * this.disperse;
+      mesh.position.x += i % 2 === 0 ? time * 0.0006 * this.disperse : -(time * 0.0006 * this.disperse);
+      mesh.position.z += time * 0.001 * this.disperse;
       mesh.rotation.y += time * 0.00001 * this.disperse;
-      mesh.rotation.z += time * 0.00001 * this.disperse;
+      mesh.rotation.x += time * 0.001 * this.disperse * i * 0.01;
     });
   }
 }

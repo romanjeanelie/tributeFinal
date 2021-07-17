@@ -3,6 +3,7 @@ uniform float activeLines;
 uniform float progress;
 uniform float opacity;
 uniform vec3 uColor; 
+uniform vec3 uColor2; 
 
 varying vec2 vUv;
 //	Classic Perlin 3D Noise 
@@ -88,23 +89,14 @@ float stroke(float x, float s, float w){
 
 void main()	{
 
-  vec3 color=vec3(0.,0.,0.);
+ vec3 color = vec3(1.); 
 
-  float noise =  cnoise(vec3(vUv  * 500.,  time * 10.))* 100.;
-  float noiseB =  cnoise(vec3(vUv.yy  * 30.,  time * 10.));
-  float noiseProgress = noise;
+  float noise = cnoise(vec3(vUv *.025, time *.2)) + 0.6;
+  float result =  noise;
 
-  float noiseMixed = mix(1., 0.5, noiseB);
+  vec3 finalColor = mix(uColor2, uColor, result);
 
-  float strokeSDF = stroke(vUv.y + 1.,12., 12. ) * noiseMixed * opacity; 
-
-
-  color += strokeSDF;
-
-  vec3 finalColor = mix(vec3(0.), uColor, color);
-  
-  // gl_FragColor = vec4(finalColor, color);
-  gl_FragColor = vec4(uColor,opacity);
-
+  gl_FragColor = vec4(vec3(finalColor), (0.4 + result) * opacity);
+  // gl_FragColor = vec4(vec3(1.), 1.);
     
 }

@@ -11,9 +11,27 @@
   align-items: center;
   font-family: Soleil;
   background: #000;
+  span,
+  a {
+    transition: opacity 0.4s;
+  }
   p {
     text-transform: uppercase;
-    opacity: 0;
+    color: #fff;
     font-size: 24px;
+  }
+  .inactive {
+    opacity: 0.3;
+  }
+}
+
+@media (max-width: 1200px) {
+  .final p {
+    font-size: 16px;
+  }
+}
+@media (max-width: 756px) {
+  .final p {
+    font-size: 14px;
   }
 }

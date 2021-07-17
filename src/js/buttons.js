@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
 
 import ios from "./utils/ios";
 
@@ -50,6 +51,8 @@ export default class Buttons {
     this.tl = gsap.timeline({ paused: true });
     this.audio = document.getElementById("audio");
 
+    gsap.registerPlugin(SplitText);
+
     //////////////////////////////////////////////////// DEBUG
     this.debug = false;
     this.start = 200;
@@ -71,8 +74,18 @@ export default class Buttons {
 
     this.finalScene.add(this.buttons);
 
+    this.hoverLinks();
+
     if (this.debug) {
-      this.returnScene();
+      setTimeout(() => {
+        this.returnScene();
+        // this.textStars.textsMesh[0].position.y += 500;
+        // this.road.pointsMaterial.uniforms.opacity.value = 0;
+        // this.textStars.opacity = 0;
+        // this.road.textBuilding.opacity = 0;
+        // this.flower.particlesMaterial.uniforms.disperse.value = 0;
+        // this.flower.particlesMaterial.uniforms.changeColor.value = 0;
+      }, 1000);
     }
 
     this.cityLights = this.road.cityLights;
@@ -122,21 +135,11 @@ export default class Buttons {
     this.audio.play();
     let start = 0;
     if (this.debug) {
-      this.backSky.material.opacity = 0;
       this.textGod.opacity.value = 1;
-      // this.sky.material.uniforms.opacity.value = 0;
-
       start = this.start;
       this.tl.paused = true;
       this.audio.pause();
-      setTimeout(() => {
-        this.textStars.textsMesh[0].position.y += 500;
-        this.road.pointsMaterial.uniforms.opacity.value = 0;
-        this.textStars.opacity = 0;
-        this.road.textBuilding.opacity = 0;
-        this.flower.particlesMaterial.uniforms.disperse.value = 0;
-        this.flower.particlesMaterial.uniforms.changeColor.value = 0;
-      }, 500);
+      setTimeout(() => {}, 500);
     }
 
     const steps = {};
@@ -167,17 +170,15 @@ export default class Buttons {
       "<"
     );
 
-    if (!this.debug) {
-      this.tl.to(
-        this.flower.particlesMaterial.uniforms.scaleSize,
-        {
-          value: 1.5,
-          duration: 7,
-          ease: "power1.inOut",
-        },
-        "<"
-      );
-    }
+    this.tl.to(
+      this.flower.particlesMaterial.uniforms.scaleSize,
+      {
+        value: 1.5,
+        duration: 7,
+        ease: "power1.inOut",
+      },
+      "<"
+    );
 
     this.tl.to(
       this.moon.moonMaterial.uniforms.wide,
@@ -244,10 +245,11 @@ export default class Buttons {
       {
         value: 0,
         delay: steps.three - steps.two,
-        duration: 30,
+        duration: 15,
       },
       "<"
     );
+
     this.tl.to(
       this.textFinal.materialsText[1].uniforms.opacity,
       {
@@ -256,6 +258,7 @@ export default class Buttons {
       },
       "<"
     );
+
     this.tl.to(
       this.camera.rotation,
       {
@@ -266,38 +269,47 @@ export default class Buttons {
       },
       "<"
     );
-    if (!this.debug) {
-      this.tl.to(
-        this.cityLights.textLight,
-        {
-          duration: 18,
-          opacity: 1,
-          ease: "power1.in",
-        },
-        "<"
-      );
-    }
+
+    this.tl.to(
+      this.cityLights.textLight,
+      {
+        duration: 18,
+        opacity: 1,
+        ease: "power1.in",
+      },
+      "<"
+    );
+
     this.tl.to(
       this.camera.rotation,
       {
         y: -Math.PI,
         delay: steps.five - steps.four,
         duration: 110,
-        onStart: () => {
-          gsap.to(this.flower.particlesMaterial.uniforms.disperse, {
-            value: 0,
-            duration: 107,
-            ease: "power1.inOut",
-          });
-          gsap.to(this.flower.particlesMaterial.uniforms.changeColor, {
-            value: 0,
-            duration: 30,
-            ease: "power2.in",
-          });
-        },
+        onStart: () => {},
       },
       "<"
     );
+
+    this.tl.to(
+      this.flower.particlesMaterial.uniforms.disperse,
+      {
+        value: 0,
+        duration: 107,
+        ease: "power1.inOut",
+      },
+      "<"
+    );
+    this.tl.to(
+      this.flower.particlesMaterial.uniforms.changeColor,
+      {
+        value: 0,
+        duration: 30,
+        ease: "power2.in",
+      },
+      "<"
+    );
+
     this.tl.to(
       this.textFinal.materialsText[1].uniforms.opacity,
       {
@@ -306,27 +318,25 @@ export default class Buttons {
       },
       "<"
     );
-    if (!this.debug) {
-      this.tl.to(
-        this.cityLights.textLight,
-        {
-          duration: 10,
-          opacity: 0,
-        },
-        "<"
-      );
-    }
-    if (!this.debug) {
-      this.tl.to(
-        this.road.pointsMaterial.uniforms.opacity,
 
-        {
-          duration: 10,
-          value: 0,
-        },
-        "<"
-      );
-    }
+    this.tl.to(
+      this.cityLights.textLight,
+      {
+        duration: 10,
+        opacity: 0,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      this.road.pointsMaterial.uniforms.opacity,
+
+      {
+        duration: 10,
+        value: 0,
+      },
+      "<"
+    );
 
     this.tl.to(
       this.textGod.opacity,
@@ -347,19 +357,69 @@ export default class Buttons {
       "<"
     );
 
+    const finalSplit = new SplitText(".final p", { type: "chars" });
+
+    let index1 = Math.round(finalSplit.chars.length / 2);
+    let index2 = Math.round(finalSplit.chars.length / 2);
+    let charTitle = finalSplit.chars[index1];
+    this.tlFinal = gsap.timeline({ paused: true, delay: 2 });
+
+    this.tlFinal.fromTo(
+      charTitle,
+      {
+        opacity: 0,
+        color: "#F41B0C",
+      },
+      {
+        opacity: 1,
+        color: "#ccc",
+        duration: 6,
+      }
+    );
+
+    for (let i = 0; i < finalSplit.chars.length; i++) {
+      index1 += 1;
+      if (finalSplit.chars[index1]) {
+        let charTitle = finalSplit.chars[index1];
+        this.tlFinal.fromTo(
+          charTitle,
+          { opacity: 0, color: "#F41B0C" },
+          {
+            delay: i * 0.002,
+            opacity: 1,
+            color: "#ccc",
+            duration: 6,
+          },
+          "<"
+        );
+      }
+      index2 -= 1;
+      if (finalSplit.chars[index2]) {
+        let charTitle = finalSplit.chars[index2];
+        this.tlFinal.fromTo(
+          charTitle,
+          { opacity: 0, color: "#F41B0C" },
+          {
+            delay: i * 0.002,
+            opacity: 1,
+            color: "#ccc",
+            duration: 6,
+          },
+          "<"
+        );
+      }
+    }
+
     this.audio.addEventListener("timeupdate", (event) => {
       const progress = this.audio.currentTime;
+
       if (progress > 204.5) {
+        console.log(finalSplit);
+        document.querySelector(".final").style.display = "flex";
+        this.tlFinal.play();
+
         while (this.finalScene.children.length > 0) {
           this.finalScene.remove(this.finalScene.children[0]);
-          setTimeout(() => {
-            document.querySelector(".final").style.display = "flex";
-            gsap.to(".final p", {
-              opacity: 1,
-              delay: 0,
-              duration: 4,
-            });
-          }, 2500);
         }
       }
     });
@@ -425,6 +485,38 @@ export default class Buttons {
     });
   }
 
+  hoverLinks() {
+    const linkRoman = document.querySelector(".link__roman");
+    const linkBeau = document.querySelector(".link__beau");
+    const finalSpans = document.querySelectorAll(".final span");
+
+    linkBeau.addEventListener("mouseenter", () => {
+      finalSpans.forEach((span) => {
+        span.classList.add("inactive");
+      });
+      linkRoman.classList.add("inactive");
+    });
+    linkBeau.addEventListener("mouseleave", () => {
+      finalSpans.forEach((span) => {
+        span.classList.remove("inactive");
+        linkRoman.classList.remove("inactive");
+      });
+    });
+
+    linkRoman.addEventListener("mouseenter", () => {
+      finalSpans.forEach((span) => {
+        span.classList.add("inactive");
+      });
+      linkBeau.classList.add("inactive");
+    });
+    linkRoman.addEventListener("mouseleave", () => {
+      finalSpans.forEach((span) => {
+        span.classList.remove("inactive");
+        linkBeau.classList.remove("inactive");
+      });
+    });
+  }
+
   anim(progress, time) {
     this.materialsButton.forEach((material) => {
       material.uniforms.time.value = time;
@@ -436,6 +528,9 @@ export default class Buttons {
       const translateX = screenPosition.x * this.sizes.width * 1600;
       const translateY = screenPosition.y * this.sizes.height * 9;
       this.btnPlay.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
+    }
+    if (this.debug) {
+      this.sky.opacity = 0;
     }
   }
 }

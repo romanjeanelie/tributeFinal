@@ -32,7 +32,7 @@ export default class Moon {
 
   addMoon() {
     this.debugObject.moonColor1 = "#000000";
-    this.debugObject.moonColor2 = "#ff4600";
+    this.debugObject.moonColor2 = "#ff8a4f";
     this.debugObject.moonColor3 = "#820000";
     this.folderMoon.addColor(this.debugObject, "moonColor1").onChange(() => {
       this.moonMaterial.uniforms.color1.value = new THREE.Color(this.debugObject.moonColor1);

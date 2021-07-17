@@ -17,7 +17,7 @@ void main(){
 
     gl_Position = projectionPosition;  
 
-        gl_PointSize = max(size, uPixelRatio * 10000.);
+        gl_PointSize = max(size, uPixelRatio * 1000.);
 
         
         // Keep size attenuation

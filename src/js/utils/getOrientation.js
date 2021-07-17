@@ -1,4 +1,6 @@
 export default function getOrientation() {
   var orientation = window.innerWidth > window.innerHeight ? "Landscape" : "Portrait";
-  return orientation;
+  if (window.innerWidth < 800) {
+    return orientation;
+  }
 }

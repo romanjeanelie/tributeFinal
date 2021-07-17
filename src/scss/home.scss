@@ -43,8 +43,10 @@
   // max-width: 600px;
   font-size: 24px;
   overflow: hidden;
+  margin-top: 200px;
   h1 {
     text-align: center;
+    color: #fff;
   }
 }
 
@@ -52,14 +54,14 @@
   z-index: 1;
   font-family: Soleil;
   text-transform: uppercase;
-  position: absolute;
-  top: 72.5%;
   transition: opacity 0.2s ease;
   opacity: 1;
   overflow: hidden;
+  margin-top: 200px;
   p {
     transform: translateY(0);
     font-size: 24px;
+    color: #fff;
   }
 
   &:hover {
@@ -72,6 +74,7 @@
   z-index: 3;
   top: 10px;
   left: 10px;
+  // display: none;
 }
 
 .rotate {
@@ -96,14 +99,30 @@
   }
 }
 
-@media (max-width: 756px) {
+@media (max-width: 1200px) {
   .home__title {
-    font-size: 16px;
+    margin-top: 0;
+    font-size: 18px;
   }
 
   .home__start {
+    margin-top: 100px;
+
     p {
       font-size: 16px;
+    }
+  }
+}
+@media (max-width: 756px) {
+  .home__title {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  .home__start {
+    margin-top: 50px;
+    p {
+      font-size: 14px;
     }
   }
 }

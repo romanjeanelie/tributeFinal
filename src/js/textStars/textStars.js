@@ -82,8 +82,8 @@ export default class TextStars {
         posY: -2050,
         posZ: 10600,
         scale: 180,
-        color: "#FF0048",
-        color2: "#FF00DE",
+        color: "#5450C6",
+        color2: "#1C003C",
       },
     ];
     this.loader.load("/fonts/Moniqa-ExtBold.json", (font) => {
@@ -164,9 +164,12 @@ export default class TextStars {
     });
 
     this.textsMesh.forEach((mesh, i) => {
+      mesh.position.x += i % 2 === 0 ? time * 0.003 * this.disperse : -(time * 0.003 * this.disperse);
       mesh.position.y += time * 0.02 * this.disperse;
+      mesh.position.z += time * 0.07 * this.disperse;
+
       mesh.rotation.y += time * 0.00001 * this.disperse;
-      mesh.rotation.z += time * 0.00001 * this.disperse;
+      mesh.rotation.x += time * 0.001 * this.disperse * i * 0.01;
     });
   }
 }

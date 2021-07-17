@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
 import TextIntro from "./textIntro";
 import TextGod from "./textGod";
 import TextPoint from "./textPoint";
@@ -22,6 +23,7 @@ import { checkScrollSpeed } from "./utils/checkScrollSpeed";
 import once from "./utils/once";
 
 import Help from "./domElements/help";
+import TextLight from "./textLight";
 
 export default class Animations {
   constructor(options) {
@@ -51,6 +53,8 @@ export default class Animations {
     this.steps = [1.4];
     this.delta = 0;
     this.currentScroll = 0;
+
+    gsap.registerPlugin(SplitText);
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
     this.backstage = false;
@@ -109,6 +113,97 @@ export default class Animations {
   startListener() {
     const startBtn = document.getElementById("start");
 
+    const titleSplit = new SplitText(".home__title h1", { type: "words,chars" });
+
+    let indexTitle1 = Math.round(titleSplit.chars.length / 2);
+    let indexTitle2 = Math.round(titleSplit.chars.length / 2);
+
+    let charTitle = titleSplit.chars[indexTitle1];
+
+    this.tlTitle = gsap.timeline({ delay: 1 });
+
+    this.tlTitle.from(charTitle, {
+      opacity: 0,
+      color: "#F41B0C",
+
+      duration: 3,
+    });
+    for (let i = 0; i < titleSplit.chars.length; i++) {
+      indexTitle1 += 1;
+      if (titleSplit.chars[indexTitle1]) {
+        let charTitle = titleSplit.chars[indexTitle1];
+        this.tlTitle.from(
+          charTitle,
+          {
+            delay: i * 0.002,
+            opacity: 0,
+            color: "#F41B0C",
+            duration: 3,
+          },
+          "<"
+        );
+      }
+      indexTitle2 -= 1;
+      if (titleSplit.chars[indexTitle2]) {
+        let charTitle = titleSplit.chars[indexTitle2];
+        this.tlTitle.from(
+          charTitle,
+          {
+            delay: i * 0.002,
+            opacity: 0,
+            color: "#F41B0C",
+            duration: 3,
+          },
+          "<"
+        );
+      }
+    }
+
+    const btnSplit = new SplitText(".home__start p", { type: "chars" });
+
+    let indexBtn1 = Math.round(btnSplit.chars.length / 2);
+    let indexBtn2 = Math.round(btnSplit.chars.length / 2);
+
+    let charBtn = btnSplit.chars[indexBtn1];
+
+    this.tlBtn = gsap.timeline({ delay: 1 });
+
+    this.tlBtn.from(charBtn, {
+      opacity: 0,
+      color: "#F41B0C",
+      duration: 4,
+    });
+    for (let i = 0; i < btnSplit.chars.length; i++) {
+      indexBtn1 += 1;
+      if (btnSplit.chars[indexBtn1]) {
+        let charBtn = btnSplit.chars[indexBtn1];
+        this.tlBtn.from(
+          charBtn,
+          {
+            delay: i * 0.1,
+            opacity: 0,
+            color: "#F41B0C",
+            duration: 4,
+          },
+          "<"
+        );
+      }
+      indexBtn2 -= 1;
+      if (btnSplit.chars[indexBtn2]) {
+        let charBtn = btnSplit.chars[indexBtn2];
+        this.tlBtn.from(
+          charBtn,
+          {
+            delay: i * 0.1,
+            opacity: 0,
+            color: "#F41B0C",
+            duration: 4,
+          },
+          "<"
+        );
+      }
+    }
+
     startBtn.addEventListener("click", () => {
       this.startProject();
     });
@@ -117,25 +212,14 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    tl.to(".home__title h1", {
-      autoAlpha: 0,
-      duration: 2,
-      ease: "expo.out",
-    });
+    this.tlTitle.ease = "linear";
+    this.tlTitle.reverse();
 
     tl.to(
       "#start p",
       {
         autoAlpha: 0,
         duration: 1,
-        onComplete: () => {
-          document.querySelector(".home").style.pointerEvent = "none";
-          document.querySelector(".home__title").style.pointerEvent = "none";
-          document.querySelector(".home").style.display = "none";
-          document.querySelector(".home__title").style.display = "none";
-
-          this.eventsAnim();
-        },
       },
       "<"
     );
@@ -147,8 +231,17 @@ export default class Animations {
       },
       {
         value: 1,
+        delay: 3,
         duration: 6,
         ease: "power2.in",
+        onStart: () => {
+          document.querySelector(".home").style.pointerEvent = "none";
+          document.querySelector(".home__title").style.pointerEvent = "none";
+          document.querySelector(".home").style.display = "none";
+          document.querySelector(".home__title").style.display = "none";
+
+          this.eventsAnim();
+        },
       }
     );
   }
@@ -389,49 +482,8 @@ export default class Animations {
   }
 
   stepFour() {
-    const camera = this.createPath.cameraPath.cameraAndScreen;
-
     const tl = gsap.timeline();
     this.progress2 = 0;
-    // ZOOM Lines
-    tl.to(this.createPath.cameraPath.screenMaterial.uniforms.thickFactor, {
-      duration: 3,
-      value: 0,
-      ease: "Power3.in",
-    });
-
-    // OPEN Wide BG
-    tl.to(
-      this.createPath.cameraPath.screenMaterial.uniforms.wide,
-      {
-        duration: 12,
-        value: 1,
-        ease: "Power3.in",
-      },
-      "<"
-    );
-
-    // FADE OUT Screen
-    tl.to(
-      this.createPath.cameraPath.screenMaterial.uniforms.opacity,
-      {
-        duration: 12,
-        value: 0,
-        ease: "Power3.in",
-      },
-      "<"
-    );
-
-    // FADE OUT Opacity Light BG
-    tl.to(
-      this.singlePoint.materialBG.uniforms.opacity,
-      {
-        duration: 12,
-        value: 0,
-        ease: "Power3.in",
-      },
-      "<"
-    );
 
     // DEZOOM Single point
     tl.to(

@@ -7,8 +7,13 @@
 
 @import "../assets/fonts/webfonts/stylesheet.css";
 
+::-webkit-scrollbar {
+  display: none;
+}
 body.scroll {
   height: 20000vh;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   #container {
     pointer-events: none;
   }

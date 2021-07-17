@@ -4,6 +4,7 @@ uniform vec3 color2;
 uniform vec3 color3;
 uniform vec3 color4;
 uniform vec3 color5;
+uniform vec3 colorOrb;
 
 uniform float isColor1;
 uniform float isColor2;
@@ -43,6 +44,7 @@ void main()	{
   
 
     vec3 result = color1 * isColor1 + color2 * isColor2 + color3 * isColor3 + color4 * isColor4 + color5 * isColor5;
+    result = mix(colorOrb, vec3(1.),  strength + 0.5);
    
 
     //float finalColor = mix(1., 0.1, strength * 3.);
