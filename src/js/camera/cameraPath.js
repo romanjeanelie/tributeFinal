@@ -33,7 +33,7 @@ export default class cameraPath {
     this.progress = 0;
 
     // ACTIVE CAMERA /////////////////
-    this.isActive = false;
+    this.isActive = true;
     window.camera = this.camera;
     // ACTIVE CAMERA /////////////////
 
@@ -43,21 +43,23 @@ export default class cameraPath {
 
   positionCameraLarge() {
     if (this.isActive) {
-      this.camera.position.x = -594.4;
-      this.camera.position.y = -6984.3;
-      this.camera.position.z = 11706.94;
+      this.camera.position.x = 94.4;
+      this.camera.position.y = -6584.3;
+      this.camera.position.z = 11506.94;
 
       // this.camera.position.x = 0;
       // this.camera.position.y = 1;
       // this.camera.position.z = 15;
 
-      this.posCameraLarge = new THREE.Vector3(0, -4500, 0);
+      this.posCameraLarge = new THREE.Vector3(500, -4500, 0);
       // this.posCameraLarge = new THREE.Vector3(0, 0, 0);
 
       this.params.animationView = false;
       document.body.classList.remove("scroll");
+      document.querySelector(".btn__wrapper").style.pointerEvents = "none";
     } else {
       document.body.classList.add("scroll");
+      document.querySelector(".btn__wrapper").style.pointerEvents = "auto";
     }
   }
 

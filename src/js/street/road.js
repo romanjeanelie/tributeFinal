@@ -11,8 +11,12 @@ import positionsWindows from "./positionsWindows.json";
 
 import CityLights from "./cityLights";
 import TextBuilding from "./textBuilding";
+
 import Wheel from "./wheel";
-import Bridge from "./bridge";
+import Garland from "./garland";
+import Ride from "./ride";
+import Cinema from "./cinema";
+
 import Tulip from "./tulip";
 import Landscape from "./landscape";
 import Clouds from "./clouds";
@@ -61,16 +65,22 @@ export default class Road {
     this.wheel = new Wheel({ scene: this.wheelGroup, gui: this.gui });
     this.wheel.init();
 
+    this.garland = new Garland({ scene: this.wheelGroup, gui: this.gui });
+    this.garland.init();
+
+    this.ride = new Ride({ scene: this.wheelGroup, gui: this.gui });
+    this.ride.init();
+
+    this.cinema = new Cinema({ scene: this.city, gui: this.gui });
+    this.cinema.init();
+
     this.tulip = new Tulip({ scene: this.city, gui: this.gui });
     this.tulip.init();
-
-    this.bridge = new Bridge({ scene: this.city, gui: this.gui });
-    this.bridge.init();
 
     this.adBoard = new AdBoard({ scene: this.wheelGroup, gui: this.gui });
     this.adBoard.init();
 
-    this.wheelGroup.scale.set(1, 1, 1);
+    this.wheelGroup.scale.set(1.2, 1.2, 1.2);
     this.wheelGroup.position.x = -40;
     this.wheelGroup.position.z = 210;
     // this.wheelGroup.position.x = -65;
@@ -184,7 +194,6 @@ export default class Road {
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
     this.buildingsGroup.add(points);
-    console.log(points.geometry.attributes.position.count);
     document.querySelector(".info").innerHTML = points.geometry.attributes.opacity.count;
   }
 

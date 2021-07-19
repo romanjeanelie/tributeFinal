@@ -57,8 +57,8 @@ export default class Animations {
     gsap.registerPlugin(SplitText);
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
-    this.backstage = false;
-    this.positionTimeline = 2;
+    this.backstage = true;
+    this.positionTimeline = 0.85;
     this.start = 0;
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
 
@@ -642,6 +642,7 @@ export default class Animations {
       this.sky.material.uniforms.opacity.value = 1;
       this.tl2.play();
       this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
+      this.sky.opacity = 1;
     }
     ///////////////////////////////////////// End Test without scrollBar
     // Animation objects
