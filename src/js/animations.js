@@ -113,6 +113,8 @@ export default class Animations {
   startListener() {
     const startBtn = document.getElementById("start");
 
+    // TITLE
+
     const titleSplit = new SplitText(".home__title h1", { type: "words,chars" });
 
     let indexTitle1 = Math.round(titleSplit.chars.length / 2);
@@ -158,6 +160,8 @@ export default class Animations {
         );
       }
     }
+
+    // BUTTON
 
     const btnSplit = new SplitText(".home__start p", { type: "chars" });
 
@@ -212,16 +216,44 @@ export default class Animations {
   startProject() {
     const tl = gsap.timeline();
 
-    this.tlTitle.ease = "linear";
-    this.tlTitle.reverse();
+    tl.to("#start p", {
+      autoAlpha: 0,
+      duration: 1,
+      onStart: () => {
+        this.tlTitle.ease = "linear";
+        this.tlTitle.reverse();
+      },
+    });
 
     tl.to(
-      "#start p",
+      ".home__subtitle h2",
       {
-        autoAlpha: 0,
-        duration: 1,
+        delay: 2,
+        opacity: 1,
+        duration: 3,
+        ease: "power2.in",
       },
       "<"
+    );
+    tl.to(
+      ".home__subtitle h2",
+
+      {
+        opacity: 0,
+        color: "#F41B0C",
+        delay: 2,
+        duration: 6,
+        ease: "power2.in",
+
+        onComplete: () => {
+          document.querySelector(".home").style.pointerEvent = "none";
+          document.querySelector(".home__title").style.pointerEvent = "none";
+          document.querySelector(".home").style.display = "none";
+          document.querySelector(".home__title").style.display = "none";
+
+          this.eventsAnim();
+        },
+      }
     );
 
     tl.fromTo(
@@ -231,18 +263,10 @@ export default class Animations {
       },
       {
         value: 1,
-        delay: 3,
         duration: 6,
         ease: "power2.in",
-        onStart: () => {
-          document.querySelector(".home").style.pointerEvent = "none";
-          document.querySelector(".home__title").style.pointerEvent = "none";
-          document.querySelector(".home").style.display = "none";
-          document.querySelector(".home__title").style.display = "none";
-
-          this.eventsAnim();
-        },
-      }
+      },
+      "<"
     );
   }
 

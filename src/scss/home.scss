@@ -29,7 +29,7 @@
 .timecode__container {
   position: fixed;
   z-index: 1;
-  color: #fff;
+  color: #ccc;
   right: 16px;
 
   p {
@@ -39,14 +39,26 @@
   }
 }
 
-.home__title {
+.home__subtitle {
   // max-width: 600px;
-  font-size: 24px;
   overflow: hidden;
   margin-top: 200px;
-  h1 {
+  z-index: 2;
+  h2 {
+    font-size: 24px;
     text-align: center;
-    color: #fff;
+    color: #ccc;
+    opacity: 0;
+  }
+}
+.home__title {
+  position: absolute;
+  overflow: hidden;
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #ccc;
+    text-transform: uppercase;
   }
 }
 
@@ -54,18 +66,17 @@
   z-index: 1;
   font-family: Soleil;
   text-transform: uppercase;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.1s ease;
   opacity: 1;
   overflow: hidden;
-  margin-top: 200px;
   p {
     transform: translateY(0);
     font-size: 24px;
-    color: #fff;
+    color: #ccc;
   }
 
   &:hover {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 }
 
@@ -104,6 +115,10 @@
     margin-top: 0;
     font-size: 18px;
   }
+  .home__subtitle {
+    margin-top: 0;
+    font-size: 18px;
+  }
 
   .home__start {
     margin-top: 100px;
@@ -115,6 +130,10 @@
 }
 @media (max-width: 756px) {
   .home__title {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  .home__subtitle {
     margin-top: 5px;
     font-size: 14px;
   }
