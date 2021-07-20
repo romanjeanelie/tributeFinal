@@ -12,13 +12,16 @@ export default class Cinema {
   }
 
   init() {
+    this.materialText = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x00f0ff) });
+    this.materialCosmos = new THREE.MeshBasicMaterial({ color: new THREE.Color(0xff00ff) });
+
     this.addCinema();
 
-    this.cinema.scale.set(2, 2, 2);
+    this.cinema.scale.set(1.5, 1.5, 1.5);
 
     this.cinema.rotation.y = 0.5;
-    this.cinema.position.x = -100;
-    this.cinema.position.y = 10;
+
+    this.cinema.position.x = -50;
     this.cinema.position.z = 250;
     this.scene.add(this.cinema);
   }
@@ -37,8 +40,13 @@ export default class Cinema {
     this.gltfLoader.load("/models/cinema.glb", (gltf) => {
       gltf.scene.traverse((child) => {
         if (child.type === "Mesh") {
-          child.material = bakedMaterial;
-          console.log(child);
+          if (child.name.includes("Cosmos")) {
+            child.material = this.materialCosmos;
+          } else if (child.name.includes("Text")) {
+            child.material = this.materialText;
+          } else {
+            // child.material = bakedMaterial;
+          }
         }
       });
 

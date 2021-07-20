@@ -16,9 +16,12 @@ import Wheel from "./wheel";
 import Garland from "./garland";
 import Ride from "./ride";
 import Cinema from "./cinema";
+import CinemaScreen from "./cinemaScreen";
+import Bridge from "./bridge";
 
 import Tulip from "./tulip";
 import Landscape from "./landscape";
+import ElectricPole from "./electricPole";
 import Clouds from "./clouds";
 import AdBoard from "./adBoard";
 
@@ -59,6 +62,9 @@ export default class Road {
     this.landscape = new Landscape({ scene: this.city, gui: this.gui });
     this.landscape.init();
 
+    this.electricPole = new ElectricPole({ scene: this.city, gui: this.gui });
+    this.electricPole.init();
+
     this.clouds = new Clouds({ scene: this.city, gui: this.gui });
     this.clouds.init();
 
@@ -73,6 +79,12 @@ export default class Road {
 
     this.cinema = new Cinema({ scene: this.city, gui: this.gui });
     this.cinema.init();
+
+    this.cinemaScreen = new CinemaScreen({ scene: this.city, gui: this.gui });
+    this.cinemaScreen.init();
+
+    this.bridge = new Bridge({ scene: this.city, gui: this.gui });
+    this.bridge.init();
 
     this.tulip = new Tulip({ scene: this.city, gui: this.gui });
     this.tulip.init();

@@ -68,7 +68,7 @@ export default class Landscape {
       gltf.scene.position.y = options.y;
       gltf.scene.position.z = options.z;
 
-      this.textLandscape.addText2(options);
+      // this.textLandscape.addText2(options);
 
       this.scene.add(gltf.scene);
     });

@@ -38,8 +38,8 @@ export default class TextGod {
   }
 
   addText() {
-    this.debugObject.color = "#BBB675";
-    this.debugObject.color2 = "#473A18";
+    this.debugObject.color = "#FAE8C9";
+    this.debugObject.color2 = "#FDAC68";
 
     this.folderGod.addColor(this.debugObject, "color").onChange(() => {
       this.materialsText.forEach((material) => {

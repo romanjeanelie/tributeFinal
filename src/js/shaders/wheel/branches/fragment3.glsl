@@ -1,9 +1,7 @@
 varying vec2 vUv;
-varying float vIndex;  
 
-uniform vec3 colorLittle;
-uniform vec3 colorBig1;
-uniform vec3 colorBig2;
+uniform vec3 color1;
+uniform vec3 color2;
 
 
 float fill(float x, float size){
@@ -12,11 +10,15 @@ float fill(float x, float size){
 void main(){
      vec3 color = vec3(0.);
 
+    float circle = length(gl_PointCoord - 0.5)*2.; 
+    circle = fill(circle, 0.5);
+
+    color = mix(vec3(0.,0.,0.), color1, circle);
+    float alpha = circle;
+   
     float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
     float strength = (0.05 / distanceToCenter - 0.1) * 1.;
 
 
-    color = mix(colorLittle, colorBig2, vIndex);
-    
-    gl_FragColor = vec4(color, strength*5.);
+    gl_FragColor = vec4(color1, strength*5.);
 }

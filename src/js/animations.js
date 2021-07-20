@@ -57,8 +57,8 @@ export default class Animations {
     gsap.registerPlugin(SplitText);
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
-    this.backstage = true;
-    this.positionTimeline = 0.85;
+    this.backstage = false;
+    this.positionTimeline = 2;
     this.start = 0;
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
 

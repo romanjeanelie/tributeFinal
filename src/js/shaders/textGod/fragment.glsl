@@ -91,12 +91,12 @@ void main()	{
 
  vec3 color = vec3(1.); 
 
-  float noise = cnoise(vec3(vUv *.025, time *.2)) + 0.6;
+  float noise = cnoise(vec3(vUv *.005, time *.2)) + 0.6;
   float result =  noise;
 
   vec3 finalColor = mix(uColor2, uColor, result);
 
-  gl_FragColor = vec4(vec3(finalColor), (0.4 + result) * opacity);
+  gl_FragColor = vec4(vec3(finalColor), (0.7 + result) * opacity);
   // gl_FragColor = vec4(vec3(1.), 1.);
     
 }

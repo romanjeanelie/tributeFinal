@@ -1,9 +1,7 @@
 varying vec2 vUv; 
-varying float vIndex;  
-
-attribute float index; 
 
 uniform float uPixelRatio; 
+
 
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.); 
@@ -12,12 +10,12 @@ void main() {
 
     gl_Position = projectionPosition;  
 
-
-    gl_PointSize = max(12000.0 * (1. + index), uPixelRatio * 1000.);
+    // gl_PointSize = 7.0;
+      gl_PointSize = max(13000., uPixelRatio * 1000.);
 
     // Keep size attenuation
     gl_PointSize *= (1.0 / - viewPosition.z);
 
+
     vUv = uv; 
-    vIndex = index; 
 }

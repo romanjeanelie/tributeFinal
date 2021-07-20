@@ -5,11 +5,13 @@ import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.j
 import vertex from "../shaders/wheel/seats/vertex";
 import fragment from "../shaders/wheel/seats/fragment";
 
-import vertex2 from "../shaders/wheel/branches/vertex";
-import fragment2 from "../shaders/wheel/branches/fragment";
+import vertex2 from "../shaders/wheel/branches/vertex2";
+import fragment2 from "../shaders/wheel/branches/fragment2";
+import vertex3 from "../shaders/wheel/branches/vertex3";
+import fragment3 from "../shaders/wheel/branches/fragment3";
 
-import vertex3 from "../shaders/wheel/base/vertex";
-import fragment3 from "../shaders/wheel/base/fragment";
+import vertex4 from "../shaders/wheel/base/vertex";
+import fragment4 from "../shaders/wheel/base/fragment";
 
 export default class Wheel {
   constructor(options) {
@@ -96,8 +98,8 @@ export default class Wheel {
         uColor1: { value: new THREE.Color("#E77F68") },
         uColor2: { value: new THREE.Color("#FFFFFF") },
       },
-      vertexShader: vertex3,
-      fragmentShader: fragment3,
+      vertexShader: vertex4,
+      fragmentShader: fragment4,
       transparent: true,
     });
 
@@ -152,17 +154,29 @@ export default class Wheel {
     const points = curve.getPoints(200);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-    const material = new THREE.PointsMaterial({
-      color: new THREE.Color("#FFDDD5"),
-      size: 10,
-      sizeAttenuation: true,
-    });
+    // const material = new THREE.PointsMaterial({
+    //   color: new THREE.Color("#B7299F"),
+    //   size: 10,
+    //   sizeAttenuation: true,
+    //   transparent: true,
+    //   opacity: 1,
+    // });
 
-    // color1: { value: new THREE.Color("#E77F68") },
-    //     color2: { value: new THREE.Color("#ffffff") },
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        color1: { value: new THREE.Color("#FFDE8F") },
+        color2: { value: new THREE.Color("#ffffff") },
+        opacity: { value: 1 },
+      },
+      vertexShader: vertex3,
+      fragmentShader: fragment3,
+      transparent: true,
+      depthWrite: false,
+    });
     const circle = new THREE.Points(geometry, material);
 
-    // this.mainWheel.add(circle);
+    this.mainWheel.add(circle);
   }
 
   createBranch() {
@@ -178,7 +192,7 @@ export default class Wheel {
     this.branchMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uColor1: { value: new THREE.Color("#E77F68") },
-        uColor2: { value: new THREE.Color("#fff") },
+        uColor2: { value: new THREE.Color("#0917FC") },
       },
       vertexShader: vertex2,
       fragmentShader: fragment2,

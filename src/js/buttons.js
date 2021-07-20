@@ -67,8 +67,8 @@ export default class Buttons {
   init() {
     this.createButton({ text: "PLAY", x: 0, y: 0, z: 0 });
 
-    this.buttons.position.y = -575;
-    this.buttons.position.z = 15500;
+    this.buttons.position.y = -805;
+    this.buttons.position.z = 15300;
 
     this.objectsToTest = this.buttonsMesh;
 
@@ -374,6 +374,7 @@ export default class Buttons {
         opacity: 1,
         color: "#ccc",
         duration: 6,
+        ease: "power2.in",
       }
     );
 
@@ -389,6 +390,7 @@ export default class Buttons {
             opacity: 1,
             color: "#ccc",
             duration: 6,
+            ease: "power2.in",
           },
           "<"
         );
@@ -404,6 +406,7 @@ export default class Buttons {
             opacity: 1,
             color: "#ccc",
             duration: 6,
+            ease: "power2.in",
           },
           "<"
         );
