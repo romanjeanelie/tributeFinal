@@ -40,9 +40,9 @@ export default class Wheel {
 
     this.wheel.position.x = 100;
     this.wheel.position.y = 0;
-    this.wheel.position.z = 10;
+    this.wheel.position.z = -20;
 
-    this.wheel.rotation.y = -Math.PI * 0.3;
+    this.wheel.rotation.y = -Math.PI * 0.25;
 
     this.wheel.scale.set(1, 1, 1);
     this.scene.add(this.wheel);
@@ -165,8 +165,8 @@ export default class Wheel {
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        color1: { value: new THREE.Color("#FFDE8F") },
-        color2: { value: new THREE.Color("#ffffff") },
+        color1: { value: new THREE.Color("#FBE9E5") },
+        color2: { value: new THREE.Color("#FFFFFF") },
         opacity: { value: 1 },
       },
       vertexShader: vertex3,
@@ -249,6 +249,6 @@ export default class Wheel {
   }
 
   anim(progress, time) {
-    this.mainWheel.rotation.z = time * 0.05;
+    this.mainWheel.rotation.z = time * 0.08;
   }
 }

@@ -76,15 +76,15 @@ export default class TextStars {
         color: "#FF00DE",
         color2: "#F41B0C",
       },
-      {
-        text: "I CAN SHOW YOU THE NIGHT",
-        posX: -2000,
-        posY: -2050,
-        posZ: 10600,
-        scale: 180,
-        color: "#5450C6",
-        color2: "#1C003C",
-      },
+      // {
+      //   text: "I CAN SHOW YOU THE NIGHT",
+      //   posX: -2000,
+      //   posY: -2050,
+      //   posZ: 10600,
+      //   scale: 180,
+      //   color: "#5450C6",
+      //   color2: "#1C003C",
+      // },
     ];
     this.loader.load("/fonts/Moniqa-ExtBold.json", (font) => {
       this.texts.forEach((textOptions) => {

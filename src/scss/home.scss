@@ -42,18 +42,23 @@
 .home__subtitle {
   // max-width: 600px;
   overflow: hidden;
-  margin-top: 200px;
   z-index: 2;
+  transform-origin: center top;
+  transform: rotateX(90deg);
+  position: absolute;
+  top: 45%;
   h2 {
     font-size: 24px;
     text-align: center;
     color: #ccc;
-    opacity: 0;
+    opacity: 1;
   }
 }
 .home__title {
   position: absolute;
   overflow: hidden;
+  transform-origin: center bottom;
+  top: 45%;
   h1 {
     font-size: 24px;
     text-align: center;
@@ -69,8 +74,9 @@
   transition: opacity 0.1s ease;
   opacity: 1;
   overflow: hidden;
+  margin-top: 100px;
   p {
-    transform: translateY(0);
+    // transform: translateY(0);
     font-size: 24px;
     color: #ccc;
   }

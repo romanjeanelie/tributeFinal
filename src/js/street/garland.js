@@ -20,7 +20,8 @@ export default class Garland {
 
     this.garlands.rotation.y = -1;
     this.garlands.position.x = 120;
-    this.garlands.position.y = 13;
+    this.garlands.position.y = 7;
+    this.garlands.position.z = -23;
 
     this.scene.add(this.garlands);
   }

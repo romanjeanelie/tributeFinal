@@ -58,7 +58,7 @@ export default class Animations {
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 2;
+    this.positionTimeline = 1.2;
     this.start = 0;
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
 
@@ -97,7 +97,6 @@ export default class Animations {
     this.anim();
     this.render();
 
-    this.helpListener();
     this.startListener();
 
     // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
@@ -111,6 +110,8 @@ export default class Animations {
   }
 
   startListener() {
+    const durationIn = 2;
+    const durationOut = 2;
     const startBtn = document.getElementById("start");
 
     // TITLE
@@ -128,7 +129,7 @@ export default class Animations {
       opacity: 0,
       color: "#F41B0C",
 
-      duration: 3,
+      duration: durationIn,
     });
     for (let i = 0; i < titleSplit.chars.length; i++) {
       indexTitle1 += 1;
@@ -140,7 +141,7 @@ export default class Animations {
             delay: i * 0.002,
             opacity: 0,
             color: "#F41B0C",
-            duration: 3,
+            duration: durationIn,
           },
           "<"
         );
@@ -154,7 +155,7 @@ export default class Animations {
             delay: i * 0.002,
             opacity: 0,
             color: "#F41B0C",
-            duration: 3,
+            duration: durationIn,
           },
           "<"
         );
@@ -175,7 +176,7 @@ export default class Animations {
     this.tlBtn.from(charBtn, {
       opacity: 0,
       color: "#F41B0C",
-      duration: 4,
+      duration: durationOut,
     });
     for (let i = 0; i < btnSplit.chars.length; i++) {
       indexBtn1 += 1;
@@ -187,7 +188,7 @@ export default class Animations {
             delay: i * 0.1,
             opacity: 0,
             color: "#F41B0C",
-            duration: 4,
+            duration: durationOut,
           },
           "<"
         );
@@ -201,7 +202,7 @@ export default class Animations {
             delay: i * 0.1,
             opacity: 0,
             color: "#F41B0C",
-            duration: 4,
+            duration: durationOut,
           },
           "<"
         );
@@ -219,19 +220,20 @@ export default class Animations {
     tl.to("#start p", {
       autoAlpha: 0,
       duration: 1,
-      onStart: () => {
-        this.tlTitle.ease = "linear";
-        this.tlTitle.reverse();
-      },
     });
+    tl.to(
+      ".home__title",
+      {
+        rotateX: -90,
+      },
+      "<"
+    );
 
     tl.to(
-      ".home__subtitle h2",
+      ".home__subtitle",
       {
-        delay: 2,
-        opacity: 1,
-        duration: 3,
-        ease: "power2.in",
+        rotateX: 0,
+        duration: 1,
       },
       "<"
     );
@@ -274,17 +276,6 @@ export default class Animations {
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
-  }
-
-  helpListener() {
-    /// Step 1
-    window.addEventListener(
-      "scroll",
-      debounce(() => {
-        this.help.active();
-        this.help.scroll();
-      }, 5000)
-    );
   }
 
   eventsAnim() {
@@ -615,6 +606,7 @@ export default class Animations {
     this.tl4.progress(this.progress2 * 0.8);
     this.singlePoint.anim(progress, time);
     this.sky.anim(progress, time, this.scrollSpeedEased);
+    this.plane.anim(progress, time);
     this.flower.anim(progress, time);
     this.buttons.anim(progress, time);
 

@@ -21,8 +21,9 @@ export default class Cinema {
 
     this.cinema.rotation.y = 0.5;
 
-    this.cinema.position.x = -50;
-    this.cinema.position.z = 250;
+    this.cinema.position.x = -60;
+    this.cinema.position.y = 10;
+    this.cinema.position.z = 235;
     this.scene.add(this.cinema);
   }
 

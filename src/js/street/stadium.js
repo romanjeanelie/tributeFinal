@@ -1,35 +1,33 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-import vertex from "../shaders/bridge/vertex";
-import fragment from "../shaders/bridge/fragment";
+import vertex from "../shaders/stadium/vertex";
+import fragment from "../shaders/stadium/fragment";
 
-export default class Bridge {
+export default class Stadium {
   constructor(options) {
     this.scene = options.scene;
 
     this.gltfLoader = new GLTFLoader();
     this.textureLoader = new THREE.TextureLoader();
 
-    this.bridge = new THREE.Group();
+    this.stadium = new THREE.Group();
   }
 
   init() {
-    this.addBridge();
+    this.addStadium();
 
-    this.bridge.position.x = 0;
-    this.bridge.position.y = 10;
-    this.bridge.position.z = 310;
+    this.stadium.scale.set(0.4, 0.4, 0.4);
 
-    this.bridge.rotation.y = -Math.PI * 0.42;
-    // this.bridge.rotation.y = 0.5;
-    // this.bridge.rotation.z = -0.7;
+    this.stadium.rotation.y = 0.3;
 
-    this.bridge.scale.set(0.7, 0.7, 0.7);
-    this.scene.add(this.bridge);
+    this.stadium.position.x = -80;
+    this.stadium.position.z = 190;
+
+    this.scene.add(this.stadium);
   }
 
-  addBridge() {
+  addStadium() {
     const material = new THREE.MeshBasicMaterial({
       color: 0x000000,
       side: THREE.DoubleSide,
@@ -51,22 +49,23 @@ export default class Bridge {
       },
       vertexShader: vertex,
       fragmentShader: fragment,
+      side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false,
     });
-    this.gltfLoader.load("/models/bridge1.glb", (gltf) => {
+    this.gltfLoader.load("/models/stadium.glb", (gltf) => {
       gltf.scene.traverse((child) => {
         if (child.type === "Mesh") {
           if (child.name.includes("Text")) {
             child.material = textMaterial;
-          } else if (child.name.includes("lightRope")) {
+          } else if (child.name.includes("Light")) {
             child.material = materialLight;
           } else {
             child.material = material;
           }
         }
       });
-      this.bridge.add(gltf.scene);
+      this.stadium.add(gltf.scene);
     });
   }
 

@@ -18,6 +18,7 @@ import Ride from "./ride";
 import Cinema from "./cinema";
 import CinemaScreen from "./cinemaScreen";
 import Bridge from "./bridge";
+import Stadium from "./stadium";
 
 import Tulip from "./tulip";
 import Landscape from "./landscape";
@@ -85,6 +86,9 @@ export default class Road {
 
     this.bridge = new Bridge({ scene: this.city, gui: this.gui });
     this.bridge.init();
+
+    this.stadium = new Stadium({ scene: this.city, gui: this.gui });
+    this.stadium.init();
 
     this.tulip = new Tulip({ scene: this.city, gui: this.gui });
     this.tulip.init();
@@ -212,6 +216,7 @@ export default class Road {
   anim(progress, time) {
     this.textBuilding.anim(progress, time);
     this.wheel.anim(progress, time);
+    this.ride.anim(progress, time);
     this.adBoard.anim(progress, time);
     this.materialAntenne.uniforms.time.value = time;
     this.cityLights.anim(progress, time);
