@@ -111,7 +111,6 @@ export default class Stadium {
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
     this.ride.add(points);
-    console.log(points);
   }
 
   anim(progress, time) {

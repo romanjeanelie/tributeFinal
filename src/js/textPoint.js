@@ -68,15 +68,6 @@ export default class TextPoint {
         bevelEnabled: false,
       });
 
-      // const textMaterial = new THREE.ShaderMaterial({
-      //   uniforms: {
-      //     uStrength: { value: 0 },
-      //     time: { value: 0 },
-      //     progress: { value: 0 },
-      //     opacity: { value: 0 },
-      //     color1: { value: new THREE.Color("#FF0000") },
-      //   },
-
       const textMaterial = new THREE.ShaderMaterial({
         uniforms: {
           uStrength: { value: 0 },
@@ -84,7 +75,7 @@ export default class TextPoint {
           activeLines: { value: 0 },
           progress: { value: 7 },
           opacity: { value: 0 },
-          uColor: { value: new THREE.Color("#ccc") },
+          uColor: { value: new THREE.Color("#FDD8D5") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

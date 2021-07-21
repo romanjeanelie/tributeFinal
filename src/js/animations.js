@@ -17,8 +17,8 @@ import Flower from "./flower";
 
 import CreatePath from "./camera/createPath";
 
-import ios from "./utils/ios";
 import debounce from "./utils/debounce";
+import ios from "./utils/ios";
 import { checkScrollSpeed } from "./utils/checkScrollSpeed";
 import once from "./utils/once";
 
@@ -283,13 +283,21 @@ export default class Animations {
     let index = this.start;
     const btn = document.querySelector(".point");
     btn.addEventListener("click", () => {
-      console.log("click");
       this.stepThree(index);
       index++;
+      this.help.hideClick();
       if (index === 4) {
         btn.style.display = "none";
+        document.querySelector(".help__click").style.display = "none";
       }
     });
+
+    // Help
+    this.help.displayClick();
+    if (index < 3) {
+      console.log(index);
+      btn.addEventListener("click", debounce(this.help.displayClick, 5000));
+    }
 
     if (ios()) {
       window.addEventListener("touchstart", (event) => {
@@ -497,6 +505,28 @@ export default class Animations {
   }
 
   stepFour() {
+    // Help
+    const scrollActive = false;
+    setTimeout(() => {
+      if (scrollActive === false) {
+        this.help.displayScroll1();
+      } else {
+        return;
+      }
+    }, 4000);
+
+    window.addEventListener(
+      "scroll",
+      debounce(() => {
+        this.help.displayScroll2();
+      }, 1500)
+    );
+
+    window.addEventListener("scroll", () => {
+      this.scrollActive = false;
+      this.help.hideScroll1();
+      this.help.hideScroll2();
+    });
     const tl = gsap.timeline();
     this.progress2 = 0;
 
@@ -586,6 +616,9 @@ export default class Animations {
         delay: steps.step2.duration,
         duration: steps.step3.duration,
         ease: "linear",
+        onComplete: () => {
+          document.querySelector(".help__scroll").style.display = "none";
+        },
       },
 
       "<"

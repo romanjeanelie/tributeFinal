@@ -10,23 +10,49 @@
   font-family: Soleil;
   font-size: 20px;
   text-transform: uppercase;
-  opacity: 0;
+  opacity: 1;
 }
 
 .help__scroll {
-  display: none;
+  position: absolute;
+  width: 600px;
+  height: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
   opacity: 1;
-  height: 100%;
+  overflow: hidden;
+  .scroll1 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    opacity: 1;
+  }
+  .scroll2 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    opacity: 1;
+  }
 }
 
 .help__click {
-  position: relative;
+  position: absolute;
   width: 600px;
+  height: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+  overflow: hidden;
+  z-index: 10;
   p {
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -100%);
+    opacity: 1;
   }
 
   .mobile {
