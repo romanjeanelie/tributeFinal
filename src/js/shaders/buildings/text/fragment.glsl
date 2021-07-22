@@ -2,7 +2,8 @@ uniform float time;
 uniform float activeLines;
 uniform float progress;
 uniform float opacity;
-uniform vec3 uColor; 
+uniform vec3 uColor1; 
+uniform vec3 uColor2; 
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -26,10 +27,13 @@ void main()	{
 
 vec3 shapeText = vec3(vNormal.xy, 0.8);
 
-vec3 result = mix(uColor, vec3(0.),  shapeText);
+vec3 result = mix(uColor1, vec3(0.),  shapeText);
+
+color = mix(uColor1, uColor2, vNormal.z);
 
   // gl_FragColor = vec4(color, newNormal);
-  gl_FragColor = vec4(uColor * opacity, 1.);
+  // gl_FragColor = vec4(uColor1 * opacity, 1.);
+  gl_FragColor = vec4(color, 1.);
 
     
 }

@@ -6,8 +6,6 @@ export default class Help {
   constructor() {
     this.scroll;
     this.activeScroll = true;
-
-    console.log("help");
   }
 
   active() {
@@ -22,7 +20,6 @@ export default class Help {
   }
 
   displayClick() {
-    console.log("display click");
     gsap.to(".help__click .desktop", {
       y: 0,
       duration: 2,
@@ -31,7 +28,6 @@ export default class Help {
   }
 
   hideClick() {
-    console.log("hide click");
     gsap.to(".help__click .desktop", {
       y: "-100%",
       duration: 2,
@@ -40,7 +36,6 @@ export default class Help {
   }
 
   displayScroll1() {
-    console.log("display scroll1");
     gsap.to(".help__scroll .scroll1", {
       y: 0,
       duration: 2,
@@ -48,7 +43,6 @@ export default class Help {
     });
   }
   hideScroll1() {
-    console.log("hide scroll1");
     gsap.to(".help__scroll .scroll1", {
       y: "-100%",
       duration: 2,
@@ -57,7 +51,6 @@ export default class Help {
   }
 
   displayScroll2() {
-    console.log("display scroll2");
     gsap.to(".help__scroll .scroll2", {
       y: 0,
       duration: 2,
@@ -65,8 +58,24 @@ export default class Help {
     });
   }
   hideScroll2() {
-    console.log("hide scroll2");
     gsap.to(".help__scroll .scroll2", {
+      y: "-100%",
+      duration: 2,
+      ease: "expo.out",
+    });
+  }
+
+  displayPlay() {
+    console.log("display help play");
+    gsap.to(".help__play p", {
+      y: 0,
+      duration: 2,
+      ease: "expo.out",
+    });
+  }
+
+  hidePlay() {
+    gsap.to(".help__play p", {
       y: "-100%",
       duration: 2,
       ease: "expo.out",

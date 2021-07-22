@@ -12,8 +12,8 @@ export default class Cinema {
   }
 
   init() {
-    this.materialText = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x00f0ff) });
-    this.materialCosmos = new THREE.MeshBasicMaterial({ color: new THREE.Color(0xff00ff) });
+    this.materialText = new THREE.MeshBasicMaterial({ color: new THREE.Color("#FFE489") });
+    this.materialCosmos = new THREE.MeshBasicMaterial({ color: new THREE.Color("#FFE489") });
 
     this.addCinema();
 
@@ -24,7 +24,7 @@ export default class Cinema {
     this.cinema.position.x = -60;
     this.cinema.position.y = 10;
     this.cinema.position.z = 235;
-    this.scene.add(this.cinema);
+    // this.scene.add(this.cinema);
   }
 
   addCinema() {

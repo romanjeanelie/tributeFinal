@@ -11,17 +11,20 @@
   font-size: 20px;
   text-transform: uppercase;
   opacity: 1;
+  color: #ccc;
+  div {
+    position: absolute;
+    width: 600px;
+    height: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    opacity: 1;
+    overflow: hidden;
+  }
 }
 
 .help__scroll {
-  position: absolute;
-  width: 600px;
-  height: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: block;
-  opacity: 1;
-  overflow: hidden;
   .scroll1 {
     position: absolute;
     top: 0;
@@ -39,14 +42,6 @@
 }
 
 .help__click {
-  position: absolute;
-  width: 600px;
-  height: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 1;
-  overflow: hidden;
-  z-index: 10;
   p {
     position: absolute;
     top: 0;
@@ -59,8 +54,28 @@
     opacity: 0;
   }
 }
+
+.help__play {
+  p {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    opacity: 1;
+  }
+
+  .mobile {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .help {
+    font-size: 18px;
+  }
+}
 @media (max-width: 756px) {
   .help {
-    // font-size: 12px;
+    font-size: 14px;
   }
 }

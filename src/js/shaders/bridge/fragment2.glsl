@@ -1,9 +1,7 @@
 varying vec2 vUv;
-
 uniform vec3 color1;
 uniform vec3 color2;
-uniform float time; 
-uniform float factorStrobe; 
+varying float vOpacity;
 
 
 float fill(float x, float size){
@@ -12,15 +10,16 @@ float fill(float x, float size){
 void main(){
      vec3 color = vec3(0.);
 
-    float circle = length(vUv - 0.5)*2.; 
+    float circle = length(gl_PointCoord - 0.5)*2.; 
     circle = fill(circle, 0.5);
 
     color = mix(vec3(0.,0.,0.), color1, circle);
     float alpha = circle;
    
-    float distanceToCenter = distance(vUv, vec2(0.5));
+    float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
     float strength = (0.05 / distanceToCenter - 0.1) * 1.;
 
+    vec3 finalColor = mix(color1, color2, vOpacity);
 
-    gl_FragColor = vec4(color1, strength * 5. * (0.9 + sin(time * 10. * factorStrobe)) - 2.2);
+    gl_FragColor = vec4(finalColor, strength*5.);
 }

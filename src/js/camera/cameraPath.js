@@ -45,7 +45,7 @@ export default class cameraPath {
     if (this.isActive) {
       this.camera.position.x = 1004.4;
       this.camera.position.y = -6584.3;
-      this.camera.position.z = 8906.94;
+      this.camera.position.z = 10906.94;
 
       // this.camera.position.x = 0;
       // this.camera.position.y = 1;
@@ -117,7 +117,7 @@ export default class cameraPath {
     this.screen = new THREE.Mesh(this.screenGeometry, this.screenMaterial);
     this.screen.position.z = -1;
 
-    this.cameraAndScreen.add(this.screen);
+    // this.cameraAndScreen.add(this.screen);
 
     this.screenGeometry.center();
   }

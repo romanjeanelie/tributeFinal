@@ -12,13 +12,16 @@ export default class Garland {
   }
 
   init() {
-    const nbGarlands = 5;
+    const nbGarlands = 3;
 
     for (let i = 0; i < nbGarlands; i++) {
       this.createGarland(i);
     }
 
+    this.garlands.scale.set(0.6, 0.6, 0.6);
+
     this.garlands.rotation.y = -1;
+
     this.garlands.position.x = 120;
     this.garlands.position.y = 7;
     this.garlands.position.z = -23;
@@ -38,12 +41,16 @@ export default class Garland {
     const points = curve.getPoints(numberLights);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
+    // Add index attribute
     const indexParticle = new Float32Array(numberLights);
+    const random = new Float32Array(numberLights);
 
     for (let i = 0; i < numberLights; i++) {
       indexParticle[i] = i % 2;
+      random[i] = Math.random();
     }
     geometry.setAttribute("index", new THREE.BufferAttribute(indexParticle, 1));
+    geometry.setAttribute("aRandom", new THREE.BufferAttribute(random, 1));
 
     const material = new THREE.ShaderMaterial({
       uniforms: {

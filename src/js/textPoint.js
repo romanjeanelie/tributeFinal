@@ -39,7 +39,7 @@ export default class TextPoint {
       "Take me back",
       "Catch me in the moment when you said you love me",
     ];
-    this.loader.load("/fonts/Soleil_Regular.json", (font) => {
+    this.loader.load("/fonts/Soleil_Italic.json", (font) => {
       if (this.index > texts.length - 1) {
         this.textGroup.position.y = -45;
         this.textGroup.position.z = -80;
@@ -75,7 +75,7 @@ export default class TextPoint {
           activeLines: { value: 0 },
           progress: { value: 7 },
           opacity: { value: 0 },
-          uColor: { value: new THREE.Color("#FDD8D5") },
+          uColor: { value: new THREE.Color("#A88C41") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -108,7 +108,7 @@ export default class TextPoint {
       // });
       gsap.to(textOut.uniforms.opacity, {
         value: 0,
-        duration: 2,
+        duration: 1,
       });
     }
 
@@ -120,7 +120,7 @@ export default class TextPoint {
       // });
       gsap.to(textIn.uniforms.opacity, {
         value: 1,
-        duration: 2,
+        duration: 1,
         onComplete: () => (this.animComplete = true),
       });
     }

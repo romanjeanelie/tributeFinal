@@ -33,13 +33,14 @@ export default class Buttons {
     this.screen = options.screen;
     this.textGod = options.textGod;
     this.textFinal = options.textFinal;
+    this.plane = options.plane;
+    this.help = options.help;
 
     this.finalScene = options.finalScene;
 
     this.btnPlay = document.querySelector(".play");
 
     this.buttonsMesh = [];
-    this.materialsButton = [];
     this.buttons = new THREE.Group();
     this.textsMesh = [];
     this.materialsText = [];
@@ -47,6 +48,8 @@ export default class Buttons {
     this.nbBtnClicked = 0;
 
     this.destroy = false;
+
+    this.clicked = false;
 
     this.tl = gsap.timeline({ paused: true });
     this.audio = document.getElementById("audio");
@@ -97,13 +100,14 @@ export default class Buttons {
     this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
   }
 
-  checkRaycaster(obj) {
+  clickListener(obj) {
     this.btnPlay.addEventListener("click", () => {
+      this.help.hidePlay();
       this.nbBtnClicked += 1;
       const btnClicked = this.buttonsMesh[0];
       const textClicked = this.textsMesh[0];
-      const materialBtnClicked = this.materialsButton[0];
-      const materialTextClicked = this.materialsText[0];
+      const materialBtnClicked = this.materialButton;
+      const materialTextClicked = this.textMaterial;
 
       gsap.to(btnClicked.position, {
         z: -10,
@@ -113,8 +117,6 @@ export default class Buttons {
         z: 0,
         duration: 0.5,
       });
-
-      // materialTextClicked.color = 0xff0000;
 
       gsap.to(materialBtnClicked.uniforms.changeColor, {
         value: 0.8,
@@ -151,10 +153,19 @@ export default class Buttons {
     steps.six = 112;
 
     this.audio.currentTime = start;
+
     this.tl.to(
       this.sky,
       {
         opacity: 0,
+        duration: 20,
+      },
+      "<"
+    );
+    this.tl.to(
+      this.plane,
+      {
+        textOpacity: 0,
         duration: 20,
       },
       "<"
@@ -373,8 +384,7 @@ export default class Buttons {
       {
         opacity: 1,
         color: "#ccc",
-        duration: 6,
-        ease: "power2.in",
+        duration: 8,
       }
     );
 
@@ -389,8 +399,7 @@ export default class Buttons {
             delay: i * 0.002,
             opacity: 1,
             color: "#ccc",
-            duration: 6,
-            ease: "power2.in",
+            duration: 8,
           },
           "<"
         );
@@ -405,8 +414,7 @@ export default class Buttons {
             delay: i * 0.002,
             opacity: 1,
             color: "#ccc",
-            duration: 6,
-            ease: "power2.in",
+            duration: 8,
           },
           "<"
         );
@@ -439,25 +447,23 @@ export default class Buttons {
       });
       textGeometry.center();
 
-      const textMaterial = new THREE.MeshBasicMaterial({ opacity: 1, color: 0xff00ff, transparent: true });
+      this.textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.2, color: 0xff00ff, transparent: true });
 
-      this.materialsText.push(textMaterial);
-
-      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+      const textMesh = new THREE.Mesh(textGeometry, this.textMaterial);
 
       textMesh.position.x = options.x;
-      textMesh.position.y = 2 + options.y;
+      textMesh.position.y = 1 + options.y;
       textMesh.position.z = options.z + 10;
-      textMesh.scale.set(4, 4, 4);
+      textMesh.scale.set(6.5, 6.5, 6.5);
 
       this.textsMesh.push(textMesh);
 
       const geometryButton = new THREE.BoxBufferGeometry(8, 1, 2);
-      const materialButton = new THREE.ShaderMaterial({
+      this.materialButton = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
-          opacity: { value: 1 },
-          uColor: { value: new THREE.Color("#BC2019") },
+          opacity: { value: 0.5 },
+          uColor: { value: new THREE.Color("#890D07") },
           changeColor: { value: 0 },
         },
         transparent: true,
@@ -465,15 +471,13 @@ export default class Buttons {
         fragmentShader: fragment,
       });
 
-      this.materialsButton.push(materialButton);
-
-      const button = new THREE.Mesh(geometryButton, materialButton);
+      const button = new THREE.Mesh(geometryButton, this.materialButton);
 
       button.rotation.x = Math.PI * 0.5;
       button.position.x = options.x;
       button.position.y = options.y;
       button.position.z = options.z;
-      button.scale.set(12, 12, 12);
+      button.scale.set(18, 18, 18);
 
       this.buttonsMesh.push(button);
 
@@ -482,10 +486,30 @@ export default class Buttons {
       // All buttons are loaded
       if (this.buttons.children.length > 0) {
         this.objectsToTest.forEach((obj) => {
-          this.checkRaycaster(obj);
+          this.clickListener(obj);
         });
       }
     });
+  }
+
+  display() {
+    gsap.to(this.materialButton.uniforms.opacity, {
+      value: 1,
+    });
+    gsap.to(this.textMaterial, {
+      opacity: 1,
+    });
+
+    document.querySelector(".btn__wrapper .play").style.pointerEvents = "auto";
+
+    // Help
+    setTimeout(() => {
+      if (this.clicked === false) {
+        this.help.displayPlay();
+      } else {
+        return;
+      }
+    }, 5000);
   }
 
   hoverLinks() {
@@ -521,10 +545,10 @@ export default class Buttons {
   }
 
   anim(progress, time) {
-    this.materialsButton.forEach((material) => {
-      material.uniforms.time.value = time;
-      this.tl.seek(this.audio.currentTime);
-    });
+    if (this.materialButton) {
+      this.materialButton.uniforms.time.value = time;
+    }
+    this.tl.seek(this.audio.currentTime);
     if (this.buttonsMesh.length > 0) {
       const screenPosition = this.buttonsMesh[0].position.clone();
       screenPosition.project(this.camera);

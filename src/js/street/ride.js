@@ -21,8 +21,8 @@ export default class Stadium {
 
     this.ride.scale.set(1.5, 1.5, 1.5);
 
-    this.ride.position.x = 120;
-    this.ride.position.z = -50;
+    this.ride.position.x = 110;
+    this.ride.position.z = -60;
 
     this.scene.add(this.ride);
   }

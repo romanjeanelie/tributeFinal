@@ -33,10 +33,10 @@ export default class SinglePoint {
   init() {
     this.textStars.init();
     this.points.color1 = new THREE.Color("#ddd");
-    this.points.color2 = new THREE.Color(this.textStars.texts[0].color);
-    this.points.color3 = new THREE.Color(this.textStars.texts[1].color);
-    this.points.color4 = new THREE.Color(this.textStars.texts[2].color);
-    this.points.color5 = new THREE.Color(this.textStars.texts[3].color);
+    this.points.color2 = new THREE.Color(this.textStars.texts[0].color2);
+    this.points.color3 = new THREE.Color(this.textStars.texts[1].color2);
+    this.points.color4 = new THREE.Color(this.textStars.texts[2].color2);
+    this.points.color5 = new THREE.Color(this.textStars.texts[3].color2);
     this.points.init();
 
     this.setColors();
@@ -52,10 +52,10 @@ export default class SinglePoint {
       uniforms: {
         time: { value: 0 },
         color1: { value: new THREE.Color(this.points.color1) },
-        color2: { value: new THREE.Color(this.textStars.texts[0].color) },
-        color3: { value: new THREE.Color(this.textStars.texts[1].color) },
-        color4: { value: new THREE.Color(this.textStars.texts[2].color) },
-        color5: { value: new THREE.Color(this.textStars.texts[3].color) },
+        color2: { value: new THREE.Color(this.textStars.texts[0].color2) },
+        color3: { value: new THREE.Color(this.textStars.texts[1].color2) },
+        color4: { value: new THREE.Color(this.textStars.texts[2].color2) },
+        color5: { value: new THREE.Color(this.textStars.texts[3].color2) },
         colorOrb: { value: new THREE.Color("#F41B0C") },
         isColor1: { value: 1 },
         isColor2: { value: 0 },

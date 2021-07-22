@@ -58,8 +58,14 @@ export default class Animations {
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 1.2;
+    this.positionTimeline = 2;
     this.start = 0;
+
+    // Timeline texts
+    // 0.07
+    // 0.12
+    // 0.2
+    // 0.34
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
 
     this.help = new Help();
@@ -106,6 +112,7 @@ export default class Animations {
 
     if (this.backstage) {
       document.querySelector(".home").style.display = "none";
+      document.querySelector(".help").style.display = "none";
     }
   }
 
@@ -219,12 +226,13 @@ export default class Animations {
 
     tl.to("#start p", {
       autoAlpha: 0,
-      duration: 1,
     });
+
     tl.to(
       ".home__title",
       {
         rotateX: -90,
+        duration: 0.8,
       },
       "<"
     );
@@ -233,30 +241,21 @@ export default class Animations {
       ".home__subtitle",
       {
         rotateX: 0,
-        duration: 1,
+        duration: 1.5,
       },
       "<"
     );
-    tl.to(
-      ".home__subtitle h2",
 
-      {
-        opacity: 0,
-        color: "#F41B0C",
-        delay: 2,
-        duration: 6,
-        ease: "power2.in",
-
-        onComplete: () => {
-          document.querySelector(".home").style.pointerEvent = "none";
-          document.querySelector(".home__title").style.pointerEvent = "none";
-          document.querySelector(".home").style.display = "none";
-          document.querySelector(".home__title").style.display = "none";
-
-          this.eventsAnim();
-        },
-      }
-    );
+    tl.to(".home__subtitle h2", {
+      opacity: 0,
+      color: "#F41B0C",
+      delay: 1,
+      duration: 4,
+      ease: "power2.in",
+      onComplete: () => {
+        document.querySelector(".home").style.display = "none";
+      },
+    });
 
     tl.fromTo(
       this.singlePoint.material.uniforms.opacity,
@@ -265,8 +264,12 @@ export default class Animations {
       },
       {
         value: 1,
-        duration: 6,
+        duration: 4,
         ease: "power2.in",
+        onStart: () => {
+          document.querySelector(".home").style.pointerEvents = "none";
+          this.eventsAnim();
+        },
       },
       "<"
     );
@@ -281,8 +284,12 @@ export default class Animations {
   eventsAnim() {
     // STEP THREE
     let index = this.start;
+    let unclick = true;
+
     const btn = document.querySelector(".point");
     btn.addEventListener("click", () => {
+      unclick = false;
+
       this.stepThree(index);
       index++;
       this.help.hideClick();
@@ -293,9 +300,14 @@ export default class Animations {
     });
 
     // Help
-    this.help.displayClick();
+    setTimeout(() => {
+      if (unclick) {
+        this.help.displayClick();
+      } else {
+        return;
+      }
+    }, 5000);
     if (index < 3) {
-      console.log(index);
       btn.addEventListener("click", debounce(this.help.displayClick, 5000));
     }
 
@@ -349,6 +361,8 @@ export default class Animations {
       screen: this.createPath.cameraPath.screenMaterial,
       textGod: this.textGod,
       textFinal: this.textFinal,
+      plane: this.plane,
+      help: this.help,
     });
 
     this.textIntro.init();
@@ -505,6 +519,8 @@ export default class Animations {
   }
 
   stepFour() {
+    const camera = this.createPath.cameraPath.cameraAndScreen;
+
     // Help
     const scrollActive = false;
     setTimeout(() => {
@@ -523,7 +539,7 @@ export default class Animations {
     );
 
     window.addEventListener("scroll", () => {
-      this.scrollActive = false;
+      this.scrollActive = true;
       this.help.hideScroll1();
       this.help.hideScroll2();
     });
@@ -537,17 +553,6 @@ export default class Animations {
         duration: 6,
         z: -300,
       },
-      "<"
-    );
-
-    // FADE IN Sky
-    tl.to(
-      this.sky,
-      {
-        opacity: 1,
-        duration: 12,
-      },
-
       "<"
     );
 
@@ -583,7 +588,7 @@ export default class Animations {
       },
     };
 
-    // PROGRESSION CAM 1 UNtil Moon
+    // // PROGRESSION CAM 1 UNtil Moon
     this.tl4.to(
       this.createPath.cameraPath,
       {
@@ -591,6 +596,17 @@ export default class Animations {
         duration: steps.step1.duration,
         ease: "linear",
       },
+      "<"
+    );
+
+    // FADE IN Sky
+    this.tl4.to(
+      this.sky,
+      {
+        opacity: 1,
+        duration: 12,
+      },
+
       "<"
     );
 
@@ -608,6 +624,29 @@ export default class Animations {
       "<"
     );
 
+    // CAMERA Rotation
+    // this.tl4.to(
+    //   camera.rotation,
+    //   {
+    //     x: 0.5,
+    //     duration: steps.step2.duration,
+    //     ease: "linear",
+    //   },
+    //   "<"
+    // );
+
+    // this.tl4.to(
+    //   camera.rotation,
+    //   {
+    //     x: 0,
+    //     delay: steps.step2.duration,
+    //     duration: steps.step2.duration,
+
+    //     ease: "linear",
+    //   },
+    //   "<"
+    // );
+
     // PROGRESSION CAM 3 Until Planet
     this.tl4.to(
       this.createPath.cameraPath,
@@ -617,7 +656,15 @@ export default class Animations {
         duration: steps.step3.duration,
         ease: "linear",
         onComplete: () => {
-          document.querySelector(".help__scroll").style.display = "none";
+          if (this.backstage) {
+            setTimeout(() => {
+              document.querySelector(".help__scroll").style.display = "none";
+              this.buttons.display();
+            }, 600);
+          } else {
+            document.querySelector(".help__scroll").style.display = "none";
+            this.buttons.display();
+          }
         },
       },
 

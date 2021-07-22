@@ -65,9 +65,9 @@ export default class Wheel {
       gltf.scene.position.x = -0.17;
       gltf.scene.position.y = -14.6;
 
-      this.mainWheel.add(gltf.scene);
+      // this.mainWheel.add(gltf.scene);
 
-      this.createLightWheel(this.seatPositions);
+      this.createLightSeats(this.seatPositions);
     });
   }
 
@@ -141,6 +141,8 @@ export default class Wheel {
   }
 
   createCircle() {
+    const numberPoints = 100;
+
     const curve = new THREE.EllipseCurve(
       0,
       0, // ax, aY
@@ -151,17 +153,20 @@ export default class Wheel {
       false, // aClockwise
       0 // aRotation
     );
-    const points = curve.getPoints(200);
+
+    const points = curve.getPoints(numberPoints);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-    // const material = new THREE.PointsMaterial({
-    //   color: new THREE.Color("#B7299F"),
-    //   size: 10,
-    //   sizeAttenuation: true,
-    //   transparent: true,
-    //   opacity: 1,
-    // });
+    // Add random attribute
+    const random = new Float32Array(numberPoints);
 
+    for (let i = 0; i < numberPoints; i++) {
+      random[i] = Math.random();
+    }
+
+    geometry.setAttribute("aRandom", new THREE.BufferAttribute(random, 1));
+
+    // Material
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
@@ -185,13 +190,20 @@ export default class Wheel {
     const nbBranches = 6;
     const ratioRotate = Math.PI / nbBranches;
 
-    // const nbPointsBranch = 100;
-    // const nbBranches = 110;
     this.branchGeometry = new THREE.PlaneGeometry(21, 0.1, nbPointsBranch, nbPointsBranch);
+
+    // Add random attribute
+    const random = new Float32Array(nbPointsBranch);
+
+    for (let i = 0; i < nbPointsBranch; i++) {
+      random[i] = Math.random();
+    }
+
+    this.branchGeometry.setAttribute("aRandom", new THREE.BufferAttribute(random, 1));
 
     this.branchMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        uColor1: { value: new THREE.Color("#E77F68") },
+        uColor1: { value: new THREE.Color("#FDF4E4") },
         uColor2: { value: new THREE.Color("#0917FC") },
       },
       vertexShader: vertex2,
@@ -210,7 +222,7 @@ export default class Wheel {
     }
   }
 
-  createLightWheel(positionsWindow) {
+  createLightSeats(positionsWindow) {
     const count = positionsWindow.length;
     this.pointsMaterial = new THREE.ShaderMaterial({
       uniforms: {
@@ -237,7 +249,7 @@ export default class Wheel {
       positions[i3 + 2] = positionsWindow[i].z - 0.5;
 
       size[i] = 20000;
-      opacity[i] = Math.random() * 0.6;
+      opacity[i] = Math.random();
     }
 
     pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));

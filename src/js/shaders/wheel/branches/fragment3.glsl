@@ -1,4 +1,6 @@
 varying vec2 vUv;
+varying float vRandom; 
+
 
 uniform vec3 color1;
 uniform vec3 color2;
@@ -20,5 +22,5 @@ void main(){
     float strength = (0.05 / distanceToCenter - 0.1) * 1.;
 
 
-    gl_FragColor = vec4(color1, strength*5.);
+    gl_FragColor = vec4(color1, strength*5. * vRandom);
 }

@@ -23,7 +23,7 @@ float rectSDF(vec2 st, vec2 s) {
 }
 
 float fill(float x, float size){
-    return 1. - smoothstep(size, size + 4., x);
+    return 1. - smoothstep(size, size + .5, x);
 }
 
 void main()	{
@@ -46,20 +46,33 @@ void main()	{
   float lines = strobeLight * littleLines;
 
    
-  float rect = rectSDF(vUv, vec2(0.21, 1.));
+  float rect = rectSDF(vUv, vec2(0.7, 0.7));
   rect = fill(rect, 1.);
 
-  float step1 = stroke(vUv.y, 0.73, 0.28);
-  // float step2 = stroke(vUv.y, 0.865, 0.17);
-  float step2 = smoothstep(0.865, 0.865 + 0.17/1., vUv.y +  0.17 ) - smoothstep(0.865 - 0.04,0.865, vUv.y - 0.15);
+  float threshold0 =  0.53;
+  float size0 = 0.99;
+
+  float threshold1 =  0.95;
+  float size1 = 0.3;
+
+  float threshold2 = 0.99;
+  float size2 = 0.1;
+
+  // float step0 = stroke(vUv.y, threshold0, size0);
+  // float step1 = stroke(vUv.y, threshold1, size1);
+  float step0 = smoothstep(threshold0, threshold0 + size0/1., vUv.y +  size0 ) - smoothstep(threshold0 - size0/1.,threshold0, vUv.y - size0);
+  float step1 = smoothstep(threshold1, threshold1 + size1/1., vUv.y +  size1 ) - smoothstep(threshold1 - size1/1.,threshold1, vUv.y - size1);
+  float step2 = smoothstep(threshold2, threshold2 + size2/1., vUv.y +  size2 ) - smoothstep(threshold2 - size2/1.,threshold2, vUv.y - size2);
 
 
   vec3 stroke1 = mix(black, color1, step1);
   vec3 stroke2 = mix(black, color2, step2);
+  vec3 stroke3 =  mix(black, color3, step0);
 
 
   color = stroke1;
   color += stroke2;
+  color += stroke3;
 
   color *= rect;
 
@@ -68,5 +81,6 @@ void main()	{
   vec3 finalColor = mix(vec3(0.), color,changeColor);
   
   gl_FragColor = vec4(color,  opacity);
+  // gl_FragColor = vec4(vec3(rect),  opacity);
 
 }

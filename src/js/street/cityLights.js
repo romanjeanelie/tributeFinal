@@ -50,7 +50,7 @@ export default class CityLights {
         maxX: Math.random() * 400,
         minY: 1,
         maxY: 0,
-        minZ: -100,
+        minZ: 50,
         maxZ: Math.random() * 200,
         size: 24000,
         material: this.pointsMaterialBig,

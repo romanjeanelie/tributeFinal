@@ -17,6 +17,10 @@ export default class Plane {
     this.plane = new THREE.Group();
     this.textsMesh = [];
     this.materialsText = [];
+    this.materialsBigLight = [];
+    this.materialsLittleLight = [];
+
+    this.textOpacity = 1;
   }
 
   init() {
@@ -27,9 +31,9 @@ export default class Plane {
       posX: 60,
       posY: 2,
       posZ: 2,
-      scale: 5,
-      color: "#F9A5D9",
-      color2: "#FFa0ff",
+      scale: 4,
+      color: "#6B788F",
+      color2: "#6D7B7C",
     };
     this.createText(textOptions);
 
@@ -58,7 +62,7 @@ export default class Plane {
   }
 
   createText(options) {
-    this.loader.load("/fonts/Moniqa-ExtBold.json", (font) => {
+    this.loader.load("/fonts/Soleil_Regular.json", (font) => {
       const textGeometry = new THREE.TextGeometry(options.text, {
         font: font,
         size: 1,
@@ -73,7 +77,7 @@ export default class Plane {
           time: { value: 0 },
           activeLines: { value: 0 },
           progress: { value: 0 },
-          opacity: { value: this.opacity },
+          opacity: { value: this.textOpacity },
           uColor: { value: new THREE.Color(options.color) },
           uColor2: { value: new THREE.Color(options.color2 ? options.color2 : options.color) },
           squeeze: { value: 0 },
@@ -81,7 +85,7 @@ export default class Plane {
         },
         vertexShader: vertex,
         fragmentShader: fragment,
-        // transparent: true,
+        transparent: true,
         // depthWrite: false,
       });
 
@@ -143,6 +147,8 @@ export default class Plane {
         color1: { value: new THREE.Color("#ff0000") },
         color2: { value: new THREE.Color("#ffffff") },
         opacity: { value: 1 },
+        time: { value: 0 },
+        factorStrobe: { value: 2 },
       },
       vertexShader: vertex2,
       fragmentShader: fragment2,
@@ -150,6 +156,8 @@ export default class Plane {
       transparent: true,
       depthWrite: false,
     });
+
+    this.materialsLittleLight.push(materialLittleLight);
 
     const materialBigLight = new THREE.ShaderMaterial({
       uniforms: {
@@ -157,6 +165,8 @@ export default class Plane {
         color1: { value: new THREE.Color("#ffffff") },
         color2: { value: new THREE.Color("#ffffff") },
         opacity: { value: 1 },
+        time: { value: 0 },
+        factorStrobe: { value: 1 },
       },
       vertexShader: vertex2,
       fragmentShader: fragment2,
@@ -165,9 +175,14 @@ export default class Plane {
       depthWrite: false,
     });
 
-    const littleLight = new THREE.Mesh(geometry, materialLittleLight);
+    this.materialsBigLight.push(materialBigLight);
 
+    const littleLight = new THREE.Mesh(geometry, materialLittleLight);
     const bigLight = new THREE.Mesh(geometry, materialBigLight);
+    const littleLightBack = new THREE.Mesh(geometry, materialLittleLight);
+    const bigLightBack = new THREE.Mesh(geometry, materialBigLight);
+
+    const bigLight2 = new THREE.Mesh(geometry, materialBigLight);
 
     littleLight.position.x = 7.2;
     littleLight.position.y = 2;
@@ -177,13 +192,35 @@ export default class Plane {
     bigLight.position.y = 2;
     bigLight.position.z = 7.3;
 
-    this.plane.add(littleLight, bigLight);
+    bigLight2.position.x = 12;
+    bigLight2.position.y = 4;
+    bigLight2.position.z = 0;
+
+    littleLightBack.position.x = 7.2;
+    littleLightBack.position.y = 2;
+    littleLightBack.position.z = -7.5;
+
+    bigLightBack.position.x = 8.15;
+    bigLightBack.position.y = 2;
+    bigLightBack.position.z = -7.3;
+
+    this.plane.add(littleLight, bigLight, littleLightBack, bigLightBack, bigLight2);
   }
 
   anim(progress, time) {
     this.materialsText.forEach((material) => {
       material.uniforms.time.value = time;
+      material.uniforms.opacity.value = this.textOpacity;
     });
+
     this.plane.position.x -= 0.5;
+
+    this.materialsBigLight.forEach((material) => {
+      material.uniforms.time.value = time;
+    });
+
+    this.materialsLittleLight.forEach((material) => {
+      material.uniforms.time.value = time;
+    });
   }
 }

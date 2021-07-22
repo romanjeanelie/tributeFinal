@@ -1,3 +1,4 @@
+varying float vRandom;
 varying vec2 vUv; 
 
 uniform vec3 uColor1;
@@ -18,6 +19,6 @@ void main()	{
 
     color += mix(uColor2, uColor1, vUv.x);
 
-    gl_FragColor = vec4(color, 0.5);
+    gl_FragColor = vec4(uColor1, vRandom);
     // gl_FragColor = vec4(vec2(vUv), 1., 1. );
 }
