@@ -10,8 +10,10 @@ export default class TextPoint {
   constructor(options) {
     this.scene = options.scene;
 
-    this.loader = new THREE.FontLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.loader = new THREE.FontLoader(this.loadingManager);
+    this.textureLoader = new THREE.TextureLoader(this.loadingManager);
+
     this.strengthValue = 1;
 
     this.textMaterial = null;
@@ -30,7 +32,7 @@ export default class TextPoint {
   }
 
   init() {
-    this.addText();
+    // this.addText();
   }
 
   addText() {
@@ -97,29 +99,22 @@ export default class TextPoint {
   }
 
   animText(index) {
-    const textOut = this.materialsText[index - 1];
-    const textIn = this.materialsText[index];
+    const texts = document.querySelectorAll(".text__point p");
+    const textOut = texts[index - 1];
+    const textIn = texts[index];
     this.animComplete = false;
+    console.log(textIn);
 
     if (textOut) {
-      // gsap.to(textOut.uniforms.progress, {
-      //   value: 7,
-      //   duration: 2,
-      // });
-      gsap.to(textOut.uniforms.opacity, {
-        value: 0,
+      gsap.to(textOut, {
+        autoAlpha: 0,
         duration: 1,
       });
     }
 
     if (textIn) {
-      // gsap.to(textIn.uniforms.progress, {
-      //   value: 1,
-      //   duration: 2,
-      //   onComplete: () => (this.animComplete = true),
-      // });
-      gsap.to(textIn.uniforms.opacity, {
-        value: 1,
+      gsap.to(textIn, {
+        autoAlpha: 1,
         duration: 1,
         onComplete: () => (this.animComplete = true),
       });

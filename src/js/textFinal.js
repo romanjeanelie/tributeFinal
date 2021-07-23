@@ -8,8 +8,9 @@ export default class TextFinal {
   constructor(options) {
     this.scene = options.scene;
 
-    this.loader = new THREE.FontLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.loader = new THREE.FontLoader(this.loadingManager);
+    this.textureLoader = new THREE.TextureLoader(this.loadingManager);
     this.strengthValue = 1;
 
     this.textMaterial = null;
@@ -35,10 +36,10 @@ export default class TextFinal {
     const texts = ["I CAN'T GET YOU OUT OF MY HEAD", "I'M SUFFOCATED"];
     this.loader.load("/fonts/Moniqa-ExtBold.json", (font) => {
       if (this.index > texts.length - 1) {
-        this.textGroup.position.y = -45;
+        this.textGroup.position.y = 2500;
         this.textGroup.position.z = 0;
 
-        this.textGroup.scale.set(600, 600, 600);
+        this.textGroup.scale.set(750, 750, 750);
         this.scene.add(this.textGroup);
         return;
       }
@@ -65,8 +66,8 @@ export default class TextFinal {
           uStrength: { value: 0 },
           time: { value: 0 },
           opacity: { value: 0 },
-          uColor1: { value: new THREE.Color("#BBB675") },
-          uColor2: { value: new THREE.Color("#473A18") },
+          uColor1: { value: new THREE.Color("#CEC98B") },
+          uColor2: { value: new THREE.Color("#8D773D") },
         },
         vertexShader: vertex,
         fragmentShader: fragment,

@@ -10,8 +10,8 @@ export default class Stadium {
   constructor(options) {
     this.scene = options.scene;
 
-    this.gltfLoader = new GLTFLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.ride = new THREE.Group();
   }

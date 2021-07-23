@@ -10,8 +10,9 @@ export default class Bridge {
   constructor(options) {
     this.scene = options.scene;
 
-    this.gltfLoader = new GLTFLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
+    this.textureLoader = new THREE.TextureLoader(this.loadingManager);
 
     this.lightsRoad = new THREE.Group();
     this.bridge = new THREE.Group();
@@ -32,6 +33,8 @@ export default class Bridge {
   }
 
   addBridge() {
+    this.lightsRopes = [];
+
     const material = new THREE.MeshBasicMaterial({
       color: 0x000000,
       side: THREE.DoubleSide,
@@ -44,17 +47,11 @@ export default class Bridge {
       opacity: 1,
     });
 
-    const materialLight = new THREE.ShaderMaterial({
-      uniforms: {
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        color1: { value: new THREE.Color("#Fff") },
-        color2: { value: new THREE.Color("#ffffff") },
-        opacity: { value: 1 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
+    const materialLight = new THREE.MeshBasicMaterial({
+      color: new THREE.Color("#FF9000"),
+      side: THREE.DoubleSide,
+      opacity: 0,
       transparent: true,
-      depthWrite: false,
     });
     this.gltfLoader.load("/models/bridge1.glb", (gltf) => {
       gltf.scene.traverse((child) => {
@@ -63,13 +60,55 @@ export default class Bridge {
             child.material = textMaterial;
           } else if (child.name.includes("lightRope")) {
             child.material = materialLight;
+            this.lightsRopes.push(child.position);
           } else {
             child.material = material;
           }
         }
       });
+
+      this.createLightsRopes(this.lightsRopes);
       this.bridge.add(gltf.scene);
     });
+  }
+
+  createLightsRopes(positionsLight) {
+    const count = positionsLight.length;
+    this.pointsMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        opacity: { value: 1 },
+        uColor: { value: new THREE.Color("#F4DECB") },
+      },
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      // depthWrite: false,
+    });
+
+    const pointsGeometry = new THREE.BufferGeometry();
+
+    const positions = new Float32Array(count * 3);
+    const size = new Float32Array(count);
+    const opacity = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      positions[i3 + 0] = positionsLight[i].x;
+      positions[i3 + 1] = positionsLight[i].y;
+      positions[i3 + 2] = positionsLight[i].z;
+
+      size[i] = 20000;
+      opacity[i] = 0.2 + Math.random();
+    }
+
+    pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    pointsGeometry.setAttribute("size", new THREE.BufferAttribute(size, 1));
+    pointsGeometry.setAttribute("opacity", new THREE.BufferAttribute(opacity, 1));
+
+    const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
+
+    this.bridge.add(points);
   }
 
   addRoad() {

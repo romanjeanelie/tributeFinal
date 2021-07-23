@@ -30,7 +30,7 @@ export default class Points {
       minZ: -500,
       maxZ: 550,
       material: this.pointsMaterial,
-      qty: 500,
+      qty: 900,
       size: 12000,
     });
   }

@@ -16,7 +16,8 @@ export default class Flower {
 
     this.scene = options.scene;
 
-    this.gltfLoader = new GLTFLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.flower = new THREE.Group();
 
@@ -25,9 +26,9 @@ export default class Flower {
 
   init() {
     this.addFlower();
-    this.flower.scale.set(12, 12, 12);
+    this.flower.scale.set(13, 13, 13);
     this.flower.rotation.x = 1;
-    this.flower.position.y = -4000;
+    this.flower.position.y = -6000;
     this.flower.position.z = 12500;
     this.scene.add(this.flower);
   }
@@ -68,6 +69,7 @@ export default class Flower {
           changeColor: { value: 1 },
           offset: { value: 200 },
           scaleSize: { value: 0.4 },
+          // scaleSize: { value: 1.5 },
         },
         vertexShader: vertex,
         fragmentShader: fragment,
@@ -82,6 +84,7 @@ export default class Flower {
       ------------------------------*/
       const sampler = new MeshSurfaceSampler(this.mesh).build();
       const numParticles = 2000;
+      // const numParticles = 200000;
 
       this.particlesGeometry = new THREE.BufferGeometry();
       const particlesPosition = new Float32Array(numParticles * 3);

@@ -14,12 +14,10 @@ export default class Buttons {
     this.gui = options.gui;
     this.debugObject = {};
 
-    this.loader = new THREE.FontLoader();
-    this.gltfLoader = new GLTFLoader();
-    this.raycaster = new THREE.Raycaster();
+    this.loadingManager = options.loadingManager;
+    this.loader = new THREE.FontLoader(this.loadingManager);
 
     this.sizes = options.sizes;
-    this.mouse = options.mouse;
     this.camera = options.camera;
     this.scene = options.scene;
     this.points = options.points;
@@ -34,6 +32,7 @@ export default class Buttons {
     this.textGod = options.textGod;
     this.textFinal = options.textFinal;
     this.plane = options.plane;
+    this.planet = options.planet;
     this.help = options.help;
 
     this.finalScene = options.finalScene;
@@ -58,20 +57,17 @@ export default class Buttons {
 
     //////////////////////////////////////////////////// DEBUG
     this.debug = false;
-    this.start = 200;
+    this.start = 30;
     //////////////////////////////////////////////////// DEBUG
-
-    window.addEventListener("mousemove", (event) => {
-      this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
   }
 
   init() {
     this.createButton({ text: "PLAY", x: 0, y: 0, z: 0 });
 
-    this.buttons.position.y = -805;
-    this.buttons.position.z = 15300;
+    this.buttons.position.y = -985;
+    this.buttons.position.z = 19400;
+
+    this.buttons.scale.set(1.7, 1.7, 1.7);
 
     this.objectsToTest = this.buttonsMesh;
 
@@ -82,27 +78,19 @@ export default class Buttons {
     if (this.debug) {
       setTimeout(() => {
         this.returnScene();
-        // this.textStars.textsMesh[0].position.y += 500;
-        // this.road.pointsMaterial.uniforms.opacity.value = 0;
-        // this.textStars.opacity = 0;
-        // this.road.textBuilding.opacity = 0;
-        // this.flower.particlesMaterial.uniforms.disperse.value = 0;
-        // this.flower.particlesMaterial.uniforms.changeColor.value = 0;
       }, 1000);
     }
 
     this.cityLights = this.road.cityLights;
   }
 
-  rayCaster() {
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
-  }
-
   clickListener(obj) {
     this.btnPlay.addEventListener("click", () => {
+      // Help
+      this.clicked = true;
       this.help.hidePlay();
+      //
+
       this.nbBtnClicked += 1;
       const btnClicked = this.buttonsMesh[0];
       const textClicked = this.textsMesh[0];
@@ -114,7 +102,7 @@ export default class Buttons {
         duration: 0.5,
       });
       gsap.to(textClicked.position, {
-        z: 0,
+        z: 10,
         duration: 0.5,
       });
 
@@ -136,6 +124,7 @@ export default class Buttons {
     this.tl.play();
     this.audio.play();
     let start = 0;
+
     if (this.debug) {
       this.textGod.opacity.value = 1;
       start = this.start;
@@ -151,6 +140,7 @@ export default class Buttons {
     steps.four = 57;
     steps.five = 86;
     steps.six = 112;
+    steps.seven = 163;
 
     this.audio.currentTime = start;
 
@@ -174,8 +164,8 @@ export default class Buttons {
     this.tl.to(
       this.camera.position,
       {
-        z: -30500,
-        duration: 306,
+        z: -28500,
+        duration: 226,
         ease: "power1.inOut",
       },
       "<"
@@ -311,6 +301,16 @@ export default class Buttons {
       },
       "<"
     );
+
+    this.tl.to(
+      this.flower.particlesMaterial.uniforms.scaleSize,
+      {
+        value: 2.5,
+        duration: 10,
+      },
+      "<"
+    );
+
     this.tl.to(
       this.flower.particlesMaterial.uniforms.changeColor,
       {
@@ -333,7 +333,16 @@ export default class Buttons {
     this.tl.to(
       this.cityLights.textLight,
       {
-        duration: 10,
+        duration: 140,
+        disperse: 1,
+      },
+      "<"
+    );
+
+    this.tl.to(
+      this.cityLights.textLight,
+      {
+        duration: 50,
         opacity: 0,
       },
       "<"
@@ -368,6 +377,19 @@ export default class Buttons {
       "<"
     );
 
+    this.tl.to(
+      this.planet.planetMaterial.uniforms.wide,
+      {
+        value: 5.8,
+        delay: steps.seven - steps.six,
+        duration: 12,
+        onStart: () => {
+          console.log("start wide");
+        },
+      },
+      "<"
+    );
+
     const finalSplit = new SplitText(".final p", { type: "chars" });
 
     let index1 = Math.round(finalSplit.chars.length / 2);
@@ -384,7 +406,8 @@ export default class Buttons {
       {
         opacity: 1,
         color: "#ccc",
-        duration: 8,
+        duration: 6,
+        ease: "power1.in",
       }
     );
 
@@ -399,7 +422,8 @@ export default class Buttons {
             delay: i * 0.002,
             opacity: 1,
             color: "#ccc",
-            duration: 8,
+            duration: 6,
+            ease: "power1.in",
           },
           "<"
         );
@@ -414,7 +438,8 @@ export default class Buttons {
             delay: i * 0.002,
             opacity: 1,
             color: "#ccc",
-            duration: 8,
+            duration: 6,
+            ease: "power1.in",
           },
           "<"
         );
@@ -425,7 +450,6 @@ export default class Buttons {
       const progress = this.audio.currentTime;
 
       if (progress > 204.5) {
-        console.log(finalSplit);
         document.querySelector(".final").style.display = "flex";
         this.tlFinal.play();
 
@@ -447,13 +471,13 @@ export default class Buttons {
       });
       textGeometry.center();
 
-      this.textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.2, color: 0xff00ff, transparent: true });
+      this.textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.2, color: 0xcccccc, transparent: true });
 
       const textMesh = new THREE.Mesh(textGeometry, this.textMaterial);
 
       textMesh.position.x = options.x;
-      textMesh.position.y = 1 + options.y;
-      textMesh.position.z = options.z + 10;
+      textMesh.position.y = options.y + 2;
+      textMesh.position.z = options.z + 15;
       textMesh.scale.set(6.5, 6.5, 6.5);
 
       this.textsMesh.push(textMesh);
@@ -463,7 +487,7 @@ export default class Buttons {
         uniforms: {
           time: { value: 0 },
           opacity: { value: 0.5 },
-          uColor: { value: new THREE.Color("#890D07") },
+          uColor: { value: new THREE.Color("#B10026") },
           changeColor: { value: 0 },
         },
         transparent: true,
@@ -554,7 +578,7 @@ export default class Buttons {
       screenPosition.project(this.camera);
       const translateX = screenPosition.x * this.sizes.width * 1600;
       const translateY = screenPosition.y * this.sizes.height * 9;
-      this.btnPlay.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
+      this.btnPlay.style.transform = `translateX(${translateX}px) translateY(${translateY + 42}px)`;
     }
     if (this.debug) {
       this.sky.opacity = 0;

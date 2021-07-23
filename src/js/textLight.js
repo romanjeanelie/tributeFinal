@@ -9,13 +9,14 @@ import fragment from "./shaders/textLight/fragment.glsl";
 
 export default class TextLight {
   constructor(options) {
-    this.gltfLoader = new GLTFLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.text = new THREE.Group();
     this.scene = options.scene;
 
-    this.materials = [];
     this.opacity = 0;
+    this.disperse = 0;
   }
 
   init() {
@@ -26,7 +27,7 @@ export default class TextLight {
     this.text.rotation.y = Math.PI;
     this.text.position.x = 150;
     this.text.position.y = 0;
-    this.text.position.z = 230;
+    this.text.position.z = 280;
     this.scene.add(this.text);
   }
 
@@ -52,7 +53,8 @@ export default class TextLight {
     this.geometry = mesh.geometry;
 
     const sampler = new MeshSurfaceSampler(mesh).build();
-    const numParticles = 2000;
+    const numParticles = 3000;
+    // const numParticles = 200000;
 
     this.particlesGeometry = new THREE.BufferGeometry();
     const particlesPosition = new Float32Array(numParticles * 3);
@@ -84,6 +86,7 @@ export default class TextLight {
         color1: { value: new THREE.Color("#E77F68") },
         color2: { value: new THREE.Color("#ffffff") },
         uOpacity: { value: this.opacity },
+        disperse: { value: this.disperse },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -91,8 +94,6 @@ export default class TextLight {
       depthTest: false,
       depthWrite: false,
     });
-
-    this.materials.push(this.particlesMaterial);
 
     this.particles = new THREE.Points(this.particlesGeometry, this.particlesMaterial);
 
@@ -106,9 +107,8 @@ export default class TextLight {
 
   anim(progress, time) {
     if (this.particlesMaterial === undefined) return;
-    this.materials.forEach((material) => {
-      material.uniforms.uOpacity.value = this.opacity;
-    });
-    // this.particlesMaterial.uniforms.uTime.value = time;
+    this.particlesMaterial.uniforms.uOpacity.value = this.opacity;
+    this.particlesMaterial.uniforms.disperse.value = this.disperse;
+    this.particlesMaterial.uniforms.uTime.value = time;
   }
 }

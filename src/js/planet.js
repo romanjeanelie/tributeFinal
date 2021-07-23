@@ -44,7 +44,7 @@ export default class Planet {
         color1: { value: new THREE.Color(this.debugObject.planetColor1) },
         color2: { value: new THREE.Color(this.debugObject.planetColor2) },
         color3: { value: new THREE.Color(this.debugObject.planetColor3) },
-        wide: { value: 6.5 },
+        wide: { value: 15.5 },
         opacity: { value: 1 },
 
         changeColor: { value: 1 },

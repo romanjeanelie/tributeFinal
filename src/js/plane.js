@@ -9,8 +9,9 @@ import vertex2 from "./shaders/plane/vertex.glsl";
 
 export default class Plane {
   constructor(options) {
-    this.gltfLoader = new GLTFLoader();
-    this.loader = new THREE.FontLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
+    this.loader = new THREE.FontLoader(this.loadingManager);
 
     this.scene = options.scene;
 
@@ -32,7 +33,7 @@ export default class Plane {
       posY: 2,
       posZ: 2,
       scale: 4,
-      color: "#6B788F",
+      color: "#9AADCD",
       color2: "#6D7B7C",
     };
     this.createText(textOptions);
@@ -42,7 +43,8 @@ export default class Plane {
     this.createLights();
 
     this.plane.scale.set(40, 40, 40);
-    this.plane.position.set(1200, -2100, 10600);
+    // this.plane.position.set(1200, -2100, 10600);
+    this.plane.position.set(1200, 0, 10600);
 
     this.scene.add(this.plane);
   }
@@ -139,7 +141,8 @@ export default class Plane {
   }
 
   createLights() {
-    const geometry = new THREE.PlaneBufferGeometry(0.5, 0.5);
+    const sizeLight = 1;
+    const geometry = new THREE.PlaneBufferGeometry(sizeLight, sizeLight);
 
     const materialLittleLight = new THREE.ShaderMaterial({
       uniforms: {

@@ -1,0 +1,42 @@
+.text__point {
+  z-index: 3;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.text__point__wrapper {
+  margin-bottom: 10vw;
+  p {
+    opacity: 0;
+    text-align: center;
+    font-size: 24px;
+    font-family: "Soleil";
+    font-style: italic;
+    color: #c5a346;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1200px) {
+  .text__point__wrapper {
+    p {
+      font-size: 18px;
+    }
+  }
+}
+@media (max-width: 756px) {
+  .text__point__wrapper {
+    p {
+      font-size: 12px;
+    }
+  }
+}

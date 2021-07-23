@@ -52,10 +52,10 @@ void main()	{
   float threshold0 =  0.53;
   float size0 = 0.99;
 
-  float threshold1 =  0.95;
-  float size1 = 0.3;
+  float threshold1 = 1.;
+  float size1 = 0.8;
 
-  float threshold2 = 0.99;
+  float threshold2 = 0.97;
   float size2 = 0.1;
 
   // float step0 = stroke(vUv.y, threshold0, size0);

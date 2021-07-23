@@ -13,8 +13,10 @@ export default class TextGod {
 
     this.scene = options.scene;
 
-    this.loader = new THREE.FontLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.loader = new THREE.FontLoader(this.loadingManager);
+    this.textureLoader = new THREE.TextureLoader(this.loadingManager);
+
     this.strengthValue = 1;
 
     this.textMaterial = null;
@@ -38,8 +40,8 @@ export default class TextGod {
   }
 
   addText() {
-    this.debugObject.color = "#FAE8C9";
-    this.debugObject.color2 = "#FDAC68";
+    this.debugObject.color = "#2F3438";
+    this.debugObject.color2 = "#C0D2E3";
 
     this.folderGod.addColor(this.debugObject, "color").onChange(() => {
       this.materialsText.forEach((material) => {
@@ -51,7 +53,7 @@ export default class TextGod {
       if (this.index > texts.length - 1) {
         // Position
         this.textGroup.rotation.x = Math.PI;
-        this.textGroup.position.y = -2000;
+        this.textGroup.position.y = -2500;
         this.textGroup.position.z = -2000;
         this.textGroup.children[0].position.y = 20;
         this.textGroup.children[1].position.y = -20;

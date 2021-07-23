@@ -66,7 +66,6 @@ export default class Help {
   }
 
   displayPlay() {
-    console.log("display help play");
     gsap.to(".help__play p", {
       y: 0,
       duration: 2,

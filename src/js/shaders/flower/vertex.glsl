@@ -19,12 +19,18 @@ void main(){
 
     vec3 newposition = position;
 
-    // newposition.xyz *= disperse;
-    newposition.x *=  1. + (sin(position.y * 1000.)  * 8.) * disperse;
+    // newposition.x *=  1. + (sin(position.y * 1000.)  * 8.) * disperse;
+    // newposition.y *= 1. +  (cos(position.y * 100.)  * 6.) * disperse;
+    // newposition.z *= 1. + sin(position.y * .5)  * disperse;
+
+    // Disperse
+    newposition.x *=  1. + (sin(position.y * 10.)  * 8.) * disperse;
     newposition.y *= 1. +  (cos(position.y * 100.)  * 6.) * disperse;
-    newposition.z *= 1. + sin(position.y * .5)  * disperse;
-    newposition.x += offset;
-    // newposition.x += disperse * 100.;
+    newposition.z *= 1. + sin(position.y * .05)  * disperse;
+
+    // Offset
+    newposition.y += 420. * disperse;
+    newposition.z -= 410. * disperse;
 
    
     vec4 modelPosition = modelMatrix * vec4(newposition, 1.); 

@@ -91,7 +91,7 @@ void main()	{
 
  vec3 color = vec3(1.); 
 
-  float noise = cnoise(vec3(vUv *.005, time *.2)) + 0.6;
+  float noise = cnoise(vec3(vUv *.008, time *.2)) + 0.6;
   float result =  noise;
 
   vec3 finalColor = mix(uColor2, uColor, result);

@@ -3,33 +3,40 @@
   src: url("HelveticaNeueLTProRoman.woff2") format("woff2"), url("HelveticaNeueLTProRoman.woff") format("woff");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: "Moniqa";
   src: url("Moniqa-ThinDisplay.woff") format("woff");
   font-weight: 200;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: "Moniqa";
   src: url("Moniqa-BlackCondensedDisplay.woff") format("woff");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: "Soleil";
   src: url("Soleil.woff") format("woff");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
+}
+@font-face {
+  font-family: "Soleil";
+  src: url("Soleil.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
 }
 @font-face {
   font-family: "Bungee";
   src: url("Bungee.woff") format("woff");
   font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+  font-style: italic;
+  font-display: block;
 }

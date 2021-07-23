@@ -1,11 +1,9 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
-import TextIntro from "./textIntro";
 import TextGod from "./textGod";
 import TextPoint from "./textPoint";
 import TextFinal from "./textFinal";
-import Circle from "./circle";
 import SinglePoint from "./singlePoint";
 import Sky from "./sky";
 import Plane from "./plane";
@@ -20,7 +18,6 @@ import CreatePath from "./camera/createPath";
 import debounce from "./utils/debounce";
 import ios from "./utils/ios";
 import { checkScrollSpeed } from "./utils/checkScrollSpeed";
-import once from "./utils/once";
 
 import Help from "./domElements/help";
 import TextLight from "./textLight";
@@ -40,8 +37,6 @@ export default class Animations {
     this.controls = options.controls;
     this.sizes = options.sizes;
 
-    this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2();
     this.currentIntersect = null;
     this.intersects = null;
 
@@ -68,27 +63,30 @@ export default class Animations {
     // 0.34
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
 
+    // Set Loader
+    this.loadingManager = new THREE.LoadingManager(
+      // Loaded
+      () => {
+        // Wait a little
+        window.setTimeout(() => {
+          this.displayHome();
+        }, 500);
+
+        window.setTimeout(() => {}, 500);
+      },
+
+      // Progress
+      (itemUrl, itemsLoaded, itemsTotal) => {
+        // Calculate the progress and update the loadingBarElement
+        const progressRatio = itemsLoaded / itemsTotal;
+        const progressEl = document.querySelector(".loader p");
+        progressEl.innerHTML = `${Math.round(progressRatio * 100)}%`;
+      }
+    );
+    // End set Loader
+
     this.help = new Help();
     this.scrollActive = false;
-
-    this.destroyAll = once(function () {
-      this.planet.planetMaterial.uniforms.opacity.value = 0;
-      setTimeout(() => {
-        console.log("remove moon");
-        this.moon.moonMaterial.uniforms.opacity.value = 0;
-      }, 1000);
-      setTimeout(() => {
-        console.log("remove city");
-        this.road.city.opacity = 0;
-      }, 2000);
-    });
-
-    this.upCityLights = once(() => {
-      gsap.to(this.road.cityLights.pointsMaterialBig.uniforms.move, {
-        duration: 4,
-        value: 1,
-      });
-    });
 
     this.init();
   }
@@ -103,8 +101,6 @@ export default class Animations {
     this.anim();
     this.render();
 
-    this.startListener();
-
     // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
     // this.startProject();
     // document.querySelector(".home").style.display = "none";
@@ -116,105 +112,34 @@ export default class Animations {
     }
   }
 
-  startListener() {
+  displayHome() {
     const durationIn = 2;
     const durationOut = 2;
     const startBtn = document.getElementById("start");
 
-    // TITLE
-
-    const titleSplit = new SplitText(".home__title h1", { type: "words,chars" });
-
-    let indexTitle1 = Math.round(titleSplit.chars.length / 2);
-    let indexTitle2 = Math.round(titleSplit.chars.length / 2);
-
-    let charTitle = titleSplit.chars[indexTitle1];
-
-    this.tlTitle = gsap.timeline({ delay: 1 });
-
-    this.tlTitle.from(charTitle, {
-      opacity: 0,
-      color: "#F41B0C",
-
-      duration: durationIn,
+    const tl = gsap.timeline();
+    tl.to(".loader p", {
+      y: "-100%",
+      onComplete: () => {
+        document.querySelector(".loader").style.display = "none";
+      },
     });
-    for (let i = 0; i < titleSplit.chars.length; i++) {
-      indexTitle1 += 1;
-      if (titleSplit.chars[indexTitle1]) {
-        let charTitle = titleSplit.chars[indexTitle1];
-        this.tlTitle.from(
-          charTitle,
-          {
-            delay: i * 0.002,
-            opacity: 0,
-            color: "#F41B0C",
-            duration: durationIn,
-          },
-          "<"
-        );
-      }
-      indexTitle2 -= 1;
-      if (titleSplit.chars[indexTitle2]) {
-        let charTitle = titleSplit.chars[indexTitle2];
-        this.tlTitle.from(
-          charTitle,
-          {
-            delay: i * 0.002,
-            opacity: 0,
-            color: "#F41B0C",
-            duration: durationIn,
-          },
-          "<"
-        );
-      }
-    }
 
-    // BUTTON
-
-    const btnSplit = new SplitText(".home__start p", { type: "chars" });
-
-    let indexBtn1 = Math.round(btnSplit.chars.length / 2);
-    let indexBtn2 = Math.round(btnSplit.chars.length / 2);
-
-    let charBtn = btnSplit.chars[indexBtn1];
-
-    this.tlBtn = gsap.timeline({ delay: 1 });
-
-    this.tlBtn.from(charBtn, {
-      opacity: 0,
-      color: "#F41B0C",
-      duration: durationOut,
+    tl.to(".home__title h1", {
+      y: 0,
+      duration: 3.5,
+      ease: "expo.out",
     });
-    for (let i = 0; i < btnSplit.chars.length; i++) {
-      indexBtn1 += 1;
-      if (btnSplit.chars[indexBtn1]) {
-        let charBtn = btnSplit.chars[indexBtn1];
-        this.tlBtn.from(
-          charBtn,
-          {
-            delay: i * 0.1,
-            opacity: 0,
-            color: "#F41B0C",
-            duration: durationOut,
-          },
-          "<"
-        );
-      }
-      indexBtn2 -= 1;
-      if (btnSplit.chars[indexBtn2]) {
-        let charBtn = btnSplit.chars[indexBtn2];
-        this.tlBtn.from(
-          charBtn,
-          {
-            delay: i * 0.1,
-            opacity: 0,
-            color: "#F41B0C",
-            duration: durationOut,
-          },
-          "<"
-        );
-      }
-    }
+    tl.to(
+      ".home__start p",
+      {
+        y: 0,
+        delay: 0.4,
+        duration: 3.5,
+        ease: "expo.out",
+      },
+      "<"
+    );
 
     startBtn.addEventListener("click", () => {
       this.startProject();
@@ -275,12 +200,6 @@ export default class Animations {
     );
   }
 
-  rayCaster() {
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    this.intersects = this.raycaster.intersectObjects(this.objectsToTest);
-  }
-
   eventsAnim() {
     // STEP THREE
     let index = this.start;
@@ -310,46 +229,46 @@ export default class Animations {
     if (index < 3) {
       btn.addEventListener("click", debounce(this.help.displayClick, 5000));
     }
-
-    if (ios()) {
-      window.addEventListener("touchstart", (event) => {
-        this.mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-        this.mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-      });
-    } else {
-      window.addEventListener("mousemove", (event) => {
-        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      });
-    }
   }
 
   addObject() {
-    this.textIntro = new TextIntro({ scene: this.finalScene, scroll: this.scrollValue });
-    this.textGod = new TextGod({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
-    this.textPoint = new TextPoint({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
-    this.textFinal = new TextFinal({ scene: this.finalScene, scroll: this.scrollValue, gui: this.gui });
+    this.textGod = new TextGod({
+      scene: this.finalScene,
+      scroll: this.scrollValue,
+      gui: this.gui,
+      loadingManager: this.loadingManager,
+    });
+    this.textPoint = new TextPoint({
+      scene: this.finalScene,
+      scroll: this.scrollValue,
+      gui: this.gui,
+      loadingManager: this.loadingManager,
+    });
+    this.textFinal = new TextFinal({
+      scene: this.finalScene,
+      scroll: this.scrollValue,
+      gui: this.gui,
+      loadingManager: this.loadingManager,
+    });
 
-    this.circle = new Circle({ scene: this.finalScene, gui: this.gui });
     this.singlePoint = new SinglePoint({
       scene: this.finalScene,
       positionCamera: this.createPath.cameraPath.cameraAndScreen.position,
       sizes: this.sizes,
       gui: this.gui,
     });
-    this.sky = new Sky({ scene: this.finalScene, gui: this.gui });
-    this.plane = new Plane({ scene: this.finalScene, gui: this.gui });
-    this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
-    this.road = new Road({ scene: this.finalScene, gui: this.gui });
-    this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
-    this.flower = new Flower({ scene: this.finalScene, gui: this.gui });
 
-    this.progressBar = new Circle({ scene: this.finalScene, gui: this.gui });
+    this.sky = new Sky({ scene: this.finalScene, gui: this.gui });
+    this.plane = new Plane({ scene: this.finalScene, gui: this.gui, loadingManager: this.loadingManager });
+    this.moon = new Moon({ scene: this.finalScene, gui: this.gui });
+    this.road = new Road({ scene: this.finalScene, gui: this.gui, loadingManager: this.loadingManager });
+    this.planet = new Planet({ scene: this.finalScene, gui: this.gui });
+    this.flower = new Flower({ scene: this.finalScene, gui: this.gui, loadingManager: this.loadingManager });
+
     this.buttons = new Buttons({
       sizes: this.sizes,
       scene: this.scene,
       gui: this.gui,
-      mouse: this.mouse,
       camera: this.createPath.cameraPath.splineCamera,
       singlePoint: this.singlePoint,
       points: this.singlePoint.points,
@@ -362,15 +281,15 @@ export default class Animations {
       textGod: this.textGod,
       textFinal: this.textFinal,
       plane: this.plane,
+      planet: this.planet,
       help: this.help,
+      loadingManager: this.loadingManager,
     });
 
-    this.textIntro.init();
     this.textGod.init();
     this.textPoint.init();
     this.textFinal.init();
 
-    this.circle.init();
     this.singlePoint.init();
     this.sky.init();
     this.moon.init();
@@ -379,7 +298,6 @@ export default class Animations {
     this.planet.init();
     this.flower.init();
 
-    this.progressBar.init();
     this.buttons.init();
   }
 
@@ -443,10 +361,6 @@ export default class Animations {
     if (this.backstage) {
       this.stepFour();
     }
-  }
-
-  stepOne(index) {
-    this.textIntro.animText(index);
   }
 
   stepTwo() {
@@ -700,7 +614,6 @@ export default class Animations {
   }
 
   animText(progress, time) {
-    this.textIntro.anim(progress * 12, time);
     this.textGod.anim(progress * 12, time);
     this.textPoint.anim(progress * 12, time);
     this.textFinal.anim(progress * 12, time);
@@ -717,14 +630,6 @@ export default class Animations {
 
     this.computeDelta(this.progress);
 
-    // Buttons
-    if (this.buttons.destroy) {
-      this.destroyAll();
-    }
-
-    // Progress Bar TEST
-    // document.querySelector(".progress").style.transform = `scaleX(${this.progress / 2})`;
-
     ///////////////////////////////////////// Test without scrollBar
     if (this.backstage) {
       this.progress = this.time;
@@ -738,31 +643,15 @@ export default class Animations {
       this.sky.material.uniforms.opacity.value = 1;
       this.tl2.play();
       this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
-      this.sky.opacity = 1;
+      // this.sky.opacity = 1;
     }
     ///////////////////////////////////////// End Test without scrollBar
     // Animation objects
     this.animObjects(this.progress, this.time);
+    this.animText(this.progress, this.time);
     this.progress2 += this.delta;
-
-    // Animations object materials
-    this.circle.anim(this.time, this.progress);
-
-    // Animation Text
-    if (this.textIntro.isLoaded) {
-      this.animText(this.progress, this.time);
-    }
 
     // Animation camera
     this.animCamera(this.progress, this.time);
-
-    // RayCasting
-    this.rayCaster();
-    this.buttons.rayCaster();
-
-    // Check position timeline
-    // if (this.progress2 > 0.8) {
-    //   this.upCityLights();
-    // }
   }
 }

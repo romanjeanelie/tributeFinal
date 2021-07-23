@@ -5,8 +5,8 @@ export default class ElectricPole {
   constructor(options) {
     this.scene = options.scene;
 
-    this.gltfLoader = new GLTFLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
   }
 
   init() {

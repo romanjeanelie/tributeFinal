@@ -17,8 +17,8 @@ export default class Wheel {
   constructor(options) {
     this.scene = options.scene;
 
-    this.gltfLoader = new GLTFLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.mainWheel = new THREE.Group();
     this.baseWheel = new THREE.Group();
@@ -172,13 +172,18 @@ export default class Wheel {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         color1: { value: new THREE.Color("#FBE9E5") },
         color2: { value: new THREE.Color("#FFFFFF") },
-        opacity: { value: 1 },
+        uOpacity: { value: 1 },
       },
       vertexShader: vertex3,
       fragmentShader: fragment3,
       transparent: true,
       depthWrite: false,
+      depthTest: false,
     });
+    // const material = new THREE.PointsMaterial({
+    //   color: 0xff0000,
+    //   size: 10,
+    // });
     const circle = new THREE.Points(geometry, material);
 
     this.mainWheel.add(circle);
@@ -227,7 +232,7 @@ export default class Wheel {
     this.pointsMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        opacity: { value: 1 },
+        uOpacity: { value: 1 },
         uColor: { value: new THREE.Color("#261017") },
       },
       vertexShader: vertex,

@@ -16,15 +16,11 @@ import Wheel from "./wheel";
 import Garland from "./garland";
 import Ride from "./ride";
 import Cinema from "./cinema";
-import CinemaScreen from "./cinemaScreen";
 import Bridge from "./bridge";
 import Stadium from "./stadium";
 
-import Tulip from "./tulip";
 import Landscape from "./landscape";
 import ElectricPole from "./electricPole";
-import Clouds from "./clouds";
-import AdBoard from "./adBoard";
 
 export default class Road {
   constructor(options) {
@@ -34,7 +30,8 @@ export default class Road {
 
     this.scene = options.scene;
 
-    this.gltfLoader = new GLTFLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.wheelGroup = new THREE.Group();
     this.buildingsGroup = new THREE.Group();
@@ -54,47 +51,39 @@ export default class Road {
   init() {
     this.addBuildings();
 
-    this.cityLights = new CityLights({ scene: this.city, gui: this.gui });
+    this.cityLights = new CityLights({ scene: this.city, gui: this.gui, loadingManager: this.loadingManager });
     this.cityLights.init();
 
-    this.textBuilding = new TextBuilding({ scene: this.buildingsGroup, gui: this.gui });
+    this.textBuilding = new TextBuilding({
+      scene: this.buildingsGroup,
+      gui: this.gui,
+      loadingManager: this.loadingManager,
+    });
     this.textBuilding.init();
 
-    this.landscape = new Landscape({ scene: this.city, gui: this.gui });
+    this.landscape = new Landscape({ scene: this.city, gui: this.gui, loadingManager: this.loadingManager });
     this.landscape.init();
 
-    this.electricPole = new ElectricPole({ scene: this.city, gui: this.gui });
+    this.electricPole = new ElectricPole({ scene: this.city, gui: this.gui, loadingManager: this.loadingManager });
     this.electricPole.init();
 
-    this.clouds = new Clouds({ scene: this.city, gui: this.gui });
-    this.clouds.init();
-
-    this.wheel = new Wheel({ scene: this.wheelGroup, gui: this.gui });
+    this.wheel = new Wheel({ scene: this.wheelGroup, gui: this.gui, loadingManager: this.loadingManager });
     this.wheel.init();
 
     this.garland = new Garland({ scene: this.wheelGroup, gui: this.gui });
     this.garland.init();
 
-    this.ride = new Ride({ scene: this.wheelGroup, gui: this.gui });
+    this.ride = new Ride({ scene: this.wheelGroup, gui: this.gui, loadingManager: this.loadingManager });
     this.ride.init();
 
-    this.cinema = new Cinema({ scene: this.city, gui: this.gui });
+    this.cinema = new Cinema({ scene: this.city, gui: this.gui, loadingManager: this.loadingManager });
     this.cinema.init();
 
-    this.cinemaScreen = new CinemaScreen({ scene: this.city, gui: this.gui });
-    this.cinemaScreen.init();
-
-    this.bridge = new Bridge({ scene: this.city, gui: this.gui });
+    this.bridge = new Bridge({ scene: this.city, gui: this.gui, loadingManager: this.loadingManager });
     this.bridge.init();
 
-    this.stadium = new Stadium({ scene: this.city, gui: this.gui });
+    this.stadium = new Stadium({ scene: this.city, gui: this.gui, loadingManager: this.loadingManager });
     this.stadium.init();
-
-    this.tulip = new Tulip({ scene: this.city, gui: this.gui });
-    this.tulip.init();
-
-    this.adBoard = new AdBoard({ scene: this.wheelGroup, gui: this.gui });
-    this.adBoard.init();
 
     this.wheelGroup.scale.set(1.2, 1.2, 1.2);
     this.wheelGroup.position.x = -40;
@@ -217,7 +206,6 @@ export default class Road {
     this.textBuilding.anim(progress, time);
     this.wheel.anim(progress, time);
     this.ride.anim(progress, time);
-    this.adBoard.anim(progress, time);
     this.materialAntenne.uniforms.time.value = time;
     this.cityLights.anim(progress, time);
   }

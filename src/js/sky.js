@@ -48,7 +48,7 @@ export default class Sky {
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    this.mesh.scale.set(85000, 15000, 100);
+    this.mesh.scale.set(105000, 15000, 100);
 
     this.mesh.position.x = this.positionX;
     this.mesh.position.y = this.positionY;
@@ -60,19 +60,19 @@ export default class Sky {
   }
 
   setColors() {
-    this.debugObject.color1 = "#301404";
+    this.debugObject.color1 = "#451b03";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("skyColor1");
 
-    this.debugObject.color2 = "#530202";
+    this.debugObject.color2 = "#450000";
     this.gui
       .addColor(this.debugObject, "color2")
       .onChange(() => (this.material.uniforms.color2.value = new THREE.Color(this.debugObject.color2)))
       .name("skyColor2");
 
-    this.debugObject.color3 = "#00000b";
+    this.debugObject.color3 = "#0d0d13";
     this.gui
       .addColor(this.debugObject, "color3")
       .onChange(() => (this.material.uniforms.color3.value = new THREE.Color(this.debugObject.color3)))

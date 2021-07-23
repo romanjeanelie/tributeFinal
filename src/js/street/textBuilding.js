@@ -11,8 +11,9 @@ export default class TextBuilding {
     this.gui = options.gui;
     this.scene = options.scene;
 
-    this.loader = new THREE.FontLoader();
-    this.textureLoader = new THREE.TextureLoader();
+    this.loadingManager = options.loadingManager;
+    this.loader = new THREE.FontLoader(this.loadingManager);
+    this.textureLoader = new THREE.TextureLoader(this.loadingManager);
 
     this.materialsText = [];
     this.textsMesh = [];
@@ -91,26 +92,26 @@ export default class TextBuilding {
         color2: "#DEC2B0",
       },
       {
-        text: "your heart is a goldmine",
-        font: "Codystar",
-
+        text: "YOUR HEART IS A GOLDMINE",
+        font: "Oswald_Regular",
         posX: -45,
         posY: 30,
         posZ: 175,
         rotateZ: 0.2,
         scale: 2.5,
-        color1: "#FFD588",
+        color1: "#0917FC",
+        color2: "#FFC3C3",
       },
       {
-        text: "larger than me",
-        font: "Codystar",
-
+        text: "LARGER THAN ME",
+        font: "Oswald_Regular",
         posX: -45,
         posY: 27,
         posZ: 175,
         rotateZ: 0.2,
         scale: 2.5,
-        color1: "#FFD588",
+        color1: "#0917FC",
+        color2: "#FFC3C3",
       },
     ];
     this.texts.forEach((textOptions) => {

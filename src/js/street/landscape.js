@@ -5,7 +5,8 @@ import TextLandscape from "./textLandscape";
 
 export default class Landscape {
   constructor(options) {
-    this.gltfLoader = new GLTFLoader();
+    this.loadingManager = options.loadingManager;
+    this.gltfLoader = new GLTFLoader(this.loadingManager);
 
     this.scene = options.scene;
 

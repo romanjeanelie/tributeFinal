@@ -1,6 +1,6 @@
 varying vec2 vUv;
 uniform vec3 uColor;
-uniform float opacity;
+uniform float uOpacity;
 
 float fill(float x, float size){
     return 1. - step(size, x);
@@ -24,5 +24,5 @@ void main(){
 
    // gl_FragColor = vec4(color, color);
    // gl_FragColor = vec4(color1, strength*5.);
-     gl_FragColor = vec4(uColor, opacity);
+     gl_FragColor = vec4(uColor, uOpacity);
 }

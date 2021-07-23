@@ -11,8 +11,11 @@ export default class CityLights {
 
     this.pointsGroup = new THREE.Group();
 
+    this.loadingManager = options.loadingManager;
+
     this.textLight = new TextLight({
       scene: this.scene,
+      loadingManager: this.loadingManager,
     });
   }
 
