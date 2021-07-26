@@ -57,17 +57,17 @@ export default class Buttons {
 
     //////////////////////////////////////////////////// DEBUG
     this.debug = false;
-    this.start = 30;
+    this.start = 0;
     //////////////////////////////////////////////////// DEBUG
   }
 
   init() {
     this.createButton({ text: "PLAY", x: 0, y: 0, z: 0 });
 
-    this.buttons.position.y = -985;
-    this.buttons.position.z = 19400;
+    this.buttons.position.y = -1385;
+    this.buttons.position.z = 18400;
 
-    this.buttons.scale.set(1.7, 1.7, 1.7);
+    this.buttons.scale.set(3.5, 3.5, 3.5);
 
     this.objectsToTest = this.buttonsMesh;
 
@@ -115,6 +115,12 @@ export default class Buttons {
         duration: 0.5,
       });
 
+      // Remove scroll
+      document.body.style.overflow = "hidden";
+
+      // Disable button
+      this.btnPlay.disabled = true;
+
       this.returnScene();
     });
   }
@@ -145,9 +151,9 @@ export default class Buttons {
     this.audio.currentTime = start;
 
     this.tl.to(
-      this.sky,
+      this.sky.animColors,
       {
-        opacity: 0,
+        value: 0,
         duration: 20,
       },
       "<"
@@ -185,7 +191,7 @@ export default class Buttons {
       this.moon.moonMaterial.uniforms.wide,
       {
         duration: 23,
-        value: 3.5,
+        value: 4.5,
         ease: "power2.out",
       },
       "<"
@@ -293,6 +299,15 @@ export default class Buttons {
     );
 
     this.tl.to(
+      this.sky,
+      {
+        opacity: 0,
+        duration: 1,
+      },
+      "<"
+    );
+
+    this.tl.to(
       this.flower.particlesMaterial.uniforms.disperse,
       {
         value: 0,
@@ -342,18 +357,8 @@ export default class Buttons {
     this.tl.to(
       this.cityLights.textLight,
       {
-        duration: 50,
+        duration: 30,
         opacity: 0,
-      },
-      "<"
-    );
-
-    this.tl.to(
-      this.road.pointsMaterial.uniforms.opacity,
-
-      {
-        duration: 10,
-        value: 0,
       },
       "<"
     );
@@ -390,61 +395,19 @@ export default class Buttons {
       "<"
     );
 
-    const finalSplit = new SplitText(".final p", { type: "chars" });
-
-    let index1 = Math.round(finalSplit.chars.length / 2);
-    let index2 = Math.round(finalSplit.chars.length / 2);
-    let charTitle = finalSplit.chars[index1];
     this.tlFinal = gsap.timeline({ paused: true, delay: 2 });
 
     this.tlFinal.fromTo(
-      charTitle,
-      {
-        opacity: 0,
-        color: "#F41B0C",
-      },
+      ".final p",
+      { opacity: 0, color: "#F41B0C" },
       {
         opacity: 1,
         color: "#ccc",
-        duration: 6,
+        duration: 3,
         ease: "power1.in",
-      }
+      },
+      "<"
     );
-
-    for (let i = 0; i < finalSplit.chars.length; i++) {
-      index1 += 1;
-      if (finalSplit.chars[index1]) {
-        let charTitle = finalSplit.chars[index1];
-        this.tlFinal.fromTo(
-          charTitle,
-          { opacity: 0, color: "#F41B0C" },
-          {
-            delay: i * 0.002,
-            opacity: 1,
-            color: "#ccc",
-            duration: 6,
-            ease: "power1.in",
-          },
-          "<"
-        );
-      }
-      index2 -= 1;
-      if (finalSplit.chars[index2]) {
-        let charTitle = finalSplit.chars[index2];
-        this.tlFinal.fromTo(
-          charTitle,
-          { opacity: 0, color: "#F41B0C" },
-          {
-            delay: i * 0.002,
-            opacity: 1,
-            color: "#ccc",
-            duration: 6,
-            ease: "power1.in",
-          },
-          "<"
-        );
-      }
-    }
 
     this.audio.addEventListener("timeupdate", (event) => {
       const progress = this.audio.currentTime;
@@ -471,7 +434,11 @@ export default class Buttons {
       });
       textGeometry.center();
 
-      this.textMaterial = new THREE.MeshBasicMaterial({ opacity: 0.2, color: 0xcccccc, transparent: true });
+      this.textMaterial = new THREE.MeshBasicMaterial({
+        opacity: 1,
+        color: new THREE.Color("#29010A"),
+        transparent: true,
+      });
 
       const textMesh = new THREE.Mesh(textGeometry, this.textMaterial);
 

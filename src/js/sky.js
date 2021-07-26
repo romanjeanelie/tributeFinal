@@ -11,10 +11,11 @@ export default class Sky {
     this.debugObject = {};
 
     this.positionX = 0;
-    this.positionY = 300;
+    this.positionY = 8000;
     this.positionZ = -7000;
 
     this.opacity = 0;
+    this.animColors = { value: 1 };
 
     this.material = null;
   }
@@ -26,18 +27,17 @@ export default class Sky {
   createSky() {
     this.setColors();
 
-    this.geometry = new THREE.PlaneGeometry(1, 1);
+    this.geometry = new THREE.PlaneGeometry(1, 2);
+    // this.geometry = new THREE.PlaneGeometry(1, 1);
+
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        progress: { value: 0 },
         color1: { value: new THREE.Color(this.debugObject.color1) },
         color2: { value: new THREE.Color(this.debugObject.color2) },
         color3: { value: new THREE.Color(this.debugObject.color3) },
-        color4: { value: new THREE.Color(this.debugObject.color4) },
-        changeColor: { value: 0 },
         opacity: { value: this.opacity },
-        thickFactor: { value: 0.5 },
+        animColors: { value: this.animColors.value },
       },
       side: THREE.DoubleSide,
       vertexShader: vertex,
@@ -45,6 +45,10 @@ export default class Sky {
       transparent: true,
       depthWrite: false,
     });
+    // this.material = new THREE.MeshBasicMaterial({
+    //   color: 0xff0000,
+    //   side: THREE.DoubleSide,
+    // });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
@@ -60,19 +64,19 @@ export default class Sky {
   }
 
   setColors() {
-    this.debugObject.color1 = "#451b03";
+    this.debugObject.color1 = "#4d2702";
     this.gui
       .addColor(this.debugObject, "color1")
       .onChange(() => (this.material.uniforms.color1.value = new THREE.Color(this.debugObject.color1)))
       .name("skyColor1");
 
-    this.debugObject.color2 = "#450000";
+    this.debugObject.color2 = "#450800";
     this.gui
       .addColor(this.debugObject, "color2")
       .onChange(() => (this.material.uniforms.color2.value = new THREE.Color(this.debugObject.color2)))
       .name("skyColor2");
 
-    this.debugObject.color3 = "#0d0d13";
+    this.debugObject.color3 = "#21212f";
     this.gui
       .addColor(this.debugObject, "color3")
       .onChange(() => (this.material.uniforms.color3.value = new THREE.Color(this.debugObject.color3)))
@@ -81,8 +85,7 @@ export default class Sky {
 
   anim(time, progress, scrollSpeedEased) {
     this.material.uniforms.time.value = time;
-    this.material.uniforms.progress.value = progress;
-    this.material.uniforms.thickFactor.value = scrollSpeedEased.value;
     this.material.uniforms.opacity.value = this.opacity;
+    this.material.uniforms.animColors.value = this.animColors.value;
   }
 }

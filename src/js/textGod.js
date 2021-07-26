@@ -86,7 +86,7 @@ export default class TextGod {
           time: { value: 0 },
           activeLines: { value: 0 },
           progress: { value: -13 },
-          opacity: { value: this.opacity },
+          opacity: { value: this.opacity.value },
           squeeze: { value: this.squeeze },
           uColor: { value: new THREE.Color(this.debugObject.color) },
           uColor2: { value: new THREE.Color(this.debugObject.color2) },

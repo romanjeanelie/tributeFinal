@@ -53,7 +53,7 @@ export default class Animations {
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 2;
+    this.positionTimeline = 0.64;
     this.start = 0;
 
     // Timeline texts
@@ -80,7 +80,7 @@ export default class Animations {
         // Calculate the progress and update the loadingBarElement
         const progressRatio = itemsLoaded / itemsTotal;
         const progressEl = document.querySelector(".loader p");
-        progressEl.innerHTML = `${Math.round(progressRatio * 100)}%`;
+        progressEl.innerHTML = `${Math.min(Math.round(progressRatio * 100), 100)}%`;
       }
     );
     // End set Loader
@@ -171,12 +171,67 @@ export default class Animations {
       "<"
     );
 
-    tl.to(".home__subtitle h2", {
+    // Fade out subtitle
+
+    const subtitleSplit = new SplitText(".home__subtitle h2", { type: "words,chars" });
+
+    let index1 = Math.round(subtitleSplit.chars.length / 2);
+    let index2 = Math.round(subtitleSplit.chars.length / 2);
+
+    let chars = subtitleSplit.chars[index1];
+
+    const durationIn = 3;
+    const ease = "linear";
+    this.tlSubtitle = gsap.timeline({ delay: 1.5, paused: true });
+
+    this.tlSubtitle.to(chars, {
       opacity: 0,
       color: "#F41B0C",
+      ease,
+      duration: durationIn,
+    });
+    for (let i = 0; i < subtitleSplit.chars.length; i++) {
+      index1 += 1;
+      if (subtitleSplit.chars[index1]) {
+        let chars = subtitleSplit.chars[index1];
+        this.tlSubtitle.to(
+          chars,
+          {
+            delay: i * 0.002,
+            color: "#F41B0C",
+            opacity: 0,
+
+            ease,
+            duration: durationIn,
+          },
+          "<"
+        );
+      }
+      index2 -= 1;
+      if (subtitleSplit.chars[index2]) {
+        let chars = subtitleSplit.chars[index2];
+        this.tlSubtitle.to(
+          chars,
+          {
+            delay: i * 0.002,
+            opacity: 0,
+            color: "#F41B0C",
+            ease,
+            opacity: 0,
+
+            duration: durationIn,
+          },
+          "<"
+        );
+      }
+    }
+
+    tl.to(".home__subtitle h2", {
       delay: 1,
-      duration: 4,
-      ease: "power2.in",
+      duration: 8,
+      onStart: () => {
+        this.tlSubtitle.play();
+      },
       onComplete: () => {
         document.querySelector(".home").style.display = "none";
       },
@@ -215,6 +270,8 @@ export default class Animations {
       if (index === 4) {
         btn.style.display = "none";
         document.querySelector(".help__click").style.display = "none";
+        // Authorize scroll
+        document.body.style.overflow = "auto";
       }
     });
 
@@ -225,7 +282,7 @@ export default class Animations {
       } else {
         return;
       }
-    }, 5000);
+    }, 6000);
     if (index < 3) {
       btn.addEventListener("click", debounce(this.help.displayClick, 5000));
     }
@@ -443,7 +500,7 @@ export default class Animations {
       } else {
         return;
       }
-    }, 4000);
+    }, 5500);
 
     window.addEventListener(
       "scroll",
@@ -457,6 +514,8 @@ export default class Animations {
       this.help.hideScroll1();
       this.help.hideScroll2();
     });
+    // End help
+
     const tl = gsap.timeline();
     this.progress2 = 0;
 
@@ -474,101 +533,30 @@ export default class Animations {
       this.singlePoint.points.pointsMaterial.uniforms.opacity,
       {
         value: 1,
-        duration: 10,
-      },
-      "<"
-    );
-    tl.to(
-      this.singlePoint.points.pointsMaterial2.uniforms.opacity,
-      {
-        value: 1,
-        duration: 10,
+        duration: 4,
+        ease: "expo.in",
       },
       "<"
     );
 
-    const steps = {
-      step1: {
-        duration: 3,
-        progress: 1100,
-      },
-      step2: {
-        duration: 10,
-        progress: 5500,
-      },
-      step3: {
-        duration: 20,
+    const tlSky = gsap.timeline({ paused: true });
+
+    tlSky.to(this.sky, {
+      opacity: 1,
+      duration: 20,
+    });
+    // PROGRESSION CAM
+    this.tl4.to(
+      this.createPath.cameraPath,
+      {
         progress: 19500,
-      },
-    };
-
-    // // PROGRESSION CAM 1 UNtil Moon
-    this.tl4.to(
-      this.createPath.cameraPath,
-      {
-        progress: steps.step1.progress,
-        duration: steps.step1.duration,
+        duration: 20,
         ease: "linear",
-      },
-      "<"
-    );
-
-    // FADE IN Sky
-    this.tl4.to(
-      this.sky,
-      {
-        opacity: 1,
-        duration: 12,
-      },
-
-      "<"
-    );
-
-    // PROGRESSION CAM 2 Until buildings
-    this.tl4.to(
-      this.createPath.cameraPath,
-      {
-        progress: steps.step2.progress,
-        delay: steps.step1.duration,
-        duration: steps.step2.duration,
-        ease: "linear",
-        onComplete: () => {},
-      },
-
-      "<"
-    );
-
-    // CAMERA Rotation
-    // this.tl4.to(
-    //   camera.rotation,
-    //   {
-    //     x: 0.5,
-    //     duration: steps.step2.duration,
-    //     ease: "linear",
-    //   },
-    //   "<"
-    // );
-
-    // this.tl4.to(
-    //   camera.rotation,
-    //   {
-    //     x: 0,
-    //     delay: steps.step2.duration,
-    //     duration: steps.step2.duration,
-
-    //     ease: "linear",
-    //   },
-    //   "<"
-    // );
-
-    // PROGRESSION CAM 3 Until Planet
-    this.tl4.to(
-      this.createPath.cameraPath,
-      {
-        progress: steps.step3.progress,
-        delay: steps.step2.duration,
-        duration: steps.step3.duration,
-        ease: "linear",
+        onUpdate: function () {
+          if (this.progress() > 0.234) {
+            tlSky.play();
+          }
+        },
         onComplete: () => {
           if (this.backstage) {
             setTimeout(() => {
@@ -639,8 +627,6 @@ export default class Animations {
       document.querySelector(".home").style.opacity = 0;
       //this.gui.show();
       this.singlePoint.points.pointsMaterial.uniforms.opacity.value = 1;
-      this.singlePoint.points.pointsMaterial2.uniforms.opacity.value = 1;
-      this.sky.material.uniforms.opacity.value = 1;
       this.tl2.play();
       this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
       // this.sky.opacity = 1;

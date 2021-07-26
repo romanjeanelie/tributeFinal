@@ -29,7 +29,7 @@ void main(){
     newposition.z *= 1. + sin(position.y * .05)  * disperse;
 
     // Offset
-    newposition.y += 420. * disperse;
+    newposition.y += 300. * disperse;
     newposition.z -= 410. * disperse;
 
    

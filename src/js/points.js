@@ -24,14 +24,14 @@ export default class Points {
     this.createPointsMaterials();
     this.addPoints({
       minX: 0,
-      maxX: 3300,
+      maxX: 13300,
       minY: -700,
       maxY: 9000,
       minZ: -500,
       maxZ: 550,
       material: this.pointsMaterial,
-      qty: 900,
-      size: 12000,
+      qty: 1900,
+      size: 20000,
     });
   }
 
@@ -57,21 +57,6 @@ export default class Points {
       fragmentShader: fragment,
       transparent: true,
       // depthWrite: false,
-    });
-    this.pointsMaterial2 = new THREE.ShaderMaterial({
-      uniforms: {
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        time: { value: 0 },
-        color1: { value: new THREE.Color("#F6CFC7") },
-        opacity: { value: 0 },
-        squeeze: { value: 0 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
     });
   }
 
@@ -109,7 +94,7 @@ export default class Points {
 
   anim(progress, time, scrollSpeed) {
     this.pointsMaterial.uniforms.time.value = time;
-    this.pointsMaterial2.uniforms.time.value = time;
+    // this..uniforms.time.value = time;
     // this.pointsMaterial.uniforms.squeeze.value = Math.min(100, Math.abs(scrollSpeed));
   }
 }

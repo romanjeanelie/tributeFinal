@@ -36,7 +36,8 @@ export default class SinglePoint {
     this.points.color2 = new THREE.Color(this.textStars.texts[0].color2);
     this.points.color3 = new THREE.Color(this.textStars.texts[1].color2);
     this.points.color4 = new THREE.Color(this.textStars.texts[2].color2);
-    this.points.color5 = new THREE.Color(this.textStars.texts[3].color2);
+    // this.points.color5 = new THREE.Color(this.textStars.texts[3].color2);
+    this.points.color5 = new THREE.Color("#fff");
     this.points.init();
 
     this.setColors();

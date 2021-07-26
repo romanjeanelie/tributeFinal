@@ -103,7 +103,6 @@ export default class TextPoint {
     const textOut = texts[index - 1];
     const textIn = texts[index];
     this.animComplete = false;
-    console.log(textIn);
 
     if (textOut) {
       gsap.to(textOut, {

@@ -28,7 +28,7 @@ export default class CityLights {
     for (let i = 0; i < this.nbRoad; i++) {
       this.addLightsRoad({
         minX: 0,
-        maxX: 200,
+        maxX: 2000,
         minY: 0,
         maxY: 0,
         minZ: 0 + offsetZ * i,
@@ -39,7 +39,7 @@ export default class CityLights {
       });
       this.addLightsRoad({
         minX: 0,
-        maxX: 200,
+        maxX: 1000,
         minY: 1,
         maxY: 0,
         minZ: 0 + offsetZ * i,
@@ -50,7 +50,7 @@ export default class CityLights {
       });
       this.addLightsRoad({
         minX: 0,
-        maxX: Math.random() * 400,
+        maxX: Math.random() * 1000,
         minY: 1,
         maxY: 0,
         minZ: 50,

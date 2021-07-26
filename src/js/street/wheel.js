@@ -67,7 +67,7 @@ export default class Wheel {
 
       // this.mainWheel.add(gltf.scene);
 
-      this.createLightSeats(this.seatPositions);
+      // this.createLightSeats(this.seatPositions);
     });
   }
 

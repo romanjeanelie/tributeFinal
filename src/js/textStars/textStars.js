@@ -90,7 +90,6 @@ export default class TextStars {
 
           if (this.index === this.texts.length) {
             this.allTextLoaded = true;
-            // this.disperse();
           }
         });
       });
