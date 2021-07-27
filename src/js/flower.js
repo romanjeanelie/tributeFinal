@@ -110,7 +110,6 @@ export default class Flower {
       this.particles = new THREE.Points(this.particlesGeometry, this.particlesMaterial);
 
       this.flower.add(this.particles);
-      const infoEl = document.querySelector(".info");
     });
   }
 

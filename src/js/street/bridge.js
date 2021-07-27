@@ -25,11 +25,16 @@ export default class Bridge {
     this.bridge.position.x = 0;
     this.bridge.position.y = 10;
     this.bridge.position.z = 310;
-
     this.bridge.rotation.y = -Math.PI * 0.47;
-
     this.bridge.scale.set(0.7, 0.7, 0.7);
-    this.scene.add(this.bridge);
+
+    this.lightsRoad.position.x = 0;
+    this.lightsRoad.position.y = 10;
+    this.lightsRoad.position.z = 310;
+    this.lightsRoad.rotation.y = -Math.PI * 0.47;
+    this.lightsRoad.scale.set(0.7, 0.7, 0.7);
+
+    this.scene.add(this.bridge, this.lightsRoad);
   }
 
   addBridge() {
@@ -77,7 +82,7 @@ export default class Bridge {
     this.pointsMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        opacity: { value: 1 },
+        uOpacity: { value: 1 },
         uColor: { value: new THREE.Color("#F4DECB") },
       },
       vertexShader: vertex,
@@ -108,7 +113,7 @@ export default class Bridge {
 
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
-    this.bridge.add(points);
+    this.lightsRoad.add(points);
   }
 
   addRoad() {
@@ -119,7 +124,7 @@ export default class Bridge {
         move: { value: 0 },
         color1: { value: new THREE.Color("#E77F68") },
         color2: { value: new THREE.Color("#ffffff") },
-        opacity: { value: 1 },
+        uOpacity: { value: 1 },
       },
       vertexShader: vertex2,
       fragmentShader: fragment2,
@@ -160,7 +165,6 @@ export default class Bridge {
     const points = new THREE.Points(pointsGeometry, pointsMaterial);
 
     this.lightsRoad.add(points);
-    this.bridge.add(this.lightsRoad);
   }
 
   anim(progress, time) {}

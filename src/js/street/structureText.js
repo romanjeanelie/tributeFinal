@@ -2,12 +2,11 @@ import * as THREE from "three";
 
 export default class StructureText {
   constructor(options) {
-    this.debugObject = {};
-    this.gui = options.gui;
-
     this.scene = options.scene;
 
     this.positions = options.positions;
+    this.scale = options.scale;
+    this.rotationY = options.rotateY;
 
     this.structure = new THREE.Group();
     this.init();
@@ -20,18 +19,15 @@ export default class StructureText {
     this.structure.position.y = this.positions.y;
     this.structure.position.z = this.positions.z;
 
-    this.structure.scale.set(6, 6, 6);
+    this.structure.scale.set(this.scale, this.scale, this.scale);
+
+    this.structure.rotation.y = this.rotationY;
     this.scene.add(this.structure);
   }
 
   addBars() {
-    this.debugObject.barsColor = "#3a3a3a";
-    this.gui.addColor(this.debugObject, "barsColor").onChange(() => {
-      this.barMaterial.color = new THREE.Color(this.debugObject.barsColor);
-    });
-
     this.barMaterial = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(this.debugObject.barsColor),
+      color: new THREE.Color(0xff0000),
     });
 
     this.addBarsVertical();

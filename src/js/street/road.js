@@ -35,6 +35,8 @@ export default class Road {
 
     this.wheelGroup = new THREE.Group();
     this.buildingsGroup = new THREE.Group();
+    this.buildingsTextsGroup = new THREE.Group();
+    this.buildingsLightsGroup = new THREE.Group();
     this.city = new THREE.Group();
   }
 
@@ -55,7 +57,7 @@ export default class Road {
     this.cityLights.init();
 
     this.textBuilding = new TextBuilding({
-      scene: this.buildingsGroup,
+      scene: this.buildingsTextsGroup,
       gui: this.gui,
       loadingManager: this.loadingManager,
     });
@@ -95,6 +97,14 @@ export default class Road {
     this.buildingsGroup.position.x = 50;
     this.buildingsGroup.position.z = 150;
     this.city.add(this.buildingsGroup);
+
+    this.buildingsLightsGroup.position.x = 50;
+    this.buildingsLightsGroup.position.z = 150;
+    this.city.add(this.buildingsLightsGroup);
+
+    this.buildingsTextsGroup.position.x = 50;
+    this.buildingsTextsGroup.position.z = 150;
+    this.city.add(this.buildingsTextsGroup);
 
     this.city.position.x = -100;
     this.city.position.y = -7000;
@@ -145,7 +155,7 @@ export default class Road {
         }
         if (child.name.includes("Window")) {
           child.material = materialTransparent;
-          this.positionsWindow.push(child.position);
+          // this.positionsWindow.push(child.position);
         }
         if (child.name.includes("Panel")) {
           child.material = this.materialPanel;
@@ -157,6 +167,7 @@ export default class Road {
 
       this.buildingsGroup.add(gltf.scene);
 
+      // this.downloadObjectAsJson(this.positionsWindow);
       this.createLightWindow(positionsWindows);
     });
   }
@@ -198,8 +209,7 @@ export default class Road {
 
     const points = new THREE.Points(pointsGeometry, this.pointsMaterial);
 
-    this.buildingsGroup.add(points);
-    document.querySelector(".info").innerHTML = points.geometry.attributes.opacity.count;
+    this.buildingsLightsGroup.add(points);
   }
 
   anim(progress, time) {

@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-import vertex2 from "../shaders/ride/vertex2";
-import fragment2 from "../shaders/ride/fragment2";
 import vertex from "../shaders/ride/vertex";
 import fragment from "../shaders/ride/fragment";
+
+import ridePositionsLights from "./ridePositionsLights.json";
 
 export default class Stadium {
   constructor(options) {
@@ -21,56 +21,14 @@ export default class Stadium {
 
     this.ride.scale.set(2, 2, 2);
 
-    this.ride.position.x = 110;
+    this.ride.position.x = 170;
     this.ride.position.z = -60;
 
     this.scene.add(this.ride);
   }
 
   addRide() {
-    this.positionsLights = [];
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x000000,
-      side: THREE.DoubleSide,
-      opacity: 1,
-    });
-
-    const textMaterial = new THREE.MeshBasicMaterial({
-      color: new THREE.Color("#FF9000"),
-      side: THREE.DoubleSide,
-      opacity: 1,
-    });
-
-    const materialLight = new THREE.ShaderMaterial({
-      uniforms: {
-        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-        color1: { value: new THREE.Color("#FFFEFF") },
-        color2: { value: new THREE.Color("#ffffff") },
-        opacity: { value: 1 },
-      },
-      vertexShader: vertex2,
-      fragmentShader: fragment2,
-      side: THREE.DoubleSide,
-      transparent: true,
-      depthWrite: false,
-    });
-    this.gltfLoader.load("/models/ride.glb", (gltf) => {
-      gltf.scene.traverse((child) => {
-        if (child.type === "Mesh") {
-          if (child.name.includes("Text")) {
-            child.material = textMaterial;
-          } else if (child.name.includes("Light")) {
-            this.positionsLights.push(child.position);
-            // child.material = materialLight;
-          } else {
-            child.material = material;
-          }
-        }
-      });
-      // this.ride.add(gltf.scene);
-
-      this.createLights(this.positionsLights);
-    });
+    this.createLights(ridePositionsLights);
   }
 
   createLights(positionsLights) {

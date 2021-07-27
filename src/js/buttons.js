@@ -8,6 +8,8 @@ import ios from "./utils/ios";
 
 import fragment from "./shaders/button/fragment.glsl";
 import vertex from "./shaders/button/vertex.glsl";
+import fragmentText from "./shaders/button/fragmentText.glsl";
+import vertexText from "./shaders/button/vertexText.glsl";
 
 export default class Buttons {
   constructor(options) {
@@ -43,8 +45,6 @@ export default class Buttons {
     this.buttons = new THREE.Group();
     this.textsMesh = [];
     this.materialsText = [];
-
-    this.nbBtnClicked = 0;
 
     this.destroy = false;
 
@@ -91,27 +91,20 @@ export default class Buttons {
       this.help.hidePlay();
       //
 
-      this.nbBtnClicked += 1;
-      const btnClicked = this.buttonsMesh[0];
-      const textClicked = this.textsMesh[0];
       const materialBtnClicked = this.materialButton;
       const materialTextClicked = this.textMaterial;
 
-      gsap.to(btnClicked.position, {
-        z: -10,
-        duration: 0.5,
-      });
-      gsap.to(textClicked.position, {
-        z: 10,
+      gsap.to(this.buttons.position, {
+        z: 18400 - 20,
         duration: 0.5,
       });
 
       gsap.to(materialBtnClicked.uniforms.changeColor, {
-        value: 0.8,
+        value: 0,
         duration: 0.5,
       });
-      gsap.to(materialTextClicked, {
-        opacity: 0.2,
+      gsap.to(materialTextClicked.uniforms.changeColor, {
+        value: 0,
         duration: 0.5,
       });
 
@@ -154,6 +147,14 @@ export default class Buttons {
       this.sky.animColors,
       {
         value: 0,
+        duration: 20,
+      },
+      "<"
+    );
+    this.tl.to(
+      this.sky.chnageColor,
+      {
+        value: 0.5,
         duration: 20,
       },
       "<"
@@ -434,10 +435,17 @@ export default class Buttons {
       });
       textGeometry.center();
 
-      this.textMaterial = new THREE.MeshBasicMaterial({
-        opacity: 1,
-        color: new THREE.Color("#29010A"),
+      this.textMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          time: { value: 0 },
+          opacity: { value: 1 },
+          uColor1: { value: new THREE.Color("#2E0000") },
+          uColor2: { value: new THREE.Color("#fff") },
+          changeColor: { value: 0 },
+        },
         transparent: true,
+        vertexShader: vertexText,
+        fragmentShader: fragmentText,
       });
 
       const textMesh = new THREE.Mesh(textGeometry, this.textMaterial);
@@ -453,8 +461,9 @@ export default class Buttons {
       this.materialButton = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 },
-          opacity: { value: 0.5 },
-          uColor: { value: new THREE.Color("#B10026") },
+          opacity: { value: 1 },
+          uColor1: { value: new THREE.Color("#2E0000") },
+          uColor2: { value: new THREE.Color("#B10026") },
           changeColor: { value: 0 },
         },
         transparent: true,
@@ -484,11 +493,11 @@ export default class Buttons {
   }
 
   display() {
-    gsap.to(this.materialButton.uniforms.opacity, {
+    gsap.to(this.materialButton.uniforms.changeColor, {
       value: 1,
     });
-    gsap.to(this.textMaterial, {
-      opacity: 1,
+    gsap.to(this.textMaterial.uniforms.changeColor, {
+      value: 1,
     });
 
     document.querySelector(".btn__wrapper .play").style.pointerEvents = "auto";

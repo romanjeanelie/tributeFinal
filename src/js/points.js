@@ -56,7 +56,7 @@ export default class Points {
       vertexShader: vertex,
       fragmentShader: fragment,
       transparent: true,
-      // depthWrite: false,
+      depthWrite: false,
     });
   }
 
@@ -92,9 +92,7 @@ export default class Points {
     this.scene.add(this.pointsGroup);
   }
 
-  anim(progress, time, scrollSpeed) {
+  anim(progress, time) {
     this.pointsMaterial.uniforms.time.value = time;
-    // this..uniforms.time.value = time;
-    // this.pointsMaterial.uniforms.squeeze.value = Math.min(100, Math.abs(scrollSpeed));
   }
 }

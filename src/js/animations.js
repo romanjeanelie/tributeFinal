@@ -17,10 +17,8 @@ import CreatePath from "./camera/createPath";
 
 import debounce from "./utils/debounce";
 import ios from "./utils/ios";
-import { checkScrollSpeed } from "./utils/checkScrollSpeed";
 
 import Help from "./domElements/help";
-import TextLight from "./textLight";
 
 export default class Animations {
   constructor(options) {
@@ -41,9 +39,6 @@ export default class Animations {
     this.intersects = null;
 
     this.scrollValue = 0;
-    this.scrollSpeed = 0;
-    this.scrollSpeedEased = { value: 0 };
-    this.progress2 = 0;
 
     this.steps = [1.4];
     this.delta = 0;
@@ -53,15 +48,14 @@ export default class Animations {
 
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
     this.backstage = false;
-    this.positionTimeline = 0.64;
+    this.positionTimeline = 0.75;
     this.start = 0;
-
-    // Timeline texts
-    // 0.07
-    // 0.12
-    // 0.2
-    // 0.34
     // DEBUG MODE /////////////////////////////////////////////////////////////////////////////////
+
+    // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
+    // this.startProject();
+    // document.querySelector(".home").style.display = "none";
+    // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
 
     // Set Loader
     this.loadingManager = new THREE.LoadingManager(
@@ -96,15 +90,8 @@ export default class Animations {
     this.addObject();
     this.createTimelines();
     this.getScroll();
-    this.getScrollSpeed();
-    this.objectsToTest = [this.singlePoint.mesh];
     this.anim();
     this.render();
-
-    // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
-    // this.startProject();
-    // document.querySelector(".home").style.display = "none";
-    // START DIRECTLY //////////////////////////////////////////////////////////////////////////////
 
     if (this.backstage) {
       document.querySelector(".home").style.display = "none";
@@ -373,10 +360,6 @@ export default class Animations {
   }
 
   createTimelines() {
-    this.tl = gsap.timeline({
-      paused: true,
-    });
-
     this.tl2 = gsap.timeline({
       paused: true,
     });
@@ -388,26 +371,12 @@ export default class Animations {
     this.tl4 = gsap.timeline({
       paused: true,
     });
-
-    this.tlText = gsap.timeline({
-      paused: true,
-    });
   }
 
   getScroll() {
     window.addEventListener("scroll", (e) => {
-      this.scrollValue = window.scrollY / document.body.scrollHeight;
-    });
-  }
-
-  getScrollSpeed() {
-    window.addEventListener("scroll", () => {
-      this.scrollSpeed = checkScrollSpeed({ delay: 40 });
-
-      gsap.to(this.scrollSpeedEased, {
-        value: this.scrollSpeed,
-        duration: 1,
-      });
+      this.scrollValue = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+      console.log(this.progress);
     });
   }
 
@@ -421,8 +390,6 @@ export default class Animations {
   }
 
   stepTwo() {
-    // FADE IN  Single point
-
     // BIGGER Single point
     this.tl2.fromTo(
       this.singlePoint.material.uniforms.isPressed,
@@ -432,18 +399,6 @@ export default class Animations {
       {
         value: 1,
         duration: 5,
-      },
-      "<"
-    );
-    // FADE IN  BG Single point
-    this.tl2.fromTo(
-      this.singlePoint.materialBG.uniforms.opacity,
-      {
-        value: 0,
-      },
-      {
-        value: 1,
-        duration: 10,
       },
       "<"
     );
@@ -517,7 +472,6 @@ export default class Animations {
     // End help
 
     const tl = gsap.timeline();
-    this.progress2 = 0;
 
     // DEZOOM Single point
     tl.to(
@@ -540,6 +494,7 @@ export default class Animations {
     );
 
     const tlSky = gsap.timeline({ paused: true });
+    const road = this.road;
 
     tlSky.to(this.sky, {
       opacity: 1,
@@ -555,6 +510,11 @@ export default class Animations {
         onUpdate: function () {
           if (this.progress() > 0.234) {
             tlSky.play();
+          }
+          if (this.progress() > 0.66) {
+            road.stadium.stadium.clear();
+            road.bridge.bridge.clear();
+            road.buildingsGroup.clear();
           }
         },
         onComplete: () => {
@@ -572,6 +532,16 @@ export default class Animations {
 
       "<"
     );
+
+    this.tl4.to(
+      this.sky.changeColor,
+      {
+        delay: 5,
+        duration: 7,
+        value: 1,
+      },
+      "<"
+    );
   }
 
   finalStep() {
@@ -584,21 +554,12 @@ export default class Animations {
   }
 
   animObjects(progress, time) {
-    this.tl.progress(progress * 0.3);
-    this.tl4.progress(this.progress2 * 0.8);
+    this.tl4.progress(this.progress);
     this.singlePoint.anim(progress, time);
-    this.sky.anim(progress, time, this.scrollSpeedEased);
+    this.sky.anim(progress, time);
     this.plane.anim(progress, time);
     this.flower.anim(progress, time);
     this.buttons.anim(progress, time);
-
-    if (this.progress > this.steps[0]) {
-    }
-  }
-
-  computeDelta(progress) {
-    this.delta = progress - this.currentScroll;
-    this.currentScroll = progress;
   }
 
   animText(progress, time) {
@@ -607,37 +568,31 @@ export default class Animations {
     this.textFinal.anim(progress * 12, time);
 
     this.road.anim(progress * 12, time);
-    this.singlePoint.points.anim(progress * 12, time, this.scrollSpeedEased.value);
+    this.singlePoint.points.anim(progress * 12, time);
   }
 
   render() {
     // Params
     const speedFactor = 100;
     this.time += 0.0001 * speedFactor;
-    this.progress = this.scrollValue * 6;
+    this.progress = this.scrollValue * 1.1;
 
-    this.computeDelta(this.progress);
+    // Animation objects
+    this.animObjects(this.progress, this.time);
+    this.animText(this.progress, this.time);
+    this.animCamera(this.progress, this.time);
 
     ///////////////////////////////////////// Test without scrollBar
     if (this.backstage) {
-      this.progress = this.time;
-      // this.progress2 = this.time * 0.2;
-      this.progress2 = this.positionTimeline;
+      this.progress = this.positionTimeline;
       document.body.classList.remove("scroll");
       document.querySelector(".home").style.opacity = 0;
       //this.gui.show();
       this.singlePoint.points.pointsMaterial.uniforms.opacity.value = 1;
       this.tl2.play();
       this.singlePoint.mesh.position.y = this.createPath.cameraPath.cameraAndScreen.position.y;
-      // this.sky.opacity = 1;
+      this.sky.opacity = 1;
     }
     ///////////////////////////////////////// End Test without scrollBar
-    // Animation objects
-    this.animObjects(this.progress, this.time);
-    this.animText(this.progress, this.time);
-    this.progress2 += this.delta;
-
-    // Animation camera
-    this.animCamera(this.progress, this.time);
   }
 }

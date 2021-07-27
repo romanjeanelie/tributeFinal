@@ -44,7 +44,7 @@ export default class Plane {
 
     this.plane.scale.set(40, 40, 40);
     // this.plane.position.set(1200, -2100, 10600);
-    this.plane.position.set(1200, -1500, 10600);
+    this.plane.position.set(1200, -2500, 10600);
 
     this.scene.add(this.plane);
   }

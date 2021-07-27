@@ -2,7 +2,7 @@ varying vec2 vUv;
 varying float vOpacity;
 
 uniform vec3 uColor;
-uniform float opacity;
+uniform float uOpacity;
 
 float fill(float x, float size){
     return 1. - step(size, x);

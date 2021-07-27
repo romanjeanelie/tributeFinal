@@ -29,7 +29,7 @@ export default class TextBuilding {
       posX: -59,
       posY: 22,
       posZ: 15,
-      rotateZ: 0,
+      rotateY: 0,
       scale: 6,
       color1: "#E8E77F",
       color2: "#CD6F3C",
@@ -61,10 +61,10 @@ export default class TextBuilding {
         font: "Milestone",
 
         posX: 5,
-        posY: 20,
+        posY: 13,
         posZ: 40,
-        rotateZ: -0.5,
-        scale: 8,
+        rotateY: -0.5,
+        scale: 6,
         color: "#F76E3B",
         color2: "#FF1B7E",
       },
@@ -72,22 +72,34 @@ export default class TextBuilding {
         text: "to feel you",
         font: "Milestone",
         posX: 5,
-        posY: 12,
+        posY: 8.5,
         posZ: 40,
-        rotateZ: -0.5,
-        scale: 8,
+        rotateY: -0.5,
+        scale: 6,
         color: "#F76E3B",
         color2: "#FF1B7E",
       },
       {
-        text: "come back to me",
+        text: "come back",
         font: "Score Board_Regular",
 
-        posX: -100,
-        posY: 14,
-        posZ: 90,
-        rotateZ: 0.2,
-        scale: 4,
+        posX: -115,
+        posY: 26,
+        posZ: 76,
+        rotateY: 0.4,
+        scale: 7,
+        color1: "#DEC2B0",
+        color2: "#DEC2B0",
+      },
+      {
+        text: "to me",
+        font: "Score Board_Regular",
+
+        posX: -115,
+        posY: 20,
+        posZ: 76,
+        rotateY: 0.4,
+        scale: 7,
         color1: "#DEC2B0",
         color2: "#DEC2B0",
       },
@@ -97,7 +109,7 @@ export default class TextBuilding {
         posX: -45,
         posY: 27,
         posZ: 175,
-        rotateZ: 0.2,
+        rotateY: 0.2,
         scale: 4,
         color1: "#E600FF",
         color2: "#FF0077",
@@ -108,16 +120,92 @@ export default class TextBuilding {
         posX: -45,
         posY: 23,
         posZ: 175,
-        rotateZ: 0.2,
+        rotateY: 0.2,
         scale: 4,
         color1: "#E600FF",
         color2: "#FF0077",
       },
     ];
+
     this.texts.forEach((textOptions) => {
       this.loader.load(`/fonts/${textOptions.font}.json`, (font) => {
         this.createText(font, textOptions);
       });
+    });
+
+    this.structures = [
+      // DANCE
+      {
+        posX: -59.4,
+        posY: 19.5,
+        posZ: 15,
+        rotateY: 0,
+        scale: 0.5,
+      },
+      {
+        posX: -61.3,
+        posY: 19.5,
+        posZ: 15,
+        rotateY: 0,
+        scale: 0.51,
+      },
+
+      {
+        posX: -57,
+        posY: 19.5,
+        posZ: 15,
+        rotateY: 0,
+        scale: 0.5,
+      },
+
+      // ON THE FLOOR
+      {
+        posX: -16,
+        posY: 15,
+        posZ: 3,
+        rotateY: 0,
+        scale: 3,
+      },
+      {
+        posX: -14,
+        posY: 19,
+        posZ: 3,
+        rotateY: 0,
+        scale: 1,
+      },
+      {
+        posX: -19,
+        posY: 19.6,
+        posZ: 3,
+        rotateY: 0,
+        scale: 0.7,
+      },
+
+      {
+        posX: -14.5,
+        posY: 18.3,
+        posZ: 4,
+        rotateZ: Math.PI * 0.5,
+        scale: 4.5,
+      },
+
+      // FEEL YOU
+      {
+        posX: 2,
+        posY: 8.5,
+        posZ: 37,
+        scale: 3,
+      },
+      {
+        posX: 9,
+        posY: 8.5,
+        posZ: 42,
+        scale: 3,
+      },
+    ];
+
+    this.structures.forEach((structure) => {
+      this.createStructure(structure);
     });
   }
 
@@ -158,30 +246,33 @@ export default class TextBuilding {
     textMesh.position.y = options.posY;
     textMesh.position.z = options.posZ;
 
-    if (options.rotateZ) {
-      textMesh.rotation.y = options.rotateZ;
+    if (options.rotateY) {
+      textMesh.rotation.y = options.rotateY;
     }
     textMesh.scale.set(options.scale, options.scale, options.scale);
 
     this.textsMesh.push(textMesh);
 
     this.scene.add(textMesh);
-    // this.addStructure();
   }
 
-  addStructure() {
-    const posDanceStruct = {
-      x: this.textDance.position.x,
-      y: this.textDance.position.y,
-      z: this.textDance.position.z,
-    };
-    const posFloorStruct = {
-      x: this.textFloor.position.x,
-      y: this.textFloor.position.y,
-      z: this.textFloor.position.z,
-    };
-    this.structureDance = new StructureText({ gui: this.gui, scene: this.scene, positions: posDanceStruct });
-    //this.structureFloor = new StructureText({ gui: this.gui, scene: this.scene, positions: posFloorStruct });
+  createStructure(options) {
+    const geometry = new THREE.PlaneBufferGeometry(0.2, 4);
+    const material = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+
+    const structure = new THREE.Mesh(geometry, material);
+
+    structure.position.set(options.posX, options.posY, options.posZ);
+
+    if (options.rotateY) {
+      structure.rotation.y = options.rotateY;
+    }
+    if (options.rotateZ) {
+      structure.rotation.z = options.rotateZ;
+    }
+
+    structure.scale.set(1, options.scale, 1);
+    this.scene.add(structure);
   }
 
   anim(progress, time) {

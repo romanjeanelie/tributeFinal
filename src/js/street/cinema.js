@@ -22,13 +22,13 @@ export default class Cinema {
 
     this.addCinema();
 
-    this.cinema.scale.set(0.4, 0.4, 0.4);
+    this.cinema.scale.set(1.5, 1.5, 1.5);
 
     this.cinema.rotation.y = 0.5;
 
-    this.cinema.position.x = -24;
-    this.cinema.position.y = 9;
-    this.cinema.position.z = 270;
+    this.cinema.position.x = -42;
+    this.cinema.position.y = 0;
+    this.cinema.position.z = 240;
     this.scene.add(this.cinema);
   }
 
